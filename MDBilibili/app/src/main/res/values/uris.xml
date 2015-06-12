@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bilibili_api_host">http://api.bilibili.cn/</string>
+    <string name="bilibili_host">http://www.bilibili.com/</string>
+    <string name="html5">m/html5?aid=</string>
+</resources>
