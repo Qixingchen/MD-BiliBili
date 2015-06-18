@@ -8,22 +8,30 @@ import android.view.ViewGroup;
 /**
  * Created by dell on 2015/6/15.
  */
-public class CardAdapter extends RecyclerView.Adapter<BilibiliCardVH> {
-    @Override
-    public BilibiliCardVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dast_bilibili_card_item, parent, false);
-        BilibiliCardVH vh = new BilibiliCardVH(v);
-        return vh;
-    }
+public class CardAdapter extends RecyclerView.Adapter<BilibiliCardViewHolder>
+		implements BilibiliCardViewHolder.BilibiliCardViewHolderOnClick {
 
-    @Override
-    public void onBindViewHolder(BilibiliCardVH holder, int position) {
 
-    }
+	@Override
+	public BilibiliCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View v = LayoutInflater.from(parent.getContext())
+				.inflate(R.layout.dast_bilibili_card_item, parent, false);
+		BilibiliCardViewHolder vh = new BilibiliCardViewHolder(v, this);
+		return vh;
+	}
 
-    @Override
-    public int getItemCount() {
-        return 20;
-    }
+	@Override
+	public void onBindViewHolder(BilibiliCardViewHolder holder, int position) {
+
+	}
+
+	@Override
+	public int getItemCount() {
+		return 20;
+	}
+
+	@Override
+	public void OnCardViewClick(View view, int position) {
+		//todo 开始播放
+	}
 }

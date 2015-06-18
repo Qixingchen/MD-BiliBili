@@ -6,4 +6,5 @@
     <string name="title_activity_player">Player</string>
     <string name="play_demo">PlayDemo</string>
     <string name="dast_string_bilibili">Bilibili</string>
+    <string name="video_img">封面</string>
 </resources>

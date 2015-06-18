@@ -14,30 +14,32 @@ import android.view.ViewGroup;
 /**
  * Created by farble on 2015/6/15.
  */
-public class TestFragment extends Fragment{
-    private static final String TAG = "TestFragment";
-    private View rootView;
-    private Activity mActivity;
-    private RecyclerView recyclerView;
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (rootView == null){
-            rootView = inflater.inflate(R.layout.dast_bilibili_card, container, false);
-        }
-        initView();
-        return rootView;
-    }
+public class TestFragment extends Fragment {
+	private static final String TAG = "TestFragment";
+	private View rootView;
+	private Activity mActivity;
+	private RecyclerView recyclerView;
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mActivity = activity;
-    }
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		if (rootView == null) {
+			rootView = inflater.inflate(R.layout.dast_bilibili_card, container, false);
+		}
+		initView();
+		return rootView;
+	}
 
-    private void initView() {
-        recyclerView = (RecyclerView)rootView.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2));
-        recyclerView.setAdapter(new CardAdapter());
-    }
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mActivity = activity;
+	}
+
+	private void initView() {
+		recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+		recyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2));
+		recyclerView.setAdapter(new CardAdapter());
+	}
+
 }
