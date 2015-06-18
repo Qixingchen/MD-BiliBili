@@ -10,15 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import me.qixingchen.mdbilibili.model.Recommend;
+import me.qixingchen.mdbilibili.network.GetRecommend;
+
 
 /**
  * Created by farble on 2015/6/15.
  */
-public class TestFragment extends Fragment {
+public class TestFragment extends Fragment implements GetRecommend.RecommendCallBack {
 	private static final String TAG = "TestFragment";
 	private View rootView;
 	private Activity mActivity;
 	private RecyclerView recyclerView;
+	private Recommend recommend = null;
+	private CardAdapter cardAdapter;
 
 	@Nullable
 	@Override
@@ -36,10 +41,22 @@ public class TestFragment extends Fragment {
 		mActivity = activity;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		GetRecommend.getRecommend().setCallBack(this).GetRecommendInfo("1");
+	}
+
 	private void initView() {
 		recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
 		recyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2));
-		recyclerView.setAdapter(new CardAdapter());
+		cardAdapter = new CardAdapter(recommend, mActivity.getApplication());
+		recyclerView.setAdapter(cardAdapter);
 	}
 
+	@Override
+	public void recommendCallBack(Recommend recommend) {
+		this.recommend = recommend;
+		cardAdapter.notifyDateChanged(recommend);
+	}
 }

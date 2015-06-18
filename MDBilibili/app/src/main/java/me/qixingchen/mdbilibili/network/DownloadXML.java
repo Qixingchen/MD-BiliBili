@@ -50,9 +50,7 @@ public class DownloadXML extends AsyncTask<String, Integer, String> {
 					File file = new File(App.getApplication().getExternalFilesDir
 							("danmaku"), filename);
 					if (file.exists()) {
-						//todo 弹幕更新
-						//file.delete();
-						return filename;
+						file.delete();
 					}
 					inputStream = new BufferedInputStream(connection.getInputStream());
 					fileStream = new FileOutputStream(file);

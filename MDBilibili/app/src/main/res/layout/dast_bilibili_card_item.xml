@@ -5,19 +5,18 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="180dp"
-    android:layout_height="145dp"
+    android:layout_height="180dp"
     android:layout_gravity="center"
     android:elevation="100dp"
-    card_view:cardBackgroundColor="@color/md_teal_200"
     card_view:cardCornerRadius="4dp"
     tools:context="${relativePackage}.${activityClass}">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/card_view_image"
             android:layout_width="match_parent"
             android:layout_height="135dp"
@@ -31,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="3dp"
+            android:textSize="@dimen/normal_text_size"
             tools:text="@string/dast_string_bilibili"/>
 
     </LinearLayout>

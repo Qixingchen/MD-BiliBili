@@ -1,5 +1,9 @@
 package me.qixingchen.mdbilibili.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Created by Yulan on 2015/6/18.
  * bilibili 读取用户推荐信息 API
@@ -7,11 +11,16 @@ package me.qixingchen.mdbilibili.model;
  */
 public class Recommend {
 	public class last_recommend {
-
+		private String tname;
+		private int mid;
+		private long time;
+		private String msg;
+		private String face;
 	}
 
-	public class list {
-		private last_recommend last_recommend;
+	public class listclass {
+		@SerializedName("last_recommend")
+		private List<last_recommend> last_recommends;
 		private String duration;
 		private int coins;
 		private int credit;
@@ -23,16 +32,15 @@ public class Recommend {
 		private int favorites;
 		private int video_review;
 		private int review;
-		private int play;
+		private String play;
 		private String subtitle;
 		private String title;
 		private String typename;
 		private int typeid;
 		private int aid;
 
-
-		public Recommend.last_recommend getLast_recommend() {
-			return last_recommend;
+		public List<last_recommend> getLast_recommends() {
+			return last_recommends;
 		}
 
 		public String getDuration() {
@@ -79,7 +87,7 @@ public class Recommend {
 			return review;
 		}
 
-		public int getPlay() {
+		public String getPlay() {
 			return play;
 		}
 
@@ -104,25 +112,25 @@ public class Recommend {
 		}
 	}
 
-
 	private String code;
-	private int pages;
-	private int num;
-	private list list;
+	private String pages;
+	private String num;
+	@SerializedName("list")
+	private List<listclass> lists;
 
 	public String getCode() {
 		return code;
 	}
 
-	public int getPages() {
+	public String getPages() {
 		return pages;
 	}
 
-	public int getNum() {
+	public String getNum() {
 		return num;
 	}
 
-	public Recommend.list getList() {
-		return list;
+	public List<listclass> getLists() {
+		return lists;
 	}
 }

@@ -75,12 +75,19 @@ public class Player extends ActionBarActivity implements GetXMLinfo.SendSrc,
 		if (mDanmakuView != null && mDanmakuView.isPrepared() && mDanmakuView.isPaused()) {
 			mDanmakuView.resume();
 		}
+		if (mMediaPlayer != null && !mMediaPlayer.isPlaying()) {
+			mMediaPlayer.start();
+		}
+
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		mMediaPlayer.pause();
+		if (mMediaPlayer!=null){
+			mMediaPlayer.pause();
+		}
+
 		if (mDanmakuView != null && mDanmakuView.isPrepared()) {
 			mDanmakuView.pause();
 		}
