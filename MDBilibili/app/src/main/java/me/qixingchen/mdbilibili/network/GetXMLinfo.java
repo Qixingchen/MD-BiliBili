@@ -13,7 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import me.qixingchen.mdbilibili.R;
-import me.qixingchen.mdbilibili.app.App;
+import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.model.HTML5;
 
 /**
@@ -31,7 +31,7 @@ public class GetXMLinfo {
 	private static final String TAG = GetXMLinfo.class.getSimpleName();
 
 	private GetXMLinfo() {
-		application = App.getApplication();
+		application = BilibiliApplication.getApplication();
 		requestQueue = Volley.newRequestQueue(application);
 	}
 

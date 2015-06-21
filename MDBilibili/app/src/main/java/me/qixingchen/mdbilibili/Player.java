@@ -27,7 +27,7 @@ import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
-import me.qixingchen.mdbilibili.app.App;
+import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.network.DownloadXML;
 import me.qixingchen.mdbilibili.network.GetXMLinfo;
 
@@ -159,7 +159,7 @@ public class Player extends ActionBarActivity implements GetXMLinfo.SendSrc,
 	//DownloadXML 回调用此处 告知 XML 下载完成
 	@Override
 	public void xmlIsOK() {
-		File xmlfile = new File(App.getApplication().getExternalFilesDir("danmaku"),
+		File xmlfile = new File(BilibiliApplication.getApplication().getExternalFilesDir("danmaku"),
 				mXMLFileName);
 		try {
 			InputStream inputStream = new FileInputStream(xmlfile);
@@ -211,7 +211,7 @@ public class Player extends ActionBarActivity implements GetXMLinfo.SendSrc,
 
 	//判断能否开始播放 嘤嘤嘤 渣实现求不骂。。
 	private static void startPlay() {
-		if (mMediaPlayer != null && mXMLFileName != null && mSrc != null && new File(App.getApplication().getExternalFilesDir("danmaku"), mXMLFileName).exists()) {
+		if (mMediaPlayer != null && mXMLFileName != null && mSrc != null && new File(BilibiliApplication.getApplication().getExternalFilesDir("danmaku"), mXMLFileName).exists()) {
 			try {
 				if (mMediaPlayer.isPlaying()) {
 					mMediaPlayer.stop();

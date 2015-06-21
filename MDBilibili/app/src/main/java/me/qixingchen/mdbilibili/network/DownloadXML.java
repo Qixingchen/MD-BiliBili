@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 
-import me.qixingchen.mdbilibili.app.App;
+import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.tool.Tool;
 
 /**
@@ -47,7 +47,7 @@ public class DownloadXML extends AsyncTask<String, Integer, String> {
 
 				if (Tool.isExternalStorageAvlilable()) {
 					filename = uriString.substring(uriString.lastIndexOf('=') + 1) + ".xml";
-					File file = new File(App.getApplication().getExternalFilesDir
+					File file = new File(BilibiliApplication.getApplication().getExternalFilesDir
 							("danmaku"), filename);
 					if (file.exists()) {
 						file.delete();

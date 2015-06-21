@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
 
-import me.qixingchen.mdbilibili.app.App;
+import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.model.Recommend;
 import me.qixingchen.mdbilibili.network.GetVolley;
 
@@ -43,7 +43,7 @@ public class CardAdapter extends RecyclerView.Adapter<BilibiliCardViewHolder> {
 		holder.rootView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent playDemoIntent = new Intent(App.getApplication(), Player.class);
+				Intent playDemoIntent = new Intent(BilibiliApplication.getApplication(), Player.class);
 				String Aid = String.valueOf(recommend.getLists().get(position).getAid());
 				playDemoIntent.putExtra("AID", Aid);
 				playDemoIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -57,7 +57,7 @@ public class CardAdapter extends RecyclerView.Adapter<BilibiliCardViewHolder> {
 		return recommend == null ? 0 : recommend.getLists().size();
 	}
 
-	//更新数据
+	//刷新数据
 	public void notifyDateChanged(Recommend recommend) {
 		this.recommend = recommend;
 		this.notifyDataSetChanged();

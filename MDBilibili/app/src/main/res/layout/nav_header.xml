@@ -23,11 +23,24 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
     android:gravity="bottom">
+    <me.qixingchen.mdbilibili.view.CircleImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="@dimen/margintop_15"
+        android:src="@drawable/user_logo"/>
 
     <TextView
+        android:layout_marginTop="@dimen/margintop_15"
+        android:layout_marginLeft="@dimen/margintop_15"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username"
+        android:text="王朗"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
-
+    <TextView
+        android:layout_marginTop="@dimen/margintop_15"
+        android:layout_marginLeft="@dimen/margintop_15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="UID  76396"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 </LinearLayout>
