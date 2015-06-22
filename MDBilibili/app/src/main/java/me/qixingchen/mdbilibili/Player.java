@@ -6,8 +6,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -36,9 +34,9 @@ public class Player extends ActionBarActivity implements GetXMLinfo.SendSrc,
 		SurfaceHolder.Callback, MediaPlayer.OnPreparedListener, MediaPlayer
 				.OnBufferingUpdateListener, DownloadXML.XMLDownloadOK {
 
-	public static Activity mActivity;
-	private static String mXMLFileName;
-	private static MediaPlayer mMediaPlayer;
+	public  Activity mActivity;
+	private String mXMLFileName;
+	private MediaPlayer mMediaPlayer;
 	private SurfaceView mPlayerView;
 	private IDanmakuView mDanmakuView;
 	private SurfaceHolder mSurfaceHolder;
@@ -210,7 +208,7 @@ public class Player extends ActionBarActivity implements GetXMLinfo.SendSrc,
 	}
 
 	//判断能否开始播放 嘤嘤嘤 渣实现求不骂。。
-	private static void startPlay() {
+	private  void startPlay() {
 		if (mMediaPlayer != null && mXMLFileName != null && mSrc != null && new File(BilibiliApplication.getApplication().getExternalFilesDir("danmaku"), mXMLFileName).exists()) {
 			try {
 				if (mMediaPlayer.isPlaying()) {
@@ -224,28 +222,4 @@ public class Player extends ActionBarActivity implements GetXMLinfo.SendSrc,
 			}
 		}
 	}
-
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_player, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent mActivity in AndroidManifest.xml.
-		int id = item.getItemId();
-
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings) {
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
 }
