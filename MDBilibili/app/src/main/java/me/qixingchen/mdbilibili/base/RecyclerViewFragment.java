@@ -16,9 +16,9 @@ import me.qixingchen.mdbilibili.view.MultiSwipeRefreshLayout;
 
 
 /**
- *
- * Created by dell on 2015/5/11.
+ * Created by farble on 2015/5/11.
  * you need include dast_base_recyclerview.xml
+ * @deprecated will be refactored next time
  */
 public abstract class RecyclerViewFragment extends Fragment {
     private final static String TAG = "RecyclerViewFragment";
@@ -30,7 +30,6 @@ public abstract class RecyclerViewFragment extends Fragment {
 
     protected MultiSwipeRefreshLayout mSwipeRefreshLayout;
 
-    //RecyclerView 是否正在滑动
     protected boolean recyclerViewStateLoading = true;
     /**
      * RecyclerView 是否支持下拉刷新
