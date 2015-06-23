@@ -38,7 +38,7 @@ public abstract class AbsSwipeRecyclerViewFab extends Fragment{
      * can RecyclerView swipe refresh
      * <li>true : yes</li>
      * <li>false : no</li>
-     */MDBilibili/app/src/main/java/me/qixingchen/mdbilibili
+     */
     protected boolean canSwipeRefresh = true;
     /**
      * RecyclerView pull to load more
@@ -125,7 +125,7 @@ public abstract class AbsSwipeRecyclerViewFab extends Fragment{
     }
 
     /**
-     * 设置canPullToLoading,canRefresh的值<li>{@linkplain AbsSwipeRecyclerViewFab canPullToLoading}</li>
+     * set canPullToLoading,canRefresh value<li>{@linkplain AbsSwipeRecyclerViewFab canPullToLoading}</li>
      * <li>{@linkplain RecyclerViewFragment canSwipeRefresh}</li>
      */
     protected abstract void setConfig();
