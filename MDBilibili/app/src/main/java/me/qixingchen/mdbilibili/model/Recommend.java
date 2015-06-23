@@ -11,33 +11,33 @@ import java.util.List;
  */
 public class Recommend {
 	public class last_recommend {
-		private String tname;
-		private int mid;
-		private long time;
-		private String msg;
-		private String face;
+		private String uname;/*推荐人名字*/
+		private int mid;/*推荐人ID*/
+		private long time;/*推荐时间*/
+		private String msg;/*推荐信息*/
+		private String face;/*推荐人头像地址*/
 	}
 
 	public class listclass {
 		@SerializedName("last_recommend")
-		private List<last_recommend> last_recommends;
-		private String duration;
-		private int coins;
-		private int credit;
-		private String pic;
-		private String create;
-		private String description;
-		private String author;
-		private int mid;
-		private int favorites;
-		private int video_review;
-		private int review;
-		private String play;
-		private String subtitle;
-		private String title;
-		private String typename;
-		private int typeid;
-		private int aid;
+		private List<last_recommend> last_recommends;/*最后推荐信息*/
+		private String duration;/*视频时长*/
+		private int coins;/*推荐数量*/
+		private int credit;/*评分数量*/
+		private String pic;/*封面图片地址*/
+		private String create;/*视频创建日期*/
+		private String description;/*视频简介*/
+		private String author;/*视频作者*/
+		private int mid;/*视频作者ID*/
+		private int favorites;/*收藏数*/
+		private int video_review;/*弹幕数*/
+		private int review;/*评论数*/
+		private String play;/*播放次数*/
+		private String subtitle;/*视频副标题*/
+		private String title;/*视频标题*/
+		private String typename;/*视频分类名称*/
+		private int typeid;/*视频分类ID*/
+		private int aid;/*视频编号*/
 
 		public List<last_recommend> getLast_recommends() {
 			return last_recommends;
