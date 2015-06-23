@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements GetRecommend.Reco
             public void run() {
                 ScrollManager manager = new ScrollManager();
                 manager.attach(mRecyclerView);
+                manager.addView(toolbar, ScrollManager.Direction.UP);
                 manager.addView(fab, ScrollManager.Direction.DOWN);
                 manager.setInitialOffset(toolbar.getHeight());
             }
