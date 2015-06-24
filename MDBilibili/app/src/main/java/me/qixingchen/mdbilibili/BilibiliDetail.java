@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
@@ -72,7 +73,7 @@ public class BilibiliDetail extends AppCompatActivity {
     }
 
     private void loadBackdrop() {
-        NetworkImageView imageView = (NetworkImageView) findViewById(R.id.backdrop);
+         final NetworkImageView imageView = (NetworkImageView) findViewById(R.id.backdrop);
         imageView.setImageUrl(imageUrl, GetVolley.getmInstance(this).getImageLoader());
     }
 
