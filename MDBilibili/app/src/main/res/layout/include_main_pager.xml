@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@mipmap/fresh" />
+            android:src="@drawable/search" />
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

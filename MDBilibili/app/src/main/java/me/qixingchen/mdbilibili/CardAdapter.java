@@ -43,11 +43,14 @@ public class CardAdapter extends RecyclerView.Adapter<BilibiliCardViewHolder> {
 		holder.rootView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent playDemoIntent = new Intent(BilibiliApplication.getApplication(), Player.class);
-				String Aid = String.valueOf(recommend.getLists().get(position).getAid());
-				playDemoIntent.putExtra("AID", Aid);
-				playDemoIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				mContext.startActivity(playDemoIntent);
+                Intent intent = new Intent(BilibiliApplication.getApplication(),BilibiliDetail.class);
+                String url = String.valueOf(recommend.getLists().get(position).getPic());
+                String title = String.valueOf(recommend.getLists().get(position).getTitle());
+                String aid = String.valueOf(recommend.getLists().get(position).getAid());
+                intent.putExtra("IMG_URL", url);
+                intent.putExtra("TITLE", title);
+                intent.putExtra("AID", aid);
+                mContext.startActivity(intent);
 			}
 		});
 	}
