@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements GetRecommend.Reco
         mRecyclerView = (RecyclerView) findViewById(R.id.dast_recycler_view);
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        mCardAdapter = new CardAdapter(recommend, this.getApplication());
+        mCardAdapter = new CardAdapter(recommend, MainActivity.this);
         mRecyclerView.setAdapter(mCardAdapter);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {

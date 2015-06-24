@@ -28,6 +28,8 @@
             android:screenOrientation="landscape"
             android:exported="false">
         </activity>
+        <activity android:name=".BilibiliDetail"
+            android:exported="false"/>
     </application>
 
 </manifest>
