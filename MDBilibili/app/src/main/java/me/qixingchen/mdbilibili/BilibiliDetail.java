@@ -73,7 +73,7 @@ public class BilibiliDetail extends AppCompatActivity {
     }
 
     private void loadBackdrop() {
-         final NetworkImageView imageView = (NetworkImageView) findViewById(R.id.backdrop);
+        final NetworkImageView imageView = (NetworkImageView) findViewById(R.id.backdrop);
         imageView.setImageUrl(imageUrl, GetVolley.getmInstance(this).getImageLoader());
     }
 
