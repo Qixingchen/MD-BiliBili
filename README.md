@@ -1,4 +1,8 @@
 # MD-BiliBili
 基于 Material Design 的 BiliBili 第三方 Android 客户端
 
-![demo](http://i4.tietuku.com/1bc33a80f8a05f75.gif)
+![demo1](http://i4.tietuku.com/ccc877c96ff6c351.png)![demo2](http://i4.tietuku.com/c179c9cd9fa8d525.png)
+![demo3](http://i4.tietuku.com/96b668b7bfb82dca.png)![demo4](http://i4.tietuku.com/73fba987232d39d5.png)
+![demo5](http://i4.tietuku.com/ce0b9a95c8b2ce23.png)
+
+
