@@ -3,4 +3,5 @@
     <string name="bilibili_api_host">http://api.bilibili.cn/</string>
     <string name="bilibili_host">http://www.bilibili.com/</string>
     <string name="html5">m/html5?aid=</string>
+    <string name="recommend">recommend?tid=</string>
 </resources>

@@ -13,7 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import me.qixingchen.mdbilibili.R;
-import me.qixingchen.mdbilibili.app.App;
+import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.model.HTML5;
 
 /**
@@ -31,7 +31,7 @@ public class GetXMLinfo {
 	private static final String TAG = GetXMLinfo.class.getSimpleName();
 
 	private GetXMLinfo() {
-		application = App.getApplication();
+		application = BilibiliApplication.getApplication();
 		requestQueue = Volley.newRequestQueue(application);
 	}
 
@@ -56,11 +56,9 @@ public class GetXMLinfo {
 					public void onResponse(String response) {
 						HTML5 html5 = gson.fromJson(response, HTML5.class);
 						String CIDName = html5.getCid();
-						//开始下载 XML
-						new DownloadXML().execute(CIDName);
+						CIDName = CIDName.replace(".com", ".cn");
 						//向 player 发送 视频源和弹幕 XML 文件名
-						msendSrc.getSrcAndXMLFileName(html5.getSrc(),
-								CIDName.substring(CIDName.lastIndexOf('/') + 1));
+						msendSrc.getSrcAndXMLFileName(html5.getSrc(), CIDName);
 					}
 				}, new Response.ErrorListener() {
 			@Override
@@ -74,7 +72,7 @@ public class GetXMLinfo {
 
 
 	public interface SendSrc {
-		void getSrcAndXMLFileName(String Src, String XMLFileName);
+		void getSrcAndXMLFileName(String Src, String XMLUrl);
 	}
 
 }

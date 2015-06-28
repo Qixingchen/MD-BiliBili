@@ -3,16 +3,15 @@ package me.qixingchen.mdbilibili.network;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
-import me.qixingchen.mdbilibili.Player;
-import me.qixingchen.mdbilibili.app.App;
+import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.tool.Tool;
 
 /**
@@ -23,40 +22,43 @@ import me.qixingchen.mdbilibili.tool.Tool;
 public class DownloadXML extends AsyncTask<String, Integer, String> {
 
 	private final static String TAG = DownloadXML.class.getSimpleName();
+	private XMLDownloadOK xmlDownloadOK;
+
+	public void setXmlDownloadOK(XMLDownloadOK xmlDownloadOK) {
+		this.xmlDownloadOK = xmlDownloadOK;
+	}
 
 	protected String doInBackground(String... params) {
-		URL url = null;
+		URL url;
 		String filename = null;
-		InputStream input = null;
-		OutputStream output = null;
-		HttpURLConnection connection = null;
+		BufferedInputStream inputStream = null;
+		BufferedOutputStream outputStream = null;
+		FileOutputStream fileStream = null;
+		URLConnection connection = null;
+		final int DOWNLOAD_BUFFER_SIZE = 1024;
 		for (String uriString : params) {
 			try {
 				url = new URL(uriString);
-				filename = uriString.substring(uriString.lastIndexOf('/') + 1);
-				connection = (HttpURLConnection) url.openConnection();
-				int length = connection.getContentLength();
-				if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-					String errorMessage = "Server returned HTTP " + connection
-							.getResponseCode()
-							+ " " + connection.getResponseMessage();
-					Log.e(TAG, errorMessage);
-				}
+				connection = url.openConnection();
+				connection.setUseCaches(false);
 
-				input = connection.getInputStream();
+				int length = connection.getContentLength();
+				Log.w(TAG, url + "文件长度" + length);
 
 				if (Tool.isExternalStorageAvlilable()) {
-					File file = new File(App.getApplication().getExternalFilesDir("danmuku"), filename);
+					filename = uriString.substring(uriString.lastIndexOf('=') + 1) + ".xml";
+					File file = new File(BilibiliApplication.getApplication().getExternalFilesDir
+							("danmaku"), filename);
 					if (file.exists()) {
-						//todo 弹幕更新
-						//file.delete();
-						return filename;
+						file.delete();
 					}
-					output = new FileOutputStream(file);
-					byte data[] = new byte[1024 * 8];
-					int count;
-					while ((count = input.read(data)) != -1) {
-						output.write(data, 0, count);
+					inputStream = new BufferedInputStream(connection.getInputStream());
+					fileStream = new FileOutputStream(file);
+					outputStream = new BufferedOutputStream(fileStream, DOWNLOAD_BUFFER_SIZE);
+					byte[] data = new byte[DOWNLOAD_BUFFER_SIZE];
+					int bytesRead = 0;
+					while ((bytesRead = inputStream.read(data, 0, data.length)) >= 0) {
+						outputStream.write(data, 0, bytesRead);
 					}
 				}
 			} catch (IOException e) {
@@ -64,26 +66,30 @@ public class DownloadXML extends AsyncTask<String, Integer, String> {
 				return "error";
 			} finally {
 				try {
-					if (output != null)
-						output.close();
-					if (input != null)
-						input.close();
+					if (outputStream != null)
+						outputStream.close();
+					if (inputStream != null)
+						inputStream.close();
+					if (fileStream != null)
+						fileStream.close();
 				} catch (IOException ignored) {
 				}
 
-				if (connection != null)
-					connection.disconnect();
+
 			}
 		}
 		return filename;
 	}
 
+	public interface XMLDownloadOK {
+		void xmlIsOK();
+	}
 
 	@Override
 	protected void onPostExecute(String s) {
 		super.onPostExecute(s);
 		if (s.compareTo("error") != 0) {
-			Player.xmlIsOK();
+			xmlDownloadOK.xmlIsOK();
 		}
 	}
 }

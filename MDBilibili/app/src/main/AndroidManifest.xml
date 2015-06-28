@@ -7,14 +7,15 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name=".app.App"
+        android:name=".app.BilibiliApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -24,8 +25,11 @@
         <activity
             android:name=".Player"
             android:label="@string/title_activity_player"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:exported="false">
         </activity>
+        <activity android:name=".BilibiliDetail"
+            android:exported="false"/>
     </application>
 
 </manifest>
