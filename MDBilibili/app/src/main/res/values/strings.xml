@@ -7,5 +7,52 @@
     <string name="play_demo">PlayDemo</string>
     <string name="dast_string_bilibili">Bilibili</string>
     <string name="video_img">封面</string>
-    <string name="sampledate">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue     cheese caerphilly bavarian bergkase cheese and biscuits mascarpone. Cheeseburger swiss bavarian     bergkase cream cheese fromage frais cheesy feet port-salut airedale. St. agur blue cheese rubber     cheese caerphilly cheddar cheesecake cream cheese manchego lancashire. Roquefort squirty cheese     the big cheese</string>
+    <string name="sampledate">我没找到新的工作，我手头上还有事，还要至少做个十天半个月。我跟你们讲什么叫改需求恶心。本来门票就一个表，价格，购买时间，然后使用时间，属于哪个景区的，差不多就这几个字段.但是那天他说要改 改成什么样的呢，有些景区有半票和全票，有些景区有儿童票和成人票还有学生票，有些景区的票是分季节价格不同的，有些景区上午门票贵点，然后中午下午门票就便宜一点。还有有些景区门票比较紧张，让我实习实时与他们景区门票数量对接。反正差不多就这么一个情况他说对我后台来说很简单，改一下，加一下就好.然后我说没那么简单，他就说我太垃圾，就改下门票的显示，你把票的数据录入进去，显示下就好的东西，然后我就日了狗了</string>
+    <string name="application_info_title">Application Info</string>
+    <string name="license_title">License</string>
+    <string name="application_info_text" formatted="false">
+        <![CDATA[
+            <p>Version: %s</p>
+            <p>This application is open source at <a href="https://github.com/Qixingchen/MD-BiliBili">github.com/Qixingchen/MD-BiliBili</a></p>
+        ]]>
+    </string>
+     <string name="license_text">
+        <![CDATA[
+            <p>Copyright 2015 MD-BiliBili</p>
+            <p>Licensed under the Apache License, Version 2.0 (the "License");
+            you may not use this file except in compliance with the License.
+            You may obtain a copy of the License at</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+            <p>Unless required by applicable law or agreed to in writing, software
+            distributed under the License is distributed on an "AS IS" BASIS,
+            WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+            See the License for the specific language governing permissions and
+            limitations under the License.</p>
+        ]]>
+    </string>
+    <string name="developer_info_title">Developer Info</string>
+        <string name="developer_info_text">
+        <![CDATA[
+            <p><a href="https://github.com/Qixingchen">Qixingchen</a></p>
+            <p><a href="https://github.com/aliway89">aliway89</a></p>
+            <p><a href="https://github.com/chriszeng87">chriszeng87</a></p>
+            <p><a href="https://github.com/darrennight">darrennight</a></p>
+            <p><a href="https://github.com/David-LIzhengyang">David-LIzhengyang</a></p>
+            <p><a href="https://github.com/fython">fython</a></p>
+            <p><a href="https://github.com/Harlber">Harlber</a></p>
+            <p><a href="https://github.com/IRMobydick">IRMobydick</a></p>
+            <p><a href="https://github.com/JohnTsaiAndroid">JohnTsaiAndroid</a></p>
+            <p><a href="https://github.com/judasnow">judasnow</a></p>
+            <p><a href="https://github.com/lgx0955">lgx0955</a></p>
+            <p><a href="https://github.com/MrKins">MrKins</a></p>
+            <p><a href="https://github.com/niconicoAo">niconicoAo</a></p>
+            <p><a href="https://github.com/shenvsv">shenvsv</a></p>
+        ]]>
+    </string>
+    <string name="developer_special">
+        <![CDATA[
+            <p><a href="http://www.coolapk.com/u/436688">萌萌的小雅酱</a></p>
+        ]]>
+    </string>
+    <string name="special_contribution">Special Contribution</string>
 </resources>

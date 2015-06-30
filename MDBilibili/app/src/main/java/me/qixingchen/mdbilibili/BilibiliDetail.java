@@ -16,7 +16,8 @@ import com.android.volley.toolbox.NetworkImageView;
 import me.qixingchen.mdbilibili.network.GetVolley;
 
 /**
- * Created by farble on 2015/6/24.
+ * Created by Farble on 2015/6/24.
+ * detail page
  */
 public class BilibiliDetail extends AppCompatActivity {
     private static final String TAG = "BilibiliDetail";
@@ -43,6 +44,7 @@ public class BilibiliDetail extends AppCompatActivity {
         aid = intent.getStringExtra(AID);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Detail");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
