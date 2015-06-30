@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="me.qixingchen.mdbilibili"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.qixingchen.mdbilibili" >
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".app.BilibiliApplication"
@@ -19,16 +18,16 @@
             android:screenOrientation="portrait"
             >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Player"
+            android:exported="false"
             android:label="@string/title_activity_player"
-            android:screenOrientation="landscape"
-            android:exported="false">
+            android:screenOrientation="landscape" >
         </activity>
         <activity android:name=".BilibiliDetail"
             android:screenOrientation="portrait"

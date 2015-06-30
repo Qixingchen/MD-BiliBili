@@ -11,6 +11,13 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_item_avatar_size">40dp</dimen>
     <dimen name="margintop_15">15dp</dimen>
+
+    <!--SearchActivity-->
+    <dimen name="search_edittext_width">250dp</dimen>
+    <dimen name="search_edittext_margin">5dp</dimen>
+    <dimen name="search_view_width">15dp</dimen>
+    <dimen name="search_users_item_margin">14dp</dimen>
+
     <dimen name="padding">8dp</dimen>
     <dimen name="main_card_width">130dp</dimen>
     <dimen name="main_card_height">120dp</dimen>

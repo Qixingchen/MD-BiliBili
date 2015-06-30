@@ -7,6 +7,18 @@
     <string name="play_demo">PlayDemo</string>
     <string name="dast_string_bilibili">Bilibili</string>
     <string name="video_img">封面</string>
+
+    <!--videoplayer-->
+    <string name="buffering">buffering</string>
+    <string name="vitamio_name">Vitamio</string>
+    <string name="vitamio_init_decoders">Initializing decoders…</string>
+    <string name="vitamio_videoview_error_title">Cannot play video</string>
+    <string name="vitamio_videoview_error_text_invalid_progressive_playback">Sorry, this video is not valid for streaming to
+		this device.</string>
+    <string name="vitamio_videoview_error_text_unknown">Sorry, this video cannot be played.</string>
+    <string name="vitamio_videoview_error_button">OK</string>
+    <string name="mediacontroller_play_pause">Play/Pause</string>
+
     <string name="sampledate">我没找到新的工作，我手头上还有事，还要至少做个十天半个月。我跟你们讲什么叫改需求恶心。本来门票就一个表，价格，购买时间，然后使用时间，属于哪个景区的，差不多就这几个字段.但是那天他说要改 改成什么样的呢，有些景区有半票和全票，有些景区有儿童票和成人票还有学生票，有些景区的票是分季节价格不同的，有些景区上午门票贵点，然后中午下午门票就便宜一点。还有有些景区门票比较紧张，让我实习实时与他们景区门票数量对接。反正差不多就这么一个情况他说对我后台来说很简单，改一下，加一下就好.然后我说没那么简单，他就说我太垃圾，就改下门票的显示，你把票的数据录入进去，显示下就好的东西，然后我就日了狗了</string>
     <string name="application_info_title">Application Info</string>
     <string name="license_title">License</string>
