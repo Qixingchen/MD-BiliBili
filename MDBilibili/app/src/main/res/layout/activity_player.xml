@@ -2,7 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="me.qixingchen.mdbilibili.Player">
+                tools:context="me.qixingchen.mdbilibili.PlayerActivity">
 
     <me.qixingchen.mdbilibili.ui.widget.VideoView
         android:id="@+id/playerView"
