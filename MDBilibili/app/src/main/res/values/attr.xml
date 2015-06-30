@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="themedTextColorPrimaryInverse" format="reference" />
+    <attr name="contentTextSize" format="dimension|reference" />
     <declare-styleable name="CircleImageView">
         <attr name="border_width" format="dimension" />
         <attr name="border_color2" format="color" />

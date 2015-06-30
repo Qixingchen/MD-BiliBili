@@ -20,7 +20,7 @@
     android:layout_height="192dp"
     android:background="?attr/colorPrimaryDark"
     android:padding="16dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:theme="@style/Base.ThemeOverlay.AppCompat.Dark"
     android:orientation="vertical"
     android:gravity="bottom">
     <me.qixingchen.mdbilibili.view.CircleImageView

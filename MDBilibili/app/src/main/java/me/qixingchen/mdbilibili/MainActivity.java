@@ -1,5 +1,7 @@
 package me.qixingchen.mdbilibili;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -19,8 +21,9 @@ import me.qixingchen.mdbilibili.model.Recommend;
 import me.qixingchen.mdbilibili.network.GetRecommend;
 
 
-public class MainActivity extends AppCompatActivity implements GetRecommend.RecommendCallBack {
+public  class MainActivity extends AppCompatActivity implements GetRecommend.RecommendCallBack {
     private static final String TAG = "MainActivity";
+    private Context mContext;
     private DrawerLayout mDrawerLayout;
     private RecyclerView mRecyclerView;
 
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements GetRecommend.Reco
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mContext = this;
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -44,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements GetRecommend.Reco
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mCardAdapter = new CardAdapter(recommend, MainActivity.this);
         mRecyclerView.setAdapter(mCardAdapter);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
@@ -79,6 +84,20 @@ public class MainActivity extends AppCompatActivity implements GetRecommend.Reco
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.nav_home:
+                            case R.id.nav_messages:
+                            case R.id.nav_my_focus:
+                            case R.id.nav_foucs_me:
+                            case R.id.nav_article:
+                            case R.id.nav_video:
+                                break;
+                            case R.id.nav_about:
+                                navigate(About.class);
+                                break;
+                            default:
+                                break;
+                        }
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();
                         return true;
@@ -89,7 +108,10 @@ public class MainActivity extends AppCompatActivity implements GetRecommend.Reco
     void initDrawer() {
 
     }
-
+    private void navigate( Class<? extends AppCompatActivity> activityClass){
+        Intent intent = new Intent(mContext, activityClass);
+        mContext.startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,6 +125,8 @@ public class MainActivity extends AppCompatActivity implements GetRecommend.Reco
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

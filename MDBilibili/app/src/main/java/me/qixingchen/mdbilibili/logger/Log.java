@@ -4,7 +4,7 @@ package me.qixingchen.mdbilibili.logger;
  * Created by farble on 2015/5/7.
  */
 public class Log {
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     public static void e(String tag,String message) {
         if (DEBUG) {

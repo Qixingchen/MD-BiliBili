@@ -20,30 +20,36 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@mipmap/ic_dashboard"
-            android:title="主页" />
+            android:title="主页"/>
         <item
             android:id="@+id/nav_messages"
             android:icon="@mipmap/ic_event"
-            android:title="私信" />
+            android:title="私信"/>
         <item
             android:id="@+id/nav_my_focus"
             android:icon="@mipmap/ic_headset"
-            android:title="我关注的" />
+            android:title="我关注的"/>
         <item
             android:id="@+id/nav_foucs_me"
             android:icon="@mipmap/ic_forum"
-            android:title="关注我的" />
+            android:title="关注我的"/>
     </group>
 
-    <item android:title="收藏夹">
+    <item android:title="收藏夹"
+        >
         <menu>
             <item
                 android:id="@+id/nav_article"
                 android:icon="@mipmap/ic_dashboard"
-                android:title="文章" />
+                android:title="文章"/>
             <item
+                android:id="@+id/nav_video"
                 android:icon="@mipmap/ic_forum"
-                android:title="视频" />
+                android:title="视频"/>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@mipmap/ic_about"
+                android:title="关于"/>
         </menu>
     </item>
 
