@@ -2,12 +2,10 @@ package me.qixingchen.mdbilibili;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 
 import java.io.File;
@@ -15,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import master.flame.danmaku.controller.IDanmakuView;
 import master.flame.danmaku.danmaku.loader.ILoader;
@@ -28,198 +27,180 @@ import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
 import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.network.DownloadXML;
 import me.qixingchen.mdbilibili.network.GetXMLinfo;
+import me.qixingchen.mdbilibili.ui.widget.MediaController;
+import me.qixingchen.mdbilibili.ui.widget.VideoView;
+import me.qixingchen.mdbilibili.utils.DLog;
+
+public class Player extends AppCompatActivity implements GetXMLinfo.SendSrc, DownloadXML.XMLDownloadOK {
+
+    public Activity mActivity;
+    private String mXMLFileName;
+    private VideoView mPlayerView;
+    private IDanmakuView mDanmakuView;
+    private View mBufferingIndicator;
+    private MediaController mMediaController;
+
+    private static BaseDanmakuParser mDanmakuParser;
+    private String mVideoSrc = "";
+    private static final String TAG = Player.class.getSimpleName();
 
 
-public class Player extends ActionBarActivity implements GetXMLinfo.SendSrc,
-		SurfaceHolder.Callback, MediaPlayer.OnPreparedListener, MediaPlayer
-				.OnBufferingUpdateListener, DownloadXML.XMLDownloadOK {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_player);
 
-	public  Activity mActivity;
-	private String mXMLFileName;
-	private MediaPlayer mMediaPlayer;
-	private SurfaceView mPlayerView;
-	private IDanmakuView mDanmakuView;
-	private SurfaceHolder mSurfaceHolder;
-	private static BaseDanmakuParser mDanmakuParser;
-	private static String mSrc;
+        //find views
+        mDanmakuView = (IDanmakuView) findViewById(R.id.sv_danmaku);
+        mPlayerView = (VideoView) findViewById(R.id.playerView);
+        mBufferingIndicator = findViewById(R.id.buffering_indicator);
+        mMediaController = new MediaController(this);
+        mActivity = this;
+        DanmakuGlobalConfig.DEFAULT.setDanmakuStyle(DanmakuGlobalConfig.DANMAKU_STYLE_STROKEN, 3)
+                .setDuplicateMergingEnabled(false).setMaximumVisibleSizeInScreen(80);
+        mDanmakuView.enableDanmakuDrawingCache(true);
+        Intent intent = getIntent();
+        String aid = intent.getStringExtra("AID");
+        GetXMLinfo.getGetXMLinfo(this).getUri(aid);
 
-	private static final String TAG = Player.class.getSimpleName();
+        //init playerview
+        mPlayerView.setMediaController(mMediaController);
+        mPlayerView.setMediaBufferingIndicator(mBufferingIndicator);
+        //TODO set URL or path
+        mPlayerView.requestFocus();
 
+        mDanmakuView.start();
+    }
 
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_player);
-		mDanmakuView = (IDanmakuView) findViewById(R.id.sv_danmaku);
-		mPlayerView = (SurfaceView) findViewById(R.id.playerView);
-		mSurfaceHolder = mPlayerView.getHolder();
-		mSurfaceHolder.addCallback(this);
-		mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-		mActivity = this;
-		DanmakuGlobalConfig.DEFAULT.setDanmakuStyle(DanmakuGlobalConfig.DANMAKU_STYLE_STROKEN, 3)
-				.setDuplicateMergingEnabled(false).setMaximumVisibleSizeInScreen(80);
-		mDanmakuView.enableDanmakuDrawingCache(true);
-		Intent intent = getIntent();
-		String aid = intent.getStringExtra("AID");
-		GetXMLinfo.getGetXMLinfo(this).getUri(aid);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-		View decorView = getWindow().getDecorView();
-		decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-	}
+        if (mDanmakuView != null && mDanmakuView.isPrepared() && mDanmakuView.isPaused()) {
+            mDanmakuView.resume();
+        }
+        //TODO 读取上次的进度
+        if (mPlayerView != null && !mPlayerView.isPlaying()) {
+            mPlayerView.start();
+        }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
+    }
 
-		if (mDanmakuView != null && mDanmakuView.isPrepared() && mDanmakuView.isPaused()) {
-			mDanmakuView.resume();
-		}
-		if (mMediaPlayer != null && !mMediaPlayer.isPlaying()) {
-			mMediaPlayer.start();
-		}
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mPlayerView != null) {
+            mPlayerView.pause();
+        }
 
-	}
+        if (mDanmakuView != null && mDanmakuView.isPrepared()) {
+            mDanmakuView.pause();
+        }
+    }
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		if (mMediaPlayer!=null){
-			mMediaPlayer.pause();
-		}
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (mDanmakuView != null) {
+            // dont forget release!
+            mDanmakuView.release();
+            mDanmakuView = null;
+        }
+    }
 
-		if (mDanmakuView != null && mDanmakuView.isPrepared()) {
-			mDanmakuView.pause();
-		}
-	}
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPlayerView != null) {
+            mPlayerView.destroyDrawingCache();
+        }
+        if (mDanmakuView != null) {
+            mDanmakuView.release();
+        }
+    }
 
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		if (mDanmakuView != null) {
-			// dont forget release!
-			mDanmakuView.release();
-			mDanmakuView = null;
-		}
-	}
+    //弹幕加载 传入文件流
+    private static BaseDanmakuParser createParser(InputStream stream) {
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		if (mMediaPlayer != null) {
-			mMediaPlayer.release();
-		}
-		if (mDanmakuView != null) {
-			mDanmakuView.release();
-		}
-	}
+        if (stream == null) {
+            return new BaseDanmakuParser() {
 
-	//弹幕加载 传入文件流
-	private static BaseDanmakuParser createParser(InputStream stream) {
+                @Override
+                protected Danmakus parse() {
+                    return new Danmakus();
+                }
+            };
+        }
 
-		if (stream == null) {
-			return new BaseDanmakuParser() {
+        ILoader loader = DanmakuLoaderFactory.create(DanmakuLoaderFactory.TAG_BILI);
 
-				@Override
-				protected Danmakus parse() {
-					return new Danmakus();
-				}
-			};
-		}
+        try {
+            loader.load(stream);
+        } catch (IllegalDataException e) {
+            e.printStackTrace();
+        }
+        BaseDanmakuParser parser = new BiliDanmukuParser();
+        IDataSource<?> dataSource = loader.getDataSource();
+        parser.load(dataSource);
+        return parser;
 
-		ILoader loader = DanmakuLoaderFactory.create(DanmakuLoaderFactory.TAG_BILI);
+    }
 
-		try {
-			loader.load(stream);
-		} catch (IllegalDataException e) {
-			e.printStackTrace();
-		}
-		BaseDanmakuParser parser = new BiliDanmukuParser();
-		IDataSource<?> dataSource = loader.getDataSource();
-		parser.load(dataSource);
-		return parser;
+    //来自 GetXMLinfo 的回调通告
+    @Override
+    public void getSrcAndXMLFileName(String Src, String XMLUri) {
 
-	}
+        mXMLFileName = XMLUri.substring(XMLUri.lastIndexOf('/') + 1);
+        String CID = mXMLFileName.substring(0, mXMLFileName.lastIndexOf("."));
+        XMLUri = "http://www.bilibilijj.com/ashx/Barrage" +
+                ".ashx?f=true&av=&p=&s=xml&cid=" + CID + "&n=" + CID;
 
-	//来自 GetXMLinfo 的回调通告
-	@Override
-	public void getSrcAndXMLFileName(String Src, String XMLUri) {
-
-		mXMLFileName = XMLUri.substring(XMLUri.lastIndexOf('/') + 1);
-		String CID = mXMLFileName.substring(0, mXMLFileName.lastIndexOf("."));
-		XMLUri = "http://www.bilibilijj.com/ashx/Barrage" +
-				".ashx?f=true&av=&p=&s=xml&cid=" + CID + "&n=" + CID;
-		//开始下载 XML
+        DLog.i(XMLUri);
+        DLog.i(Src);
+        mVideoSrc = Src;
+        mPlayerView.setVideoURI(Uri.parse(mVideoSrc));
+        mPlayerView.start();
+        //TODO 弹幕在视频播放前加载
+        //TODO 播放器解码失败时重试
+        //TODO 弹幕视频同步
+        //TODO 修改代码结构，重写文件下载
+        //TODO 错误提示
+        //开始下载 XML
 		DownloadXML downloadXML = new DownloadXML();
 		downloadXML.setXmlDownloadOK(this);
 		downloadXML.execute(XMLUri);
-		mSrc = Src;
-	}
 
-	//DownloadXML 回调用此处 告知 XML 下载完成
-	@Override
-	public void xmlIsOK() {
-		File xmlfile = new File(BilibiliApplication.getApplication().getExternalFilesDir("danmaku"),
-				mXMLFileName);
-		try {
-			InputStream inputStream = new FileInputStream(xmlfile);
-			mDanmakuParser = createParser(inputStream);
-			mDanmakuView.prepare(mDanmakuParser);
-			startPlay();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+    }
 
-	//视频预加载完毕 开始播放视频与弹幕
-	@Override
-	public void onPrepared(MediaPlayer mp) {
-		int videoWidth = mMediaPlayer.getVideoWidth();
-		int videoHeight = mMediaPlayer.getVideoHeight();
-		if (videoHeight != 0 && videoWidth != 0) {
-			mp.start();
-			mDanmakuView.start();
-		}
-	}
-
-	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
-		try {
-			mMediaPlayer = new MediaPlayer();
-			mMediaPlayer.setDisplay(mSurfaceHolder);
-			mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			mMediaPlayer.setOnBufferingUpdateListener(this);
-			mMediaPlayer.setOnPreparedListener(this);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		startPlay();
-	}
-
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-	}
-
-	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
-	}
-
-	@Override
-	public void onBufferingUpdate(MediaPlayer mp, int percent) {
-		//todo 进度
-	}
+    //DownloadXML 回调用此处 告知 XML 下载完成
+    @Override
+    public void xmlIsOK() {
+        File xmlfile = new File(BilibiliApplication.getApplication().getExternalFilesDir("danmaku"),
+                mXMLFileName);
+        DLog.i("danmu download ok");
+        try {
+            InputStream inputStream = new FileInputStream(xmlfile);
+            mDanmakuParser = createParser(inputStream);
+            mDanmakuView.prepare(mDanmakuParser);
+//			startPlay();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
 	//判断能否开始播放 嘤嘤嘤 渣实现求不骂。。
-	private  void startPlay() {
-		if (mMediaPlayer != null && mXMLFileName != null && mSrc != null && new File(BilibiliApplication.getApplication().getExternalFilesDir("danmaku"), mXMLFileName).exists()) {
-			try {
-				if (mMediaPlayer.isPlaying()) {
-					mMediaPlayer.stop();
-				}
-				mMediaPlayer.reset();
-				mMediaPlayer.setDataSource(mSrc);
-				mMediaPlayer.prepare();//prepare之后自动播放
-			} catch (IllegalArgumentException | IllegalStateException | IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+    //预计会改为更渣的实现
+//	private  void startPlay() {
+//		if (mMediaPlayer != null && mXMLFileName != null && mSrc != null && new File(BilibiliApplication.getApplication().getExternalFilesDir("danmaku"), mXMLFileName).exists()) {
+//			try {
+//				if (mMediaPlayer.isPlaying()) {
+//					mMediaPlayer.stop();
+//				}
+//				mMediaPlayer.reset();
+//				mMediaPlayer.setDataSource(mSrc);
+//				mMediaPlayer.prepare();//prepare之后自动播放
+//			} catch (IllegalArgumentException | IllegalStateException | IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 }
