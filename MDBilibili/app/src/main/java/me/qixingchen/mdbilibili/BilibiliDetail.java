@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
@@ -56,7 +55,7 @@ public class BilibiliDetail extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent playDemoIntent = new Intent(mContext, Player.class);
+                Intent playDemoIntent = new Intent(mContext, PlayerActivity.class);
                 playDemoIntent.putExtra("AID", aid);
                 mContext.startActivity(playDemoIntent);
             }

@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Player"
+            android:name=".PlayerActivity"
             android:exported="false"
             android:label="@string/title_activity_player"
             android:screenOrientation="landscape" >

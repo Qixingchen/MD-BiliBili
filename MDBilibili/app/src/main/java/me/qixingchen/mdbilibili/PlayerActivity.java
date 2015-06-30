@@ -5,15 +5,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 import master.flame.danmaku.controller.IDanmakuView;
 import master.flame.danmaku.danmaku.loader.ILoader;
@@ -31,7 +30,7 @@ import me.qixingchen.mdbilibili.ui.widget.MediaController;
 import me.qixingchen.mdbilibili.ui.widget.VideoView;
 import me.qixingchen.mdbilibili.utils.DLog;
 
-public class Player extends AppCompatActivity implements GetXMLinfo.SendSrc, DownloadXML.XMLDownloadOK {
+public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.SendSrc, DownloadXML.XMLDownloadOK {
 
     public Activity mActivity;
     private String mXMLFileName;
@@ -39,14 +38,16 @@ public class Player extends AppCompatActivity implements GetXMLinfo.SendSrc, Dow
     private IDanmakuView mDanmakuView;
     private View mBufferingIndicator;
     private MediaController mMediaController;
-
     private static BaseDanmakuParser mDanmakuParser;
     private String mVideoSrc = "";
-    private static final String TAG = Player.class.getSimpleName();
+    private static final String TAG = PlayerActivity.class.getSimpleName();
 
 
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_player);
 
         //find views
@@ -67,8 +68,6 @@ public class Player extends AppCompatActivity implements GetXMLinfo.SendSrc, Dow
         mPlayerView.setMediaBufferingIndicator(mBufferingIndicator);
         //TODO set URL or path
         mPlayerView.requestFocus();
-
-        mDanmakuView.start();
     }
 
     @Override
@@ -80,9 +79,8 @@ public class Player extends AppCompatActivity implements GetXMLinfo.SendSrc, Dow
         }
         //TODO 读取上次的进度
         if (mPlayerView != null && !mPlayerView.isPlaying()) {
-            mPlayerView.start();
+            mPlayerView.resume();
         }
-
     }
 
     @Override
@@ -165,9 +163,10 @@ public class Player extends AppCompatActivity implements GetXMLinfo.SendSrc, Dow
         //TODO 修改代码结构，重写文件下载
         //TODO 错误提示
         //开始下载 XML
-		DownloadXML downloadXML = new DownloadXML();
-		downloadXML.setXmlDownloadOK(this);
-		downloadXML.execute(XMLUri);
+
+//		DownloadXML downloadXML = new DownloadXML();
+//		downloadXML.setXmlDownloadOK(this);
+//		downloadXML.execute(XMLUri);
 
     }
 
@@ -181,6 +180,7 @@ public class Player extends AppCompatActivity implements GetXMLinfo.SendSrc, Dow
             InputStream inputStream = new FileInputStream(xmlfile);
             mDanmakuParser = createParser(inputStream);
             mDanmakuView.prepare(mDanmakuParser);
+            mDanmakuView.start();
 //			startPlay();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
