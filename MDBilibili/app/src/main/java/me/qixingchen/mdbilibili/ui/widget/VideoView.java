@@ -43,7 +43,6 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -57,7 +56,7 @@ import android.view.ViewGroup.LayoutParams;
  * sources (such as resources or content providers), takes care of computing its
  * measurement from the video so that it can be used in any layout manager, and
  * provides various display options such as scaling and tinting.
- * 
+ *
  * VideoView also provide many wrapper methods for
  * {@link io.vov.vitamio.MediaPlayer}, such as {@link #getVideoWidth()},
  * {@link #setSubShown(boolean)}
@@ -106,6 +105,7 @@ public class VideoView extends SurfaceView implements
     private OnSeekCompleteListener mOnSeekCompleteListener;
     private OnInfoListener mOnInfoListener;
     private OnBufferingUpdateListener mOnBufferingUpdateListener;
+    private OnControllerEventsListener mOnControllerEventsListener;
     private int mCurrentBufferPercentage;
     private long mSeekWhenPrepared;
     private boolean mCanPause = true;
@@ -136,7 +136,7 @@ public class VideoView extends SurfaceView implements
 
     /**
      * Set the display options
-     * 
+     *
      * @param layout
      *            <ul>
      *            <li>{@link #VIDEO_LAYOUT_ORIGIN}
@@ -224,7 +224,7 @@ public class VideoView extends SurfaceView implements
     public void setUserAgent(String ua) {
     	mUserAgent = ua;
     }
-    
+
     public void stopPlayback() {
         if (mMediaPlayer != null) {
             mMediaPlayer.stop();
@@ -483,6 +483,10 @@ public class VideoView extends SurfaceView implements
         mOnInfoListener = l;
     }
 
+    public void setOnControllerEventsListener(OnControllerEventsListener l){
+        mOnControllerEventsListener = l;
+    }
+
     SurfaceHolder.Callback mSHCallback = new SurfaceHolder.Callback() {
         public void surfaceChanged(SurfaceHolder holder, int format, int w,
                 int h) {
@@ -600,6 +604,7 @@ public class VideoView extends SurfaceView implements
             mCurrentState = STATE_PLAYING;
         }
         mTargetState = STATE_PLAYING;
+        mOnControllerEventsListener.OnVideoResume();
     }
 
     @Override
@@ -611,6 +616,7 @@ public class VideoView extends SurfaceView implements
             }
         }
         mTargetState = STATE_PAUSED;
+        mOnControllerEventsListener.onVideoPause();
     }
 
     public void resume() {
@@ -687,5 +693,10 @@ public class VideoView extends SurfaceView implements
 
     public boolean canSeekForward() {
         return mCanSeekForward;
+    }
+
+    public interface OnControllerEventsListener{
+        void onVideoPause();
+        void OnVideoResume();
     }
 }

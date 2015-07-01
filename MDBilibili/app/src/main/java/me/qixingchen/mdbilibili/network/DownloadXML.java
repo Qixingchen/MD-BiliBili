@@ -42,9 +42,6 @@ public class DownloadXML extends AsyncTask<String, Integer, String> {
 				connection = url.openConnection();
 				connection.setUseCaches(false);
 
-				int length = connection.getContentLength();
-				Log.w(TAG, url + "文件长度" + length);
-
 				if (Tool.isExternalStorageAvlilable()) {
 					filename = uriString.substring(uriString.lastIndexOf('=') + 1) + ".xml";
 					File file = new File(BilibiliApplication.getApplication().getExternalFilesDir
