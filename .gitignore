@@ -59,6 +59,9 @@ crashlytics-build.properties
 #签名密钥
 *.keystore
 
+#app key
+app/secret.java
+
 #发布说明
 manifest-merger-release-report.txt
 import-summary.txt

@@ -43,6 +43,9 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
     private String mVideoSrc = "";
     private static final String TAG = PlayerActivity.class.getSimpleName();
 
+    //页面切换时，播放到的位置
+    private int LastPosition = 0;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -78,13 +81,14 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
     @Override
     protected void onResume() {
         super.onResume();
-
         if (mDanmakuView != null && mDanmakuView.isPrepared() && mDanmakuView.isPaused()) {
             mDanmakuView.resume();
+            mDanmakuView.seekTo((long) LastPosition);
         }
-        //TODO 读取上次的进度
+        //todo 看看能不能保留缓冲的视频
         if (mPlayerView != null && !mPlayerView.isPlaying()) {
-            mPlayerView.resume();
+            mPlayerView.start();
+            mPlayerView.seekTo(LastPosition);
         }
     }
 
@@ -92,6 +96,7 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
     protected void onPause() {
         super.onPause();
         if (mPlayerView != null) {
+            LastPosition = mPlayerView.getCurrentPosition();
             mPlayerView.pause();
         }
 
@@ -200,10 +205,14 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
             if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_START) {
                 if (mDanmakuView != null && mDanmakuView.isPrepared()) {
                     mDanmakuView.pause();
+                    if (mBufferingIndicator != null)
+                        mBufferingIndicator.setVisibility(View.VISIBLE);
                 }
             } else if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_END) {
                 if (mDanmakuView != null && mDanmakuView.isPaused()) {
                     mDanmakuView.resume();
+                    if (mBufferingIndicator != null)
+                        mBufferingIndicator.setVisibility(View.GONE);
                 }
             }
             return true;
