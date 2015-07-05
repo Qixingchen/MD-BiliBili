@@ -4,7 +4,7 @@
 文档共享 ： 
 https://drive.google.com/folderview?id=0B5Izr6QMl6WhflNwY3MyZUlLMl8wdTNQdmROUVExNHpJVDV4Y3ZrcFc0c2VUa2lldEszbkE&usp=sharing
 
-邮件讨论组：
+邮件讨论组（仅对协作者开放）：
 https://groups.google.com/forum/#!forum/md-bili-bili
 
 开发群：（TeleGram）
@@ -17,7 +17,6 @@ https://groups.google.com/forum/#!forum/md-bili-bili
 <img src="http://i4.tietuku.com/ccc877c96ff6c351.png" width = "300" height = "572" alt="demo1" align=center />
 <img src="http://i4.tietuku.com/c179c9cd9fa8d525.png" width = "300" height = "572" alt="demo2" align=center />
 <img src="http://i4.tietuku.com/96b668b7bfb82dca.png" width = "300" height = "572" alt="demo3" align=center />
-<img src="http://i4.tietuku.com/73fba987232d39d5.png" width = "300" height = "572" alt="demo4" align=center />
 ![demo5](http://i4.tietuku.com/ce0b9a95c8b2ce23.png)
 
 
