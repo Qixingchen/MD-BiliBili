@@ -60,7 +60,7 @@ crashlytics-build.properties
 *.keystore
 
 #app key
-app/secret.java
+app/Secret.java
 
 #发布说明
 manifest-merger-release-report.txt

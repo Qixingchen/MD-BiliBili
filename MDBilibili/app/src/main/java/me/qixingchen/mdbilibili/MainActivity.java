@@ -21,7 +21,7 @@ import me.qixingchen.mdbilibili.model.Recommend;
 import me.qixingchen.mdbilibili.network.GetRecommend;
 
 
-public  class MainActivity extends AppCompatActivity implements GetRecommend.RecommendCallBack {
+public class MainActivity extends AppCompatActivity implements GetRecommend.RecommendCallBack {
     private static final String TAG = "MainActivity";
     private Context mContext;
     private DrawerLayout mDrawerLayout;
@@ -59,6 +59,7 @@ public  class MainActivity extends AppCompatActivity implements GetRecommend.Rec
             public void onClick(View view) {
                 Snackbar.make(view, "正在刷新", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                setRequest();
             }
         });
         setRequest();
@@ -75,8 +76,8 @@ public  class MainActivity extends AppCompatActivity implements GetRecommend.Rec
         initDrawer();
     }
 
-    void setRequest() {
-        GetRecommend.getRecommend().setCallBack(this).GetRecommendInfo("1");
+    private void setRequest() {
+        GetRecommend.getRecommend().setCallBack(this).GetRecommendInfo("20");
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -108,7 +109,8 @@ public  class MainActivity extends AppCompatActivity implements GetRecommend.Rec
     void initDrawer() {
 
     }
-    private void navigate( Class<? extends AppCompatActivity> activityClass){
+
+    private void navigate(Class<? extends AppCompatActivity> activityClass) {
         Intent intent = new Intent(mContext, activityClass);
         mContext.startActivity(intent);
     }
