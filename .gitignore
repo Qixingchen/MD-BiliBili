@@ -253,3 +253,4 @@ $RECYCLE.BIN/
 # Visual Studio 2014 CTP
 **/*.sln.ide
 
+MDBilibili/app/src/main/java/me/qixingchen/mdbilibili/app/Secret.java
