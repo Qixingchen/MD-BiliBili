@@ -18,14 +18,15 @@ import me.qixingchen.mdbilibili.tool.Tool;
  * Created by Yulan on 2015/6/12.
  * 下载弹幕 XML 的 AsyncTask 。
  * 但是目前下载的 XML 连长度都不对。。
+ * vsv:添加一点回调
  */
 public class DownloadXML extends AsyncTask<String, Integer, String> {
 
 	private final static String TAG = DownloadXML.class.getSimpleName();
-	private XMLDownloadOK xmlDownloadOK;
+	private CallBack callBack;
 
-	public void setXmlDownloadOK(XMLDownloadOK xmlDownloadOK) {
-		this.xmlDownloadOK = xmlDownloadOK;
+	public void setCallBack(CallBack callBack) {
+		this.callBack = callBack;
 	}
 
 	protected String doInBackground(String... params) {
@@ -42,7 +43,7 @@ public class DownloadXML extends AsyncTask<String, Integer, String> {
 				connection = url.openConnection();
 				connection.setUseCaches(false);
 
-				if (Tool.isExternalStorageAvlilable()) {
+				if (Tool.isExternalStorageAvailable()) {
 					filename = uriString.substring(uriString.lastIndexOf('=') + 1) + ".xml";
 					File file = new File(BilibiliApplication.getApplication().getExternalFilesDir
 							("danmaku"), filename);
@@ -78,15 +79,16 @@ public class DownloadXML extends AsyncTask<String, Integer, String> {
 		return filename;
 	}
 
-	public interface XMLDownloadOK {
-		void xmlIsOK();
+	public interface CallBack {
+		void onXmlSuccess();
+		void onXmlError();
 	}
 
 	@Override
 	protected void onPostExecute(String s) {
 		super.onPostExecute(s);
 		if (s.compareTo("error") != 0) {
-			xmlDownloadOK.xmlIsOK();
+			callBack.onXmlSuccess();
 		}
 	}
 }

@@ -13,7 +13,7 @@ public class Tool {
 	private Application application = BilibiliApplication.getApplication();
 
 	//判断外置储存空间是否有效
-	public static boolean isExternalStorageAvlilable() {
+	public static boolean isExternalStorageAvailable() {
 		String state = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
 			return true;

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,7 +32,7 @@ import me.qixingchen.mdbilibili.ui.widget.VideoView;
 import me.qixingchen.mdbilibili.utils.DLog;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
-public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.SendSrc, DownloadXML.XMLDownloadOK {
+public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.SendSrc, DownloadXML.CallBack {
 
     public Activity mActivity;
     private String mXMLFileName;
@@ -65,7 +66,6 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
         mDanmakuView.enableDanmakuDrawingCache(true);
         Intent intent = getIntent();
         String aid = intent.getStringExtra("AID");
-        GetXMLinfo.getGetXMLinfo(this).getUri(aid);
 
         //init playerView
         mPlayerView.setMediaController(mMediaController);
@@ -76,6 +76,8 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
         mPlayerView.setOnCompletionListener(onCompletionListener);
         mPlayerView.setOnControllerEventsListener(onControllerEventsListener);
         mPlayerView.requestFocus();
+
+        GetXMLinfo.getGetXMLinfo(this).getUri(aid);
     }
 
     @Override
@@ -156,7 +158,7 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
     //来自 GetXMLinfo 的回调通告
     @Override
     public void getSrcAndXMLFileName(String Src, String XMLUri) {
-        if (Src.compareTo("Error")==0){
+        if (Src.compareTo("Error") == 0) {
             return;
         }
 
@@ -166,14 +168,13 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
                 ".ashx?f=true&av=&p=&s=xml&cid=" + CID + "&n=" + CID;
 
         DLog.i(XMLUri);
+        mVideoSrc = Src;
         //开始下载 XML
         DownloadXML downloadXML = new DownloadXML();
-        downloadXML.setXmlDownloadOK(this);
+        downloadXML.setCallBack(this);
         downloadXML.execute(XMLUri);
 
         DLog.i(Src);
-        mVideoSrc = Src;
-
         //TODO 播放器解码失败时重试
         //TODO 修改代码结构，重写文件下载
         //TODO 错误提示
@@ -182,7 +183,7 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
 
     //DownloadXML 回调用此处 告知 XML 下载完成
     @Override
-    public void xmlIsOK() {
+    public void onXmlSuccess() {
         File xmlfile = new File(BilibiliApplication.getApplication().getExternalFilesDir("danmaku"),
                 mXMLFileName);
         DLog.i("danmu download ok");
@@ -195,6 +196,13 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onXmlError() {
+        //先这么写
+        Toast.makeText(this,"弹幕加载错误",Toast.LENGTH_SHORT).show();
+        this.finish();
     }
 
     //VideoView OnInfo 当正在缓冲时等事件会被调用
