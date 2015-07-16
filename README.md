@@ -4,7 +4,7 @@
 文档共享 ： 
 https://drive.google.com/folderview?id=0B5Izr6QMl6WhflNwY3MyZUlLMl8wdTNQdmROUVExNHpJVDV4Y3ZrcFc0c2VUa2lldEszbkE&usp=sharing
 
-邮件讨论组（仅对协作者开放）：
+邮件讨论组（仅对协作者开放，请先以 issue 或其他联络方式与 Qixingchen 联系）：
 https://groups.google.com/forum/#!forum/md-bili-bili
 
 开发群：（TeleGram）
@@ -14,6 +14,7 @@ https://groups.google.com/forum/#!forum/md-bili-bili
 将您申请到的 Bilibili API Key 填入 Secret.java ,
 并放入 MDBilibili\app\src\main\java\me\qixingchen\mdbilibili\app 文件夹下
 
+##Screen shots
 <img src="http://i4.tietuku.com/ccc877c96ff6c351.png" width = "300" height = "572" alt="demo1" align=center />
 <img src="http://i4.tietuku.com/c179c9cd9fa8d525.png" width = "300" height = "572" alt="demo2" align=center />
 <img src="http://i4.tietuku.com/96b668b7bfb82dca.png" width = "300" height = "572" alt="demo3" align=center />
