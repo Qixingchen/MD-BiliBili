@@ -61,6 +61,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'io.reactivex:rxjava:1.0.10'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.4'
     compile project(':player-java')
     compile project(':player-armv7a')
