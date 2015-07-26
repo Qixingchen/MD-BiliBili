@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -15,16 +16,20 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.controller.IDanmakuView;
 import master.flame.danmaku.danmaku.loader.ILoader;
 import master.flame.danmaku.danmaku.loader.IllegalDataException;
 import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory;
+import master.flame.danmaku.danmaku.model.DanmakuTimer;
 import master.flame.danmaku.danmaku.model.android.DanmakuGlobalConfig;
 import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
 import me.qixingchen.mdbilibili.app.BilibiliApplication;
+import me.qixingchen.mdbilibili.logger.Log;
+import me.qixingchen.mdbilibili.model.Tags;
 import me.qixingchen.mdbilibili.network.DownloadXML;
 import me.qixingchen.mdbilibili.network.GetXMLinfo;
 import me.qixingchen.mdbilibili.ui.widget.MediaController;
@@ -42,6 +47,7 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
     private MediaController mMediaController;
     private static BaseDanmakuParser mDanmakuParser;
     private String mVideoSrc = "";
+    private Boolean isPlayerPrepared;
     private static final String TAG = PlayerActivity.class.getSimpleName();
 
     //页面切换时，播放到的位置
@@ -78,6 +84,7 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
         mPlayerView.requestFocus();
 
         GetXMLinfo.getGetXMLinfo(this).getUri(aid);
+        isPlayerPrepared = false;
     }
 
     @Override
@@ -190,9 +197,26 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
         try {
             InputStream inputStream = new FileInputStream(xmlfile);
             mDanmakuParser = createParser(inputStream);
+            mDanmakuView.setCallback(new DrawHandler.Callback() {
+                @Override
+                public void prepared() {
+                    if (mPlayerView != null && isPlayerPrepared) {
+                        if (!mPlayerView.isPlaying()) {
+                            mPlayerView.start();
+                        }
+                        Log.e(TAG, String.valueOf(mDanmakuView.isPrepared()));
+                        mDanmakuView.start();
+                        Log.e(TAG, "视频先加载完成");
+                    }
+                }
+
+                @Override
+                public void updateTimer(DanmakuTimer danmakuTimer) {
+
+                }
+            });
             mDanmakuView.prepare(mDanmakuParser);
             mPlayerView.setVideoURI(Uri.parse(mVideoSrc));
-            //todo: know issue:部分视频跳过了 OnPreparedListener 直接开始播放
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -201,7 +225,7 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
     @Override
     public void onXmlError() {
         //先这么写
-        Toast.makeText(this,"弹幕加载错误",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "弹幕加载错误", Toast.LENGTH_SHORT).show();
         this.finish();
     }
 
@@ -231,10 +255,14 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
     private IMediaPlayer.OnPreparedListener onPreparedListener = new IMediaPlayer.OnPreparedListener() {
         @Override
         public void onPrepared(IMediaPlayer mp) {
-            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
-                mDanmakuView.start();
-            }
-            mPlayerView.start();
+//            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
+//                if (!mPlayerView.isPlaying()) {
+//                    mPlayerView.start();
+//                }
+//                mDanmakuView.start();
+//                Log.e(TAG, "弹幕先加载完成");
+//            }
+            isPlayerPrepared = true;
         }
     };
 
@@ -273,7 +301,7 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
 
         @Override
         public void OnVideoResume() {
-            if (mDanmakuView != null && mDanmakuView.isPaused()) {
+            if (mDanmakuView != null && mDanmakuView.isPaused() && mPlayerView.isPlaying()) {
                 mDanmakuView.resume();
             }
         }

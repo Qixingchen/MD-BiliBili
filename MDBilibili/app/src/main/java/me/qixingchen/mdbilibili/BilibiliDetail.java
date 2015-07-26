@@ -3,16 +3,21 @@ package me.qixingchen.mdbilibili;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
+import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.network.GetVolley;
+import me.qixingchen.mdbilibili.network.ViewAPI;
 
 /**
  * Created by Farble on 2015/6/24.
@@ -29,12 +34,23 @@ public class BilibiliDetail extends AppCompatActivity {
     protected String imageUrl;
     protected String title;
     private String aid;
+    private NetworkImageView backdrop;
+    private Toolbar toolbar;
+    private CollapsingToolbarLayout collapsingtoolbar;
+    private android.support.design.widget.AppBarLayout appbar;
+    private android.widget.TextView aidTextView;
+    private android.widget.TextView PlayTextView;
+    private android.widget.TextView reviewTextView;
+    private android.widget.TextView videoreviewTextView;
+    private android.widget.TextView favoritesTextView;
+    private FloatingActionButton detailfab;
 
     @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dast_bilibili_detail);
+        findViews();
 
         mContext = this;
         Intent intent = getIntent();
@@ -42,14 +58,26 @@ public class BilibiliDetail extends AppCompatActivity {
         title = intent.getStringExtra(TITLE);
         aid = intent.getStringExtra(AID);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ViewAPI.getInstance().setCallBack(new ViewAPI.OnJsonGot() {
+            @Override
+            public void ViewOK(me.qixingchen.mdbilibili.model.View views) {
+                setVideoInfo(views);
+            }
+
+            @Override
+            public void ViewError(String errorMessage) {
+                Log.e(TAG, errorMessage);
+            }
+        }).addRequest(aid, "1");
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Detail");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        CollapsingToolbarLayout collapsingToolbar =
+        collapsingtoolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(title);
+        collapsingtoolbar.setTitle(title);
 
         fab = (FloatingActionButton) findViewById(R.id.detail_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +89,27 @@ public class BilibiliDetail extends AppCompatActivity {
             }
         });
         loadBackdrop();
+    }
+
+    private void setVideoInfo(me.qixingchen.mdbilibili.model.View views) {
+        favoritesTextView.setText("收藏数：" + views.getFavorites());
+        videoreviewTextView.setText("弹幕数：" + views.getVideo_review());
+        reviewTextView.setText("评论数：" + views.getReview());
+        PlayTextView.setText("播放数：" + views.getPlay());
+        aidTextView.setText("AV" + aid);
+    }
+
+    private void findViews() {
+        this.detailfab = (FloatingActionButton) findViewById(R.id.detail_fab);
+        this.favoritesTextView = (TextView) findViewById(R.id.favoritesTextView);
+        this.videoreviewTextView = (TextView) findViewById(R.id.video_reviewTextView);
+        this.reviewTextView = (TextView) findViewById(R.id.reviewTextView);
+        this.PlayTextView = (TextView) findViewById(R.id.PlayTextView);
+        this.aidTextView = (TextView) findViewById(R.id.aidTextView);
+        this.appbar = (AppBarLayout) findViewById(R.id.appbar);
+        this.collapsingtoolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
+        this.backdrop = (NetworkImageView) findViewById(R.id.backdrop);
     }
 
     @Override

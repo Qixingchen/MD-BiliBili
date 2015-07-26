@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/include_main_pager"/>
+    <include layout="@layout/main_layout"/>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

@@ -1,22 +1,21 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="me.qixingchen.mdbilibili.PlayerActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playerFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="me.qixingchen.mdbilibili.PlayerActivity">
 
     <me.qixingchen.mdbilibili.ui.widget.VideoView
         android:id="@+id/playerView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        />
+        android:layout_gravity="center" />
 
     <master.flame.danmaku.ui.widget.DanmakuView
         android:id="@+id/sv_danmaku"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        />
+        android:layout_gravity="center" />
 
     <LinearLayout
         android:id="@+id/buffering_indicator"
@@ -26,7 +25,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/buffering_msg"
