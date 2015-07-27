@@ -5,7 +5,6 @@ import android.app.Application;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.facebook.imagepipeline.cache.CountingMemoryCacheInspector;
 
 import java.util.Map;
 
@@ -58,6 +57,7 @@ public class GetAPI {
             public void onResponse(String response) {
                 if (onJsonGot != null) {
                     onJsonGot.JsonOK(response);
+                    onJsonGot = null;
                 }
             }
         };
@@ -70,6 +70,7 @@ public class GetAPI {
             public void onErrorResponse(VolleyError error) {
                 if (onJsonGot != null) {
                     onJsonGot.JsonError(error.getMessage());
+                    onJsonGot = null;
                 } else {
                     Log.e(TAG, error.getMessage());
                 }

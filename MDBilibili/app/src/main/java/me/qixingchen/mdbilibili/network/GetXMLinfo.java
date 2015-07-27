@@ -59,11 +59,13 @@ public class GetXMLinfo {
                         if (CIDName.compareTo("http://comment.bilibili.com/undefined.xml") == 0) {
                             Toast.makeText(application, "视频不存在或不能播放", Toast.LENGTH_LONG).show();
                             msendSrc.getSrcAndXMLFileName("Error", CIDName);
+                            msendSrc = null;
                             return;
                         }
                         CIDName = CIDName.replace(".com", ".cn");
                         //向 player 发送 视频源和弹幕 XML 文件名
                         msendSrc.getSrcAndXMLFileName(html5.getSrc(), CIDName);
+                        msendSrc = null;
                     }
                 }, new Response.ErrorListener() {
             @Override

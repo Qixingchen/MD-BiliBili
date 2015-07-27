@@ -46,10 +46,10 @@
 
                 <TextView
                     style="@style/HeadlineTextStyle"
-                    android:text="@string/special_contribution" />
+                    android:text="@string/Designer_title" />
 
                 <TextView
-                    android:id="@+id/text_developer_special"
+                    android:id="@+id/text_designer"
                     style="@style/textContentStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -63,6 +63,16 @@
                     style="@style/textContentStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+                <TextView
+                    style="@style/HeadlineTextStyle"
+                    android:text="@string/other_license" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/other_license_button"
+                    android:text="@string/click_here_and_see"/>
             </LinearLayout>
         </ScrollView>
 
