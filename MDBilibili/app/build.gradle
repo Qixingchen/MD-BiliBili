@@ -50,18 +50,20 @@ apply plugin: 'me.tatarka.retrolambda'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.2.0'
-    compile 'com.github.ctiao:dfm:0.3.2'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.github.ctiao:dfm:0.3.3'
     compile 'eu.the4thfloor.volley:com.android.volley:2015.05.13'
     compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.facebook.fresco:fresco:0.5.1+'
+    compile 'com.facebook.fresco:fresco:0.6.0'
     compile 'com.squareup.okhttp:okhttp:2.4.0'
     compile 'com.android.support:design:22.2.0'
     compile 'com.android.support:cardview-v7:22.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.0'
-    compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'io.reactivex:rxjava:1.0.10'
+    compile 'io.reactivex:rxandroid:0.25.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.0.4'
     compile project(':player-java')
     compile project(':player-armv7a')

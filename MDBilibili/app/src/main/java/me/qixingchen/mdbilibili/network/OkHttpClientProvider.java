@@ -20,7 +20,6 @@ public enum OkHttpClientProvider {
 
     OkHttpClientProvider() {
         okHttpClient = new OkHttpClient();
-
         okHttpClient.setConnectTimeout(HttpCommon.OKHTTP_CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS);
         okHttpClient.setWriteTimeout(HttpCommon.OKHTTP_CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS);
         okHttpClient.setReadTimeout(HttpCommon.OKHTTP_CLIENT_READ_TIMEOUT, TimeUnit.SECONDS);

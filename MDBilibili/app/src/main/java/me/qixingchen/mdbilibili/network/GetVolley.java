@@ -82,7 +82,7 @@ public class GetVolley {
         paraUri += "&sign=" + getSign(paraUri);
         uri += paraUri;
         StringRequest stringRequest = new StringRequest(method, uri, OKListener, errorListener);
-        mRequestQueue.add(stringRequest);
+        addToRequestQueue(stringRequest);
     }
 
     private String getParaUriNoSigned(Map<String, String> para) {

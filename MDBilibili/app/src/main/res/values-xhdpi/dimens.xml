@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">0dp</dimen>
     <dimen name="tool_bar_top_padding">0dp</dimen>
     <dimen name="normal_text_size">16sp</dimen>
-    <dimen name="small_tilt_size">20sp</dimen>
+    <dimen name="small_title_size">20sp</dimen>
 
     <dimen name="detail_backdrop_height">256dp</dimen>
     <dimen name="card_margin">16dp</dimen>

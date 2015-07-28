@@ -50,27 +50,20 @@ public class GetXMLinfo {
     public void getUri(final String Aid) {
         String uri = application.getString(R.string.bilibili_host)
                 + application.getString(R.string.html5) + Aid;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, new
-                Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        HTML5 html5 = gson.fromJson(response, HTML5.class);
-                        String CIDName = html5.getCid();
-                        if (CIDName.compareTo("http://comment.bilibili.com/undefined.xml") == 0) {
-                            Toast.makeText(application, "视频不存在或不能播放", Toast.LENGTH_LONG).show();
-                            msendSrc.getSrcAndXMLFileName("Error", CIDName);
-                            return;
-                        }
-                        CIDName = CIDName.replace(".com", ".cn");
-                        //向 player 发送 视频源和弹幕 XML 文件名
-                        msendSrc.getSrcAndXMLFileName(html5.getSrc(), CIDName);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(application, "网络错误", Toast.LENGTH_LONG).show();
-                Log.e(TAG, error.toString());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
+            HTML5 html5 = gson.fromJson(response, HTML5.class);
+            String CIDName = html5.getCid();
+            if (CIDName.compareTo("http://comment.bilibili.com/undefined.xml") == 0) {
+                Toast.makeText(application, "视频不存在或不能播放", Toast.LENGTH_LONG).show();
+                msendSrc.getSrcAndXMLFileName("Error", CIDName);
+                return;
             }
+            CIDName = CIDName.replace(".com", ".cn");
+            //向 player 发送 视频源和弹幕 XML 文件名
+            msendSrc.getSrcAndXMLFileName(html5.getSrc(), CIDName);
+        }, error -> {
+            Toast.makeText(application, "网络错误", Toast.LENGTH_LONG).show();
+            Log.e(TAG, error.toString());
         });
         requestQueue.add(stringRequest);
     }
