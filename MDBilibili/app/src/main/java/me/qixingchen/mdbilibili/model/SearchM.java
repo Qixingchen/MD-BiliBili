@@ -1,12 +1,15 @@
 package me.qixingchen.mdbilibili.model;
 
+
 import java.io.Serializable;
 
 /**
  * Created by Farble on 2015/7/28 23.
- * see {@link http://docs.bilibili.cn/wiki/API.search}
+ *
+ * @see <a href="http://docs.bilibili.cn/wiki/API.search">Search Api</a>
  */
 public class SearchM implements Serializable {
+    private static final long serialVersionUID = 4289171421735929959L;
     private String type;//mylist 我的列表 video 视频 special 专题
     private int lid;//我的列表编号 当type为mylist时才会出现
     private int aid;//视频编号 当type为video时才会出现

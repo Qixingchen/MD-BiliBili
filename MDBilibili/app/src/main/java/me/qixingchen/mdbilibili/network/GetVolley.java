@@ -15,11 +15,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
-import me.qixingchen.mdbilibili.app.Secret;
-
 /**
  * Created by Yulan on 2015/6/18.
- * 使用 Volley 下载等
+ * 使用 Volley 请求,下载
  */
 public class GetVolley {
 
@@ -85,6 +83,10 @@ public class GetVolley {
         addToRequestQueue(stringRequest);
     }
 
+    /**
+     * A combination of request parameters,added App_Key
+     * see {@link GetVolley getSign(String paraUri)}
+     */
     private String getParaUriNoSigned(Map<String, String> para) {
         para.put("ts", String.valueOf(System.currentTimeMillis() / 1000L));
         para.put("appkey", Secret.App_Key);
@@ -96,6 +98,9 @@ public class GetVolley {
         return paraUri;
     }
 
+    /**
+     * Md5 encryption
+     */
     private String getSign(String paraUri) {
 
         MessageDigest md = null;
