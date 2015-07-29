@@ -30,12 +30,9 @@ public class RxUtils {
     }
 
     public static <T> T createApi(Class<T> c) {
-        RequestInterceptor requestInterceptor = new RequestInterceptor() {
-            @Override
-            public void intercept(RequestFacade request) {
-                request.addHeader("User-Agent", "MD-Bilibili/1.0");
-                request.addHeader("Accept", "application/json; q=0.5");
-            }
+        RequestInterceptor requestInterceptor = request -> {
+            request.addHeader("User-Agent", "MD-Bilibili/1.0");
+            request.addHeader("Accept", "application/json; q=0.5");
         };
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)

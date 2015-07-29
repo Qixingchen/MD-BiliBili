@@ -63,11 +63,11 @@ public class MainActivity extends AppCompatActivity {
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             //todo 搜索
-            subscription.add(searchApi.doSearch("拜年祭", 1, 1, "default")
+            subscription.add(searchApi.doSearch("bilibili",1,10,"default")
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(json -> {
-                        Snackbar.make(view, json.getAuthor(), Snackbar.LENGTH_LONG)
+                        Snackbar.make(view, "searching", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }));
 

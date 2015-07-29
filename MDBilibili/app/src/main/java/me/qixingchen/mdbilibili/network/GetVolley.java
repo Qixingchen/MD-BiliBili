@@ -15,6 +15,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
+import me.qixingchen.mdbilibili.app.Secret;
+
 /**
  * Created by Yulan on 2015/6/18.
  * 使用 Volley 请求,下载

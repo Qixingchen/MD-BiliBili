@@ -1,5 +1,7 @@
 package me.qixingchen.mdbilibili.network;
 
+import me.qixingchen.mdbilibili.model.FeedbackM;
+import me.qixingchen.mdbilibili.model.RecommendM;
 import me.qixingchen.mdbilibili.model.SearchM;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -10,9 +12,22 @@ import rx.Observable;
  */
 public interface Api {
     String URL = "http://api.bilibili.cn";
-    interface SearchApi{
-       @GET("/search?")
-       Observable<SearchM> doSearch(@Query("keyword") String keyword, @Query("page") int page,
-                                    @Query("pagesize") int pagesize, @Query("order") String order);
-   }
+
+    interface SearchApi {
+        @GET("/search")
+        Observable<SearchM> doSearch(@Query("keyword") String keyword, @Query("page") int page,
+                                     @Query("pagesize") int pagesize, @Query("order") String order);
+    }
+
+    interface RecommendApi {
+
+        @GET("/author_recommend")
+        Observable<RecommendM> getRecommendApi(@Query("aid") int aid);
+    }
+
+    interface FeedBackApi {
+
+        @GET("/feedback")
+        Observable<FeedbackM> getFeedBackApiApi(@Query("aid") int aid, @Query("ver") int ver);
+    }
 }
