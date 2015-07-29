@@ -42,6 +42,20 @@
             limitations under the License.</p>
         ]]>
     </string>
+
+    <string name="other_license_text"><![CDATA[
+
+        <p>BiliNyan-Android</p>
+           <p>Copyright © 2015 Fung Jichun</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
+
+ <p>http://www.apache.org/licenses/LICENSE-2.0</p>
+
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+
+    ]]></string>
+
     <string name="developer_info_title">Developer Info</string>
         <string name="developer_info_text">
         <![CDATA[
@@ -61,13 +75,15 @@
             <p><a href="https://github.com/shenvsv">shenvsv</a></p>
         ]]>
     </string>
-    <string name="developer_special">
+    <string name="designer">
         <![CDATA[
-            <p><a href="http://www.coolapk.com/u/436688">萌萌的小雅酱</a></p>
+            <p><a href="https://plus.google.com/+xiaoya-er">萌萌的小雅酱</a></p>
         ]]>
     </string>
-    <string name="special_contribution">Special Contribution</string>
+    <string name="Designer_title">Designer</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="other_license">3rd Open Source App License</string>
+    <string name="click_here_and_see">点此查看</string>
 </resources>

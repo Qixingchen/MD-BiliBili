@@ -61,11 +61,13 @@ public class ViewAPI {
             public void JsonOK(String json) {
                 View view = gson.fromJson(json, View.class);
                 onJsonGot.ViewOK(view);
+                onJsonGot = null;
             }
 
             @Override
             public void JsonError(String errorMessage) {
                 onJsonGot.ViewError(errorMessage);
+                onJsonGot = null;
             }
         }).addRequest(tagspara);
     }
