@@ -32,7 +32,6 @@ import me.qixingchen.mdbilibili.network.DownloadXML;
 import me.qixingchen.mdbilibili.network.GetXMLinfo;
 import me.qixingchen.mdbilibili.ui.widget.MediaController;
 import me.qixingchen.mdbilibili.ui.widget.VideoView;
-import me.qixingchen.mdbilibili.utils.DLog;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.SendSrc, DownloadXML.CallBack {
@@ -172,14 +171,14 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
         XMLUri = "http://www.bilibilijj.com/ashx/Barrage" +
                 ".ashx?f=true&av=&p=&s=xml&cid=" + CID + "&n=" + CID;
 
-        DLog.i(XMLUri);
+        //DLog.i(XMLUri);
         mVideoSrc = Src;
         //开始下载 XML
         DownloadXML downloadXML = new DownloadXML();
         downloadXML.setCallBack(this);
         downloadXML.execute(XMLUri);
 
-        DLog.i(Src);
+        //DLog.i(Src);
         //TODO 播放器解码失败时重试
         //TODO 修改代码结构，重写文件下载
         //TODO 错误提示
@@ -191,7 +190,7 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
     public void onXmlSuccess() {
         File xmlfile = new File(BilibiliApplication.getApplication().getExternalFilesDir("danmaku"),
                 mXMLFileName);
-        DLog.i("danmu download ok");
+        //DLog.i("danmu download ok");
         try {
             InputStream inputStream = new FileInputStream(xmlfile);
             mDanmakuParser = createParser(inputStream);

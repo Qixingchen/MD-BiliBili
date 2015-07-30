@@ -12,12 +12,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import me.qixingchen.mdbilibili.fragment.main.MainFragmentPagerAdapter;
 import me.qixingchen.mdbilibili.network.Api;
@@ -31,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Context mContext;
     private DrawerLayout mDrawerLayout;
-    //private RecyclerView mRecyclerView;
     private CompositeSubscription subscription = new CompositeSubscription();
     private Api.SearchApi searchApi;
 
@@ -47,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.mipmap.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
+        searchApi = RxUtils.createApi(Api.SearchApi.class);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
         ViewPager mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
@@ -54,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //mRecyclerView = (RecyclerView) findViewById(R.id.dast_recycler_view);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
@@ -63,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             //todo 搜索
-            subscription.add(searchApi.doSearch("bilibili",1,10,"default")
+            subscription.add(searchApi.doSearch("bilibili", 1, 10, "default")
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(json -> {
@@ -71,18 +67,8 @@ public class MainActivity extends AppCompatActivity {
                                 .setAction("Action", null).show();
                     }));
 
+
         });
-        //todo 折叠操作
-//        toolbar.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                ScrollManager manager = new ScrollManager();
-//                manager.attach(mRecyclerView);
-//                manager.addView(toolbar, ScrollManager.Direction.UP);
-//                manager.addView(fab, ScrollManager.Direction.DOWN);
-//                manager.setInitialOffset(toolbar.getHeight());
-//            }
-//        });
         initDrawer();
     }
 
@@ -135,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onResume() {
         super.onResume();
