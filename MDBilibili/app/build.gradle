@@ -51,7 +51,7 @@ apply plugin: 'me.tatarka.retrolambda'
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.github.ctiao:dfm:0.3.3'
+    compile 'com.github.ctiao:dfm:0.3.4'
     compile 'eu.the4thfloor.volley:com.android.volley:2015.05.13'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.facebook.fresco:fresco:0.6.0'

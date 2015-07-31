@@ -2,10 +2,9 @@ package me.qixingchen.mdbilibili.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -15,13 +14,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import com.android.volley.toolbox.NetworkImageView;
 
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.fragment.main.MainFragmentPagerAdapter;
+import me.qixingchen.mdbilibili.logger.Log;
+import me.qixingchen.mdbilibili.model.Topic;
 import me.qixingchen.mdbilibili.network.Api;
+import me.qixingchen.mdbilibili.network.GetVolley;
+import me.qixingchen.mdbilibili.network.TagsAPI;
+import me.qixingchen.mdbilibili.network.TopicApi;
 import me.qixingchen.mdbilibili.utils.RxUtils;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 
@@ -44,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.mipmap.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
+
         searchApi = RxUtils.createApi(Api.SearchApi.class);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
@@ -57,20 +65,30 @@ public class MainActivity extends AppCompatActivity {
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            //todo 搜索
-            subscription.add(searchApi.doSearch("bilibili", 1, 10, "default")
-                    .subscribeOn(Schedulers.newThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(json -> {
-                        Snackbar.make(view, "searching", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }));
-
-
-        });
         initDrawer();
+        //topic
+        ViewPager topicViewPager;
+
+        TopicApi.getInstance().setCallBack(new TopicApi.OnJsonGot() {
+            @Override
+            public void TopicOK(Topic topic) {
+                //将图片装载到数组中
+                NetworkImageView[] mImageViews = new NetworkImageView[topic.getResults()];
+                for (int i = 0; i < topic.getResults(); i++) {
+                    NetworkImageView imageView = new NetworkImageView(mContext);
+                    mImageViews[i] = imageView;
+                    imageView.setImageUrl(topic.getList().get(i).getImg(),
+                            GetVolley.getmInstance(mContext).getImageLoader());
+                }
+            }
+
+            @Override
+            public void TopicError(String errorMessage) {
+                Log.e(TAG, errorMessage);
+            }
+        });
+
+
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
