@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili;
+package me.qixingchen.mdbilibili.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.view.MultiSwipeRefreshLayout;
 
 /**

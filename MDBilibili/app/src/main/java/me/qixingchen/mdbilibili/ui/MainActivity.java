@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili;
+package me.qixingchen.mdbilibili.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.fragment.main.MainFragmentPagerAdapter;
 import me.qixingchen.mdbilibili.network.Api;
 import me.qixingchen.mdbilibili.utils.RxUtils;

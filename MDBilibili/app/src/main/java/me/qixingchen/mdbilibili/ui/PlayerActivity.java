@@ -1,11 +1,10 @@
-package me.qixingchen.mdbilibili;
+package me.qixingchen.mdbilibili.ui;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,7 +26,9 @@ import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
+import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.app.BilibiliApplication;
+import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.network.DownloadXML;
 import me.qixingchen.mdbilibili.network.GetXMLinfo;
 import me.qixingchen.mdbilibili.ui.widget.MediaController;

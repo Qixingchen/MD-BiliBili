@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili;
+package me.qixingchen.mdbilibili.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +9,12 @@ import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
 
+import me.qixingchen.mdbilibili.view.BilibiliCardViewHolder;
+import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.model.Recommend;
 import me.qixingchen.mdbilibili.network.GetVolley;
+import me.qixingchen.mdbilibili.ui.BilibiliDetail;
 
 /**
  * Created by dell on 2015/6/15.

@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili;
+package me.qixingchen.mdbilibili.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,12 +8,13 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
+import me.qixingchen.mdbilibili.R;
+import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.network.GetVolley;
 import me.qixingchen.mdbilibili.network.ViewAPI;
 

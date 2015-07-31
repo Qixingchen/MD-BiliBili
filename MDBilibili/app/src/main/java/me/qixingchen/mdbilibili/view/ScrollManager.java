@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili;
+package me.qixingchen.mdbilibili.view;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;

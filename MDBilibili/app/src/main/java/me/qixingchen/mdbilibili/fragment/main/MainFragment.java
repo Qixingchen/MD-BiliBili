@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import me.qixingchen.mdbilibili.CardAdapter;
+import me.qixingchen.mdbilibili.adapter.CardAdapter;
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.network.GetRecommend;
 

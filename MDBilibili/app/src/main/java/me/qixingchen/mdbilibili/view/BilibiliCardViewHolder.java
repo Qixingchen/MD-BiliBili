@@ -1,10 +1,12 @@
-package me.qixingchen.mdbilibili;
+package me.qixingchen.mdbilibili.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
+
+import me.qixingchen.mdbilibili.R;
 
 /**
  * Created by dell on 2015/6/15.

@@ -1,10 +1,7 @@
-package me.qixingchen.mdbilibili;
+package me.qixingchen.mdbilibili.ui;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
@@ -15,6 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import me.qixingchen.mdbilibili.view.AppUtils;
+import me.qixingchen.mdbilibili.R;
 
 /**
  * Created by Farble on 2015/6/28 14.
