@@ -12,32 +12,38 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import me.qixingchen.mdbilibili.fragment.main.MainFragmentPagerAdapter;
+import me.qixingchen.mdbilibili.network.Api;
+import me.qixingchen.mdbilibili.utils.RxUtils;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Context mContext;
     private DrawerLayout mDrawerLayout;
-    //private RecyclerView mRecyclerView;
+    private CompositeSubscription subscription = new CompositeSubscription();
+    private Api.SearchApi searchApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
+        searchApi = RxUtils.createApi(Api.SearchApi.class);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.mipmap.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
+        searchApi = RxUtils.createApi(Api.SearchApi.class);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
         ViewPager mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
@@ -45,58 +51,47 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //mRecyclerView = (RecyclerView) findViewById(R.id.dast_recycler_view);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //todo 搜索
-                Snackbar.make(view, "正在刷新", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+        fab.setOnClickListener(view -> {
+            //todo 搜索
+            subscription.add(searchApi.doSearch("bilibili", 1, 10, "default")
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(json -> {
+                        Snackbar.make(view, "searching", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }));
+
+
         });
-        //todo 折叠操作
-//        toolbar.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                ScrollManager manager = new ScrollManager();
-//                manager.attach(mRecyclerView);
-//                manager.addView(toolbar, ScrollManager.Direction.UP);
-//                manager.addView(fab, ScrollManager.Direction.DOWN);
-//                manager.setInitialOffset(toolbar.getHeight());
-//            }
-//        });
         initDrawer();
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.nav_home:
-                            case R.id.nav_messages:
-                            case R.id.nav_my_focus:
-                            case R.id.nav_foucs_me:
-                            case R.id.nav_article:
-                            case R.id.nav_video:
-                                break;
-                            case R.id.nav_about:
-                                navigate(About.class);
-                                break;
-                            default:
-                                break;
-                        }
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
-                        return true;
+                menuItem -> {
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_home:
+                        case R.id.nav_messages:
+                        case R.id.nav_my_focus:
+                        case R.id.nav_foucs_me:
+                        case R.id.nav_article:
+                        case R.id.nav_video:
+                            break;
+                        case R.id.nav_about:
+                            navigate(About.class);
+                            break;
+                        default:
+                            break;
                     }
+                    menuItem.setChecked(true);
+                    mDrawerLayout.closeDrawers();
+                    return true;
                 });
     }
 
@@ -125,5 +120,17 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        subscription = RxUtils.getNewCompositeSubIfUnsubscribed(subscription);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        RxUtils.unsubscribeIfNotNull(subscription);
     }
 }

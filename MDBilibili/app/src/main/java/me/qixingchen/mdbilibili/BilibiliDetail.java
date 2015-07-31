@@ -8,14 +8,12 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
-import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.network.GetVolley;
 import me.qixingchen.mdbilibili.network.ViewAPI;
 
@@ -80,13 +78,10 @@ public class BilibiliDetail extends AppCompatActivity {
         collapsingtoolbar.setTitle(title);
 
         fab = (FloatingActionButton) findViewById(R.id.detail_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent playDemoIntent = new Intent(mContext, PlayerActivity.class);
-                playDemoIntent.putExtra("AID", aid);
-                mContext.startActivity(playDemoIntent);
-            }
+        fab.setOnClickListener(view -> {
+            Intent playDemoIntent = new Intent(mContext, PlayerActivity.class);
+            playDemoIntent.putExtra("AID", aid);
+            mContext.startActivity(playDemoIntent);
         });
         loadBackdrop();
     }
