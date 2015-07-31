@@ -12,8 +12,8 @@ public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
 
     private final String tabTitles[] = new String[]{"番组", "动画", "音乐", "舞蹈", "游戏",
             "科技", "娱乐", "鬼畜", "电影", "电视剧"};
-    private final String typeid[] = new String[]{"20", "20", "20", "20", "20",
-            "20", "20", "20", "20", "20"};
+    private final String typeid[] = new String[]{"20", "47", "29", "20", "65",
+            "107", "5", "26", "147", "147"};
     private Context context;
 
     public MainFragmentPagerAdapter(FragmentManager fm, Context context) {
