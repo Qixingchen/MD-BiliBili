@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import com.android.volley.toolbox.NetworkImageView;
 
 import me.qixingchen.mdbilibili.R;
+import me.qixingchen.mdbilibili.adapter.TopicAdapter;
 import me.qixingchen.mdbilibili.fragment.main.MainFragmentPagerAdapter;
 import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.model.Topic;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }
         initDrawer();
         //topic
-        ViewPager topicViewPager;
+        ViewPager topicViewPager = (ViewPager) findViewById(R.id.topicViewPager);
 
         TopicApi.getInstance().setCallBack(new TopicApi.OnJsonGot() {
             @Override
@@ -80,13 +81,14 @@ public class MainActivity extends AppCompatActivity {
                     imageView.setImageUrl(topic.getList().get(i).getImg(),
                             GetVolley.getmInstance(mContext).getImageLoader());
                 }
+                topicViewPager.setAdapter(new TopicAdapter(mImageViews));
             }
 
             @Override
             public void TopicError(String errorMessage) {
                 Log.e(TAG, errorMessage);
             }
-        });
+        }).addRequest();
 
 
     }
