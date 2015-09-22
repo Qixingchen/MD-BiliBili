@@ -1,11 +1,13 @@
 package me.qixingchen.mdbilibili.network;
 
 import me.qixingchen.mdbilibili.model.FeedbackM;
+import me.qixingchen.mdbilibili.model.List;
 import me.qixingchen.mdbilibili.model.RecommendM;
 import me.qixingchen.mdbilibili.model.SearchM;
 import me.qixingchen.mdbilibili.model.UserNameM;
 import me.qixingchen.mdbilibili.model.UserUidM;
 import me.qixingchen.mdbilibili.model.VideoM;
+import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Query;
 import rx.Observable;
@@ -50,5 +52,14 @@ public interface Api {
 
         @GET("/m/html5")
         Observable<VideoM> getVideoApi(@Query("aid") String aid);
+    }
+
+    interface ListApi {
+
+        @GET("/list")
+        Call<List> getList(
+                @Query("tid") int tid,
+                @Query("ver") int ver
+        );
     }
 }

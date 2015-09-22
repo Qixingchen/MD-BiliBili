@@ -2,7 +2,6 @@ package me.qixingchen.mdbilibili.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -14,9 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.android.volley.toolbox.NetworkImageView;
 
@@ -25,11 +21,8 @@ import me.qixingchen.mdbilibili.adapter.TopicAdapter;
 import me.qixingchen.mdbilibili.fragment.main.MainFragmentPagerAdapter;
 import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.model.Topic;
-import me.qixingchen.mdbilibili.network.Api;
 import me.qixingchen.mdbilibili.network.GetVolley;
-import me.qixingchen.mdbilibili.network.TagsAPI;
 import me.qixingchen.mdbilibili.network.TopicApi;
-import me.qixingchen.mdbilibili.utils.RxUtils;
 import rx.subscriptions.CompositeSubscription;
 
 
@@ -38,22 +31,18 @@ public class MainActivity extends AppCompatActivity {
     private Context mContext;
     private DrawerLayout mDrawerLayout;
     private CompositeSubscription subscription = new CompositeSubscription();
-    private Api.SearchApi searchApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
-        searchApi = RxUtils.createApi(Api.SearchApi.class);
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.mipmap.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
-
-        searchApi = RxUtils.createApi(Api.SearchApi.class);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
         ViewPager mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
@@ -146,12 +135,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        subscription = RxUtils.getNewCompositeSubIfUnsubscribed(subscription);
+        //subscription = RxUtils.getNewCompositeSubIfUnsubscribed(subscription);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        RxUtils.unsubscribeIfNotNull(subscription);
+        // RxUtils.unsubscribeIfNotNull(subscription);
     }
 }
