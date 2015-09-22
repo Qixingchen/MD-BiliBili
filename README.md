@@ -2,10 +2,18 @@
 基于 Material Design 的 BiliBili 第三方 Android 客户端
 
 文档共享 ： 
+
 https://drive.google.com/folderview?id=0B5Izr6QMl6WhflNwY3MyZUlLMl8wdTNQdmROUVExNHpJVDV4Y3ZrcFc0c2VUa2lldEszbkE&usp=sharing
 
+
 B站API镜像【被B站API wiki 服务器崩坏吓哭了，于是有了这个镜像。。：
+
 https://github.com/Qixingchen/ApiOfBiliBili/
+
+一个在维护中的API整理：
+
+https://github.com/fython/BilibiliAPIDocs
+
 
 邮件讨论组（仅对协作者开放，如果您希望一起完成这个项目，请先以 issue 或其他联络方式与 Qixingchen 联系）：
 https://groups.google.com/forum/#!forum/md-bili-bili
