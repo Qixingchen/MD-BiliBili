@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -47,12 +49,18 @@ public class GetRecommend {
         String uri = application.getString(R.string.bilibili_api_host) +
                 application.getString(R.string.recommend) + tid;
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, response -> {
-            Recommend recommend = gson.fromJson(response, Recommend.class);
-            recommendCallBack.recommendCallBack(recommend);
-        }, error -> {
-            Toast.makeText(application, "网络错误", Toast.LENGTH_LONG).show();
-            Log.e(TAG, error.toString());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Recommend recommend = gson.fromJson(response, Recommend.class);
+                recommendCallBack.recommendCallBack(recommend);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(application, "网络错误", Toast.LENGTH_LONG).show();
+                Log.e(TAG, error.toString());
+            }
         });
         requestQueue.add(stringRequest);
         return getRecommend;

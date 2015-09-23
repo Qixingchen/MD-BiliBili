@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 
 import com.android.volley.toolbox.ImageLoader;
 
-import me.qixingchen.mdbilibili.view.BilibiliCardViewHolder;
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.model.Recommend;
 import me.qixingchen.mdbilibili.network.GetVolley;
 import me.qixingchen.mdbilibili.ui.BilibiliDetail;
+import me.qixingchen.mdbilibili.view.BilibiliCardViewHolder;
 
 /**
  * Created by dell on 2015/6/15.
@@ -43,15 +43,18 @@ public class CardAdapter extends RecyclerView.Adapter<BilibiliCardViewHolder> {
     public void onBindViewHolder(BilibiliCardViewHolder holder, final int position) {
         holder.textView.setText(recommend.getLists().get(position).getTitle());
         holder.imageView.setImageUrl(recommend.getLists().get(position).getPic(), mImageLoader);
-        holder.rootView.setOnClickListener(v -> {
-            Intent intent = new Intent(BilibiliApplication.getApplication(), BilibiliDetail.class);
-            String url = String.valueOf(recommend.getLists().get(position).getPic());
-            String title = String.valueOf(recommend.getLists().get(position).getTitle());
-            String aid = String.valueOf(recommend.getLists().get(position).getAid());
-            intent.putExtra("IMG_URL", url);
-            intent.putExtra("TITLE", title);
-            intent.putExtra("AID", aid);
-            mContext.startActivity(intent);
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BilibiliApplication.getApplication(), BilibiliDetail.class);
+                String url = String.valueOf(recommend.getLists().get(position).getPic());
+                String title = String.valueOf(recommend.getLists().get(position).getTitle());
+                String aid = String.valueOf(recommend.getLists().get(position).getAid());
+                intent.putExtra("IMG_URL", url);
+                intent.putExtra("TITLE", title);
+                intent.putExtra("AID", aid);
+                mContext.startActivity(intent);
+            }
         });
     }
 

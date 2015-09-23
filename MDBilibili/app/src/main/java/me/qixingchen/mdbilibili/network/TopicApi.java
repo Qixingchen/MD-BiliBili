@@ -3,6 +3,8 @@ package me.qixingchen.mdbilibili.network;
 import android.app.Application;
 
 import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
@@ -36,11 +38,19 @@ public class TopicApi {
     }
 
     public TopicApi addRequest() {
-        Request<String> request = new StringRequest(Request.Method.GET, "http://www.bilibili.com/index/slideshow.json"
-                , response -> {
-                    Topic topic = gson.fromJson(response, Topic.class);
-                    onJsonGot.TopicOK(topic);
-                }, error -> onJsonGot.TopicError(error.getMessage()));
+
+        Request<String> request = new StringRequest(Request.Method.GET, "http://www.bilibili.com/index/slideshow.json", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Topic topic = gson.fromJson(response, Topic.class);
+                onJsonGot.TopicOK(topic);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onJsonGot.TopicError(error.getMessage());
+            }
+        });
         GetVolley.getmInstance(application).addToRequestQueue(request);
         return mInstance;
     }

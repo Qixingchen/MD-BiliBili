@@ -11,8 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import me.qixingchen.mdbilibili.adapter.CardAdapter;
 import me.qixingchen.mdbilibili.R;
+import me.qixingchen.mdbilibili.adapter.CardAdapter;
+import me.qixingchen.mdbilibili.model.Recommend;
 import me.qixingchen.mdbilibili.network.GetRecommend;
 
 /**
@@ -80,10 +81,13 @@ public class MainFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.e(TAG, "onStart" + mParam2);
-        GetRecommend.getRecommend().setCallBack(recommend -> {
-            CardAdapter mCardAdapter = new CardAdapter(recommend, mActivity);
-            mRecyclerView.setAdapter(mCardAdapter);
-            Log.e(TAG, "setAdapter" + mParam2);
+        GetRecommend.getRecommend().setCallBack(new GetRecommend.RecommendCallBack() {
+            @Override
+            public void recommendCallBack(Recommend recommend) {
+                CardAdapter mCardAdapter = new CardAdapter(recommend, mActivity);
+                mRecyclerView.setAdapter(mCardAdapter);
+                Log.e(TAG, "setAdapter" + mParam2);
+            }
         }).GetRecommendInfo(mParam1);
     }
 }

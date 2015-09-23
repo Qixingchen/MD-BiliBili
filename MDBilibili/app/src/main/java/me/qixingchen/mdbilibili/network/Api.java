@@ -48,6 +48,7 @@ public interface Api {
         @GET("/userinfo")
         Observable<UserUidM> getUserInfoByuidApi(@Query("uid") String uid);
     }
+
     interface VideoApi {
 
         @GET("/m/html5")
@@ -59,7 +60,8 @@ public interface Api {
         @GET("/list")
         Call<List> getList(
                 @Query("tid") int tid,
-                @Query("ver") int ver
+                @Query("ver") int ver,
+                @Query("pagesize") int pageSize
         );
     }
 }

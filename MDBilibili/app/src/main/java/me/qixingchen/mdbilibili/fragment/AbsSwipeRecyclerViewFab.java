@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -67,13 +68,14 @@ public abstract class AbsSwipeRecyclerViewFab extends Fragment {
     protected void initRefreshLayout() {
         mSwipeRefreshLayout = (MultiSwipeRefreshLayout) rootView.findViewById(R.id.abs_swiperefresh);
 
-        mSwipeRefreshLayout.setColorScheme(
-                R.color.md_orange_700, R.color.md_red_500,
-                R.color.md_indigo_900, R.color.md_green_700);
+        mSwipeRefreshLayout.setColorScheme(new int[]{R.color.md_orange_700, R.color.md_red_500, R.color.md_indigo_900, R.color.md_green_700});
         mSwipeRefreshLayout.setSwipeableChildren(R.id.abs_recycler_view);
-        mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            Log.i(TAG, "onRefresh called from SwipeRefreshLayout");
-            doSwapeRefresh();
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.i(TAG, "onRefresh called from SwipeRefreshLayout");
+                AbsSwipeRecyclerViewFab.this.doSwapeRefresh();
+            }
         });
     }
 

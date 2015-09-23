@@ -11,8 +11,12 @@ public class ListApi extends RetrofitNetworkAbs {
 
     private Api.ListApi listServer = RetrofitNetwork.retrofitAPI.create(Api.ListApi.class);
 
+    public static ListApi getNewInstance() {
+        return new ListApi();
+    }
+
     public void getList(int tid) {
-        listServer.getList(tid, 2).enqueue(new Callback<List>() {
+        listServer.getList(tid, 2, 10).enqueue(new Callback<List>() {
             @Override
             public void onResponse(Response<List> response) {
                 myOnResponse(response);

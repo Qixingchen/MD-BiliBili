@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         }
         initDrawer();
         //topic
-        ViewPager topicViewPager = (ViewPager) findViewById(R.id.topicViewPager);
+        final ViewPager topicViewPager = (ViewPager) findViewById(R.id.topicViewPager);
 
         TopicApi.getInstance().setCallBack(new TopicApi.OnJsonGot() {
             @Override
@@ -79,29 +79,31 @@ public class MainActivity extends AppCompatActivity {
             }
         }).addRequest();
 
-
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
-                menuItem -> {
-                    switch (menuItem.getItemId()) {
-                        case R.id.nav_home:
-                        case R.id.nav_messages:
-                        case R.id.nav_my_focus:
-                        case R.id.nav_foucs_me:
-                        case R.id.nav_article:
-                        case R.id.nav_video:
-                            break;
-                        case R.id.nav_about:
-                            navigate(About.class);
-                            break;
-                        default:
-                            break;
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        switch (menuItem.getItemId()) {
+                            case R.id.nav_home:
+                            case R.id.nav_messages:
+                            case R.id.nav_my_focus:
+                            case R.id.nav_foucs_me:
+                            case R.id.nav_article:
+                            case R.id.nav_video:
+                                break;
+                            case R.id.nav_about:
+                                MainActivity.this.navigate(About.class);
+                                break;
+                            default:
+                                break;
+                        }
+                        menuItem.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        return true;
                     }
-                    menuItem.setChecked(true);
-                    mDrawerLayout.closeDrawers();
-                    return true;
                 });
     }
 

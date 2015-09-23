@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import java.util.Map;
 
@@ -51,20 +52,27 @@ public class GetAPI {
     }
 
     private Response.Listener<String> makeOKListener() {
-        Response.Listener<String> OKListener = response -> {
-            if (onJsonGot != null) {
-                onJsonGot.JsonOK(response);
+        Response.Listener<String> OKListener;
+        OKListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (onJsonGot != null) {
+                    onJsonGot.JsonOK(response);
+                }
             }
         };
         return OKListener;
     }
 
     private Response.ErrorListener makeErrorListener() {
-        Response.ErrorListener errorListener = error -> {
-            if (onJsonGot != null) {
-                onJsonGot.JsonError(error.getMessage());
-            } else {
-                Log.e(TAG, error.getMessage());
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (onJsonGot != null) {
+                    onJsonGot.JsonError(error.getMessage());
+                } else {
+                    Log.e(TAG, error.getMessage());
+                }
             }
         };
         return errorListener;
