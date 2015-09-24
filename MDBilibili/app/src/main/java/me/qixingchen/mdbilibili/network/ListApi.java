@@ -6,6 +6,8 @@ import retrofit.Response;
 
 /**
  * Created by Yulan on 2015/9/22.
+ * 读取视频排行信息
+ * https://github.com/fython/BilibiliAPIDocs/blob/master/API.list.md
  */
 public class ListApi extends RetrofitNetworkAbs {
 
@@ -16,7 +18,7 @@ public class ListApi extends RetrofitNetworkAbs {
     }
 
     public void getList(int tid) {
-        listServer.getList(tid, 2, 10).enqueue(new Callback<List>() {
+        listServer.getList(tid, 2, 50).enqueue(new Callback<List>() {
             @Override
             public void onResponse(Response<List> response) {
                 myOnResponse(response);

@@ -24,20 +24,9 @@ import me.qixingchen.mdbilibili.app.Secret;
 public class GetVolley {
 
     private static GetVolley mInstance;
+    private static Context mCtx;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-    private static Context mCtx;
-
-    public static GetVolley getmInstance(Context context) {
-        if (mInstance == null) {
-            synchronized (GetVolley.class) {
-                if (mInstance == null) {
-                    mInstance = new GetVolley(context);
-                }
-            }
-        }
-        return mInstance;
-    }
 
     private GetVolley(Context context) {
         mCtx = context;
@@ -46,7 +35,7 @@ public class GetVolley {
         mImageLoader = new ImageLoader(mRequestQueue,
                 new ImageLoader.ImageCache() {
                     private final LruCache<String, Bitmap>
-                            cache = new LruCache<String, Bitmap>(20);
+                            cache = new LruCache<String, Bitmap>(2000);
 
                     @Override
                     public Bitmap getBitmap(String url) {
@@ -58,6 +47,17 @@ public class GetVolley {
                         cache.put(url, bitmap);
                     }
                 });
+    }
+
+    public static GetVolley getmInstance(Context context) {
+        if (mInstance == null) {
+            synchronized (GetVolley.class) {
+                if (mInstance == null) {
+                    mInstance = new GetVolley(context);
+                }
+            }
+        }
+        return mInstance;
     }
 
     public RequestQueue getRequestQueue() {

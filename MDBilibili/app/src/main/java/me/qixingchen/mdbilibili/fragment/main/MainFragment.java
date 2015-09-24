@@ -13,21 +13,20 @@ import android.view.ViewGroup;
 
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.adapter.CardAdapter;
-import me.qixingchen.mdbilibili.model.Recommend;
-import me.qixingchen.mdbilibili.network.GetRecommend;
+import me.qixingchen.mdbilibili.model.List;
+import me.qixingchen.mdbilibili.network.ListApi;
+import me.qixingchen.mdbilibili.network.RetrofitNetworkAbs;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MainFragment extends Fragment {
 
-    private Activity mActivity;
-    private RecyclerView mRecyclerView;
-
     private static final String TAG = "MainFragment";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private Activity mActivity;
+    private RecyclerView mRecyclerView;
     private String mParam1;
     private String mParam2;
 
@@ -35,6 +34,14 @@ public class MainFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static MainFragment newInstance(String param1, String param2) {
+        MainFragment fragment = new MainFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,15 +66,6 @@ public class MainFragment extends Fragment {
 
     }
 
-    public static MainFragment newInstance(String param1, String param2) {
-        MainFragment fragment = new MainFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,13 +79,20 @@ public class MainFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.e(TAG, "onStart" + mParam2);
-        GetRecommend.getRecommend().setCallBack(new GetRecommend.RecommendCallBack() {
+
+        ListApi.getNewInstance().setNetworkListener(new RetrofitNetworkAbs.NetworkListener() {
             @Override
-            public void recommendCallBack(Recommend recommend) {
-                CardAdapter mCardAdapter = new CardAdapter(recommend, mActivity);
+            public void onOK(Object ts) {
+                List list = (List) ts;
+                CardAdapter mCardAdapter = new CardAdapter(list, mActivity);
                 mRecyclerView.setAdapter(mCardAdapter);
                 Log.e(TAG, "setAdapter" + mParam2);
             }
-        }).GetRecommendInfo(mParam1);
+
+            @Override
+            public void onError(String Message) {
+                Log.w(TAG, Message);
+            }
+        }).getList(Integer.parseInt(mParam1));
     }
 }
