@@ -19,8 +19,8 @@
     <dimen name="search_users_item_margin">14dp</dimen>
 
     <dimen name="padding">8dp</dimen>
-    <dimen name="main_card_width">130dp</dimen>
-    <dimen name="main_card_height">120dp</dimen>
-    <dimen name="card_img_height">80dp</dimen>
-    <dimen name="card_img_width">120dp</dimen>
+    <dimen name="main_card_width">160dp</dimen>
+    <dimen name="main_card_height">160dp</dimen>
+    <dimen name="card_img_height">120dp</dimen>
+    <dimen name="card_img_width">160dp</dimen>
 </resources>

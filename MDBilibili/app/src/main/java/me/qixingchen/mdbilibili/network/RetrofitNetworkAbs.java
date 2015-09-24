@@ -10,6 +10,7 @@ public abstract class RetrofitNetworkAbs {
     protected final String TAG = this.getClass().getSimpleName();
     protected NetworkListener networkListener;
 
+    @SuppressWarnings("unchecked")
     protected <T extends RetrofitNetworkAbs> T setNetworkListener(NetworkListener networkListener, T type) {
         type.networkListener = networkListener;
         return type;
@@ -17,17 +18,11 @@ public abstract class RetrofitNetworkAbs {
 
     public abstract <T extends RetrofitNetworkAbs> T setNetworkListener(NetworkListener networkListener);
 
-    // TODO: 15/9/17 T 抽象
-    public interface NetworkListener<T extends Object> {
-        void onOK(T ts);
-
-        void onError(String Message);
-    }
-
     /**
      * 检查Response是否成功
      *
      * @param response retrofit 的 response
+     *
      * @return 是否成功
      */
     protected boolean myOnResponse(retrofit.Response<? extends Object> response) {
@@ -47,7 +42,6 @@ public abstract class RetrofitNetworkAbs {
         }
     }
 
-
     /**
      * OnFailure
      */
@@ -56,6 +50,14 @@ public abstract class RetrofitNetworkAbs {
         if (networkListener != null) {
             networkListener.onError(t.getMessage());
         }
+    }
+
+
+    // TODO: 15/9/17 T 抽象
+    public interface NetworkListener<T extends Object> {
+        void onOK(T ts);
+
+        void onError(String Message);
     }
 
 }

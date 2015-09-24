@@ -28,7 +28,7 @@ public interface Api {
     interface RecommendApi {
 
         @GET("/author_recommend")
-        Observable<RecommendM> getRecommendApi(@Query("aid") int aid);
+        Call<RecommendM> getRecommendApi(@Query("aid") int aid);
     }
 
     interface FeedBackApi {
@@ -52,7 +52,7 @@ public interface Api {
     interface VideoApi {
 
         @GET("/m/html5")
-        Observable<VideoM> getVideoApi(@Query("aid") String aid);
+        Call<VideoM> getVideoApi(@Query("aid") String aid);
     }
 
     interface ListApi {

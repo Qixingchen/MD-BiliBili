@@ -1,77 +1,39 @@
 package me.qixingchen.mdbilibili.network;
 
-import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-
-import me.qixingchen.mdbilibili.R;
-import me.qixingchen.mdbilibili.app.BilibiliApplication;
-import me.qixingchen.mdbilibili.model.Recommend;
+import me.qixingchen.mdbilibili.model.RecommendM;
+import retrofit.Callback;
 
 /**
  * Created by Yulan on 2015/6/18.
  * 使用 BiliBili 的 Recommend API 接口 获得 用户推荐信息
  */
-public class GetRecommend {
-    private static GetRecommend getRecommend;
-    private Application application;
-    private Gson gson = new Gson();
-    private static final String TAG = GetRecommend.class.getSimpleName();
-    private RequestQueue requestQueue;
+public class GetRecommend extends RetrofitNetworkAbs {
 
-    private RecommendCallBack recommendCallBack;
+    private Api.RecommendApi recommendApiServer = RetrofitNetwork.retrofitAPI.create(Api.RecommendApi.class);
 
-    public static GetRecommend getRecommend() {
-        if (getRecommend == null) {
-            synchronized (GetRecommend.class) {
-                if (getRecommend == null) {
-                    getRecommend = new GetRecommend();
-                }
-            }
-        }
-        return getRecommend;
+    public static GetRecommend getNewInstance() {
+        return new GetRecommend();
     }
 
-    private GetRecommend() {
-        application = BilibiliApplication.getApplication();
-        requestQueue = Volley.newRequestQueue(application);
-    }
+    public void GetRecommendInfo(int aid) {
 
-    public GetRecommend GetRecommendInfo(String tid) {
-        String uri = application.getString(R.string.bilibili_api_host) +
-                application.getString(R.string.recommend) + tid;
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, uri, new Response.Listener<String>() {
+        recommendApiServer.getRecommendApi(aid).enqueue(new Callback<RecommendM>() {
             @Override
-            public void onResponse(String response) {
-                Recommend recommend = gson.fromJson(response, Recommend.class);
-                recommendCallBack.recommendCallBack(recommend);
+            public void onResponse(retrofit.Response<RecommendM> response) {
+                myOnResponse(response);
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(application, "网络错误", Toast.LENGTH_LONG).show();
-                Log.e(TAG, error.toString());
+            public void onFailure(Throwable t) {
+                myOnFailure(t);
             }
         });
-        requestQueue.add(stringRequest);
-        return getRecommend;
     }
 
-    public GetRecommend setCallBack(RecommendCallBack recommendCallBack) {
-        this.recommendCallBack = recommendCallBack;
-        return getRecommend;
+    @SuppressWarnings("unchecked")
+    @Override
+    public GetRecommend setNetworkListener(NetworkListener networkListener) {
+        return setNetworkListener(networkListener, this);
     }
 
-    public interface RecommendCallBack {
-        void recommendCallBack(Recommend recommend);
-    }
 }

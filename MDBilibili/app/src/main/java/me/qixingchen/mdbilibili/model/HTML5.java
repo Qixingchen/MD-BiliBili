@@ -12,7 +12,25 @@ import android.os.Parcelable;
  * src ： 视频源地址
  */
 public class HTML5 implements Parcelable {
+	public static final Creator<HTML5> CREATOR = new Creator<HTML5>() {
+		public HTML5 createFromParcel(Parcel source) {
+			return new HTML5(source);
+		}
+
+		public HTML5[] newArray(int size) {
+			return new HTML5[size];
+		}
+	};
 	private String img, cid, src;
+
+	public HTML5() {
+	}
+
+	protected HTML5(Parcel in) {
+		this.img = in.readString();
+		this.cid = in.readString();
+		this.src = in.readString();
+	}
 
 	public String getImg() {
 		return img;
@@ -33,8 +51,8 @@ public class HTML5 implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(img);
-		dest.writeString(cid);
-		dest.writeString(src);
+		dest.writeString(this.img);
+		dest.writeString(this.cid);
+		dest.writeString(this.src);
 	}
 }

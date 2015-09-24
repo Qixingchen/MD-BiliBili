@@ -22,6 +22,6 @@ public class DownloadDanmakuXML {
 	}
 
 	public void startDownloadByAid(String Aid) {
-		//GetXMLinfo.getGetXMLinfo().getUri(Aid);
+		//GetXMLinfo.getNewInstance().getUri(Aid);
 	}
 }

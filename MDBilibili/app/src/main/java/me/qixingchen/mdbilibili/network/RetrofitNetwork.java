@@ -27,8 +27,6 @@ public class RetrofitNetwork {
     private final static String TAG = RetrofitNetwork.class.getSimpleName();
 
     private static String APIURL = "http://api.bilibili.cn";
-    private static String MAIN_URL = "http://api.bilibili.cn";
-
     /**
      * API 接口
      */
@@ -37,7 +35,7 @@ public class RetrofitNetwork {
             .client(getClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-
+    private static String MAIN_URL = "http://www.bilibili.com/";
     /**
      * 主站
      */
@@ -46,70 +44,6 @@ public class RetrofitNetwork {
             .client(getClient())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-
-    /**
-     * OKHttp log接口
-     */
-    static class LoggingInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-
-            long t1 = System.nanoTime();
-            //Log.i(TAG, String.format("Sending request %s on %s%n%s",
-            //request.url(), chain.connection(), "request.headers()"));
-
-            Response response = chain.proceed(request);
-
-            long t2 = System.nanoTime();
-            Log.i(TAG, String.format("Received response for %s in %.1fms%n",
-                    response.request().url(), (t2 - t1) / 1e6d));
-
-            return response;
-        }
-    }
-
-    /**
-     * 签名接口
-     */
-    static class SignInterceptor implements Interceptor {
-
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-
-            Request request = chain.request();
-
-            if (request != null) {
-                URL requestURL = request.url();
-                String baseURL = requestURL.getProtocol() + "://" + requestURL.getHost() + requestURL.getPath();
-
-                Map<String, String> queryMap = splitQuery(requestURL);
-                String paraUri = getParaUriNoSigned(queryMap);
-                paraUri += "&sign=" + getSign(paraUri);
-
-                Request.Builder signedRequestBuilder = request.newBuilder();
-                signedRequestBuilder.url(baseURL + "?" + paraUri);
-                request = signedRequestBuilder.build();
-            }
-            return chain.proceed(request);
-        }
-    }
-
-    /**
-     * 设置UA
-     */
-    static class UserAgentInterceptor implements Interceptor {
-
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request originalRequest = chain.request();
-            Request requestWithUserAgent = originalRequest.newBuilder()
-                    .removeHeader("User-Agent")
-                    .addHeader("User-Agent", Secret.User_Agent)
-                    .build();
-            return chain.proceed(requestWithUserAgent);
-        }
-    }
 
     /**
      * 获取 OkHttpClinet
@@ -152,6 +86,7 @@ public class RetrofitNetwork {
      * 从 URL 获取参数
      *
      * @param url URL
+     *
      * @return 参数MAP
      */
     public static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException {
@@ -178,5 +113,72 @@ public class RetrofitNetwork {
         }
         paraUri = paraUri.substring(0, paraUri.length() - 1);
         return paraUri;
+    }
+
+    /**
+     * OKHttp log接口
+     */
+    static class LoggingInterceptor implements Interceptor {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+
+            long t1 = System.nanoTime();
+            //Log.i(TAG, String.format("Sending request %s on %s%n%s",
+            //request.url(), chain.connection(), "request.headers()"));
+
+            Response response = chain.proceed(request);
+
+            long t2 = System.nanoTime();
+            Log.i(TAG, String.format("Received response for %s in %.1fms%n",
+                    response.request().url(), (t2 - t1) / 1e6d));
+
+            return response;
+        }
+    }
+
+    /**
+     * 签名接口
+     */
+    static class SignInterceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+
+            Request request = chain.request();
+
+            if (request != null) {
+                URL requestURL = request.url();
+                if (requestURL.getHost().contains("www.bilibili.com")) {
+                    return chain.proceed(request);
+                }
+                String baseURL = requestURL.getProtocol() + "://" + requestURL.getHost() + requestURL.getPath();
+
+                Map<String, String> queryMap = splitQuery(requestURL);
+                String paraUri = getParaUriNoSigned(queryMap);
+                paraUri += "&sign=" + getSign(paraUri);
+
+                Request.Builder signedRequestBuilder = request.newBuilder();
+                signedRequestBuilder.url(baseURL + "?" + paraUri);
+                request = signedRequestBuilder.build();
+            }
+            return chain.proceed(request);
+        }
+    }
+
+    /**
+     * 设置UA
+     */
+    static class UserAgentInterceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Request originalRequest = chain.request();
+            Request requestWithUserAgent = originalRequest.newBuilder()
+                    .removeHeader("User-Agent")
+                    .addHeader("User-Agent", Secret.User_Agent)
+                    .build();
+            return chain.proceed(requestWithUserAgent);
+        }
     }
 }

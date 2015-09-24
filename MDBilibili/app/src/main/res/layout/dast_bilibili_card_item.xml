@@ -7,6 +7,8 @@
     android:layout_width="@dimen/main_card_width"
     android:layout_height="@dimen/main_card_height"
     android:layout_gravity="center"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="4dp"
     card_view:cardCornerRadius="4dp"
     tools:context="${relativePackage}.${activityClass}">
 
@@ -17,23 +19,23 @@
 
         <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/card_view_image"
+            style="@style/cardImagePadding"
             android:layout_width="match_parent"
             android:layout_height="@dimen/card_img_height"
-            style="@style/cardImagePadding"
             android:background="#00000000"
             android:contentDescription="@string/video_img"
             android:scaleType="centerCrop"
             tools:src="@mipmap/bilibili_test"/>
 
         <TextView
-            android:layout_below="@id/card_view_image"
             android:id="@+id/card_view_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_below="@id/card_view_image"
+            android:ellipsize="end"
             android:gravity="center_vertical"
             android:padding="3dp"
             android:singleLine="true"
-            android:ellipsize="end"
             android:textSize="@dimen/normal_text_size"
             tools:text="@string/dast_string_bilibili"/>
 

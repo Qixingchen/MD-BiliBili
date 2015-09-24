@@ -29,28 +29,128 @@ import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.logger.Log;
+import me.qixingchen.mdbilibili.model.VideoM;
 import me.qixingchen.mdbilibili.network.DownloadXML;
 import me.qixingchen.mdbilibili.network.GetXMLinfo;
+import me.qixingchen.mdbilibili.network.RetrofitNetworkAbs;
 import me.qixingchen.mdbilibili.ui.widget.MediaController;
 import me.qixingchen.mdbilibili.ui.widget.VideoView;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
-public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.SendSrc, DownloadXML.CallBack {
+public class PlayerActivity extends AppCompatActivity implements DownloadXML.CallBack {
 
+    private static final String TAG = PlayerActivity.class.getSimpleName();
+    private static BaseDanmakuParser mDanmakuParser;
     public Activity mActivity;
     private String mXMLFileName;
     private VideoView mPlayerView;
     private IDanmakuView mDanmakuView;
     private View mBufferingIndicator;
     private MediaController mMediaController;
-    private static BaseDanmakuParser mDanmakuParser;
     private String mVideoSrc = "";
     private Boolean isPlayerPrepared;
-    private static final String TAG = PlayerActivity.class.getSimpleName();
-
     //页面切换时，播放到的位置
     private int LastPosition = 0;
+    //VideoView OnInfo 当正在缓冲时等事件会被调用
+    // todo 显示缓冲提示
+    private IMediaPlayer.OnInfoListener onInfoListener = new IMediaPlayer.OnInfoListener() {
+        @Override
+        public boolean onInfo(IMediaPlayer mp, int what, int extra) {
+            if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_START) {
+                if (mDanmakuView != null && mDanmakuView.isPrepared()) {
+                    mDanmakuView.pause();
+                    if (mBufferingIndicator != null)
+                        mBufferingIndicator.setVisibility(View.VISIBLE);
+                }
+            } else if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_END) {
+                if (mDanmakuView != null && mDanmakuView.isPaused()) {
+                    mDanmakuView.resume();
+                    if (mBufferingIndicator != null)
+                        mBufferingIndicator.setVisibility(View.GONE);
+                }
+            }
+            return true;
+        }
+    };
+    //视频缓冲完成
+    private IMediaPlayer.OnPreparedListener onPreparedListener = new IMediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(IMediaPlayer mp) {
+            //            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
+            //                if (!mPlayerView.isPlaying()) {
+            //                    mPlayerView.start();
+            //                }
+            //                mDanmakuView.start();
+            //                Log.e(TAG, "弹幕先加载完成");
+            //            }
+            isPlayerPrepared = true;
+        }
+    };
+    //跳转
+    private IMediaPlayer.OnSeekCompleteListener onSeekCompleteListener = new IMediaPlayer.OnSeekCompleteListener() {
+        @Override
+        public void onSeekComplete(IMediaPlayer mp) {
+            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
+                mDanmakuView.seekTo(mp.getCurrentPosition());
+            }
 
+        }
+    };
+    //播放完成
+    private IMediaPlayer.OnCompletionListener onCompletionListener = new IMediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(IMediaPlayer mp) {
+            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
+                mDanmakuView.pause();
+                mDanmakuView.seekTo((long) 0);
+
+            }
+            mPlayerView.pause();
+        }
+    };
+    //被控制条控制状态
+    private VideoView.OnControllerEventsListener onControllerEventsListener = new VideoView.OnControllerEventsListener() {
+        @Override
+        public void onVideoPause() {
+            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
+                mDanmakuView.pause();
+            }
+        }
+
+        @Override
+        public void OnVideoResume() {
+            if (mDanmakuView != null && mDanmakuView.isPaused() && mPlayerView.isPlaying()) {
+                mDanmakuView.resume();
+            }
+        }
+    };
+
+    //弹幕加载 传入文件流
+    private static BaseDanmakuParser createParser(InputStream stream) {
+
+        if (stream == null) {
+            return new BaseDanmakuParser() {
+
+                @Override
+                protected Danmakus parse() {
+                    return new Danmakus();
+                }
+            };
+        }
+
+        ILoader loader = DanmakuLoaderFactory.create(DanmakuLoaderFactory.TAG_BILI);
+
+        try {
+            loader.load(stream);
+        } catch (IllegalDataException e) {
+            e.printStackTrace();
+        }
+        BaseDanmakuParser parser = new BiliDanmukuParser();
+        IDataSource<?> dataSource = loader.getDataSource();
+        parser.load(dataSource);
+        return parser;
+
+    }
 
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -81,7 +181,25 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
         mPlayerView.setOnControllerEventsListener(onControllerEventsListener);
         mPlayerView.requestFocus();
 
-        GetXMLinfo.getGetXMLinfo(this).getUri(aid);
+        GetXMLinfo.getNewInstance().setNetworkListener(new RetrofitNetworkAbs.NetworkListener() {
+            @Override
+            public void onOK(Object ts) {
+                VideoM html5 = (VideoM) ts;
+                String CIDName = html5.getCid();
+                if (CIDName.compareTo("http://comment.bilibili.com/undefined.xml") == 0) {
+                    Toast.makeText(mActivity, "视频不存在或不能播放", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                CIDName = CIDName.replace(".com", ".cn");
+                //向 player 发送 视频源和弹幕 XML 文件名
+                getSrcAndXMLFileName(html5.getSrc(), CIDName);
+            }
+
+            @Override
+            public void onError(String Message) {
+                Toast.makeText(mActivity, "视频不存在或不能播放:" + Message, Toast.LENGTH_LONG).show();
+            }
+        }).getUri(aid);
         isPlayerPrepared = false;
     }
 
@@ -133,39 +251,8 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
         }
     }
 
-    //弹幕加载 传入文件流
-    private static BaseDanmakuParser createParser(InputStream stream) {
-
-        if (stream == null) {
-            return new BaseDanmakuParser() {
-
-                @Override
-                protected Danmakus parse() {
-                    return new Danmakus();
-                }
-            };
-        }
-
-        ILoader loader = DanmakuLoaderFactory.create(DanmakuLoaderFactory.TAG_BILI);
-
-        try {
-            loader.load(stream);
-        } catch (IllegalDataException e) {
-            e.printStackTrace();
-        }
-        BaseDanmakuParser parser = new BiliDanmukuParser();
-        IDataSource<?> dataSource = loader.getDataSource();
-        parser.load(dataSource);
-        return parser;
-
-    }
-
     //来自 GetXMLinfo 的回调通告
-    @Override
     public void getSrcAndXMLFileName(String Src, String XMLUri) {
-        if (Src.compareTo("Error") == 0) {
-            return;
-        }
 
         mXMLFileName = XMLUri.substring(XMLUri.lastIndexOf('/') + 1);
         String CID = mXMLFileName.substring(0, mXMLFileName.lastIndexOf("."));
@@ -226,82 +313,4 @@ public class PlayerActivity extends AppCompatActivity implements GetXMLinfo.Send
         Toast.makeText(this, "弹幕加载错误", Toast.LENGTH_SHORT).show();
         this.finish();
     }
-
-    //VideoView OnInfo 当正在缓冲时等事件会被调用
-    // todo 显示缓冲提示
-    private IMediaPlayer.OnInfoListener onInfoListener = new IMediaPlayer.OnInfoListener() {
-        @Override
-        public boolean onInfo(IMediaPlayer mp, int what, int extra) {
-            if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_START) {
-                if (mDanmakuView != null && mDanmakuView.isPrepared()) {
-                    mDanmakuView.pause();
-                    if (mBufferingIndicator != null)
-                        mBufferingIndicator.setVisibility(View.VISIBLE);
-                }
-            } else if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_END) {
-                if (mDanmakuView != null && mDanmakuView.isPaused()) {
-                    mDanmakuView.resume();
-                    if (mBufferingIndicator != null)
-                        mBufferingIndicator.setVisibility(View.GONE);
-                }
-            }
-            return true;
-        }
-    };
-
-    //视频缓冲完成
-    private IMediaPlayer.OnPreparedListener onPreparedListener = new IMediaPlayer.OnPreparedListener() {
-        @Override
-        public void onPrepared(IMediaPlayer mp) {
-//            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
-//                if (!mPlayerView.isPlaying()) {
-//                    mPlayerView.start();
-//                }
-//                mDanmakuView.start();
-//                Log.e(TAG, "弹幕先加载完成");
-//            }
-            isPlayerPrepared = true;
-        }
-    };
-
-    //跳转
-    private IMediaPlayer.OnSeekCompleteListener onSeekCompleteListener = new IMediaPlayer.OnSeekCompleteListener() {
-        @Override
-        public void onSeekComplete(IMediaPlayer mp) {
-            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
-                mDanmakuView.seekTo(mp.getCurrentPosition());
-            }
-
-        }
-    };
-
-    //播放完成
-    private IMediaPlayer.OnCompletionListener onCompletionListener = new IMediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(IMediaPlayer mp) {
-            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
-                mDanmakuView.pause();
-                mDanmakuView.seekTo((long) 0);
-
-            }
-            mPlayerView.pause();
-        }
-    };
-
-    //被控制条控制状态
-    private VideoView.OnControllerEventsListener onControllerEventsListener = new VideoView.OnControllerEventsListener() {
-        @Override
-        public void onVideoPause() {
-            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
-                mDanmakuView.pause();
-            }
-        }
-
-        @Override
-        public void OnVideoResume() {
-            if (mDanmakuView != null && mDanmakuView.isPaused() && mPlayerView.isPlaying()) {
-                mDanmakuView.resume();
-            }
-        }
-    };
 }
