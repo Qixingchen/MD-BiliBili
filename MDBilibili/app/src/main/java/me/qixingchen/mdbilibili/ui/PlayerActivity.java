@@ -21,7 +21,7 @@ import master.flame.danmaku.danmaku.loader.ILoader;
 import master.flame.danmaku.danmaku.loader.IllegalDataException;
 import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
-import master.flame.danmaku.danmaku.model.android.DanmakuGlobalConfig;
+import master.flame.danmaku.danmaku.model.android.DanmakuContext;
 import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
@@ -165,8 +165,6 @@ public class PlayerActivity extends AppCompatActivity implements DownloadXML.Cal
         mBufferingIndicator = findViewById(R.id.buffering_indicator);
         mMediaController = new MediaController(this);
         mActivity = this;
-        DanmakuGlobalConfig.DEFAULT.setDanmakuStyle(DanmakuGlobalConfig.DANMAKU_STYLE_STROKEN, 3)
-                .setDuplicateMergingEnabled(false).setMaximumVisibleSizeInScreen(80);
         mDanmakuView.enableDanmakuDrawingCache(true);
         Intent intent = getIntent();
         String aid = intent.getStringExtra("AID");
@@ -299,8 +297,13 @@ public class PlayerActivity extends AppCompatActivity implements DownloadXML.Cal
                 public void updateTimer(DanmakuTimer danmakuTimer) {
 
                 }
+
+                @Override
+                public void drawingFinished() {
+
+                }
             });
-            mDanmakuView.prepare(mDanmakuParser);
+            mDanmakuView.prepare(mDanmakuParser, new DanmakuContext());
             mPlayerView.setVideoURI(Uri.parse(mVideoSrc));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
