@@ -2,6 +2,7 @@ package me.qixingchen.mdbilibili.network;
 
 import me.qixingchen.mdbilibili.model.RecommendM;
 import retrofit.Callback;
+import retrofit.Retrofit;
 
 /**
  * Created by Yulan on 2015/6/18.
@@ -19,7 +20,7 @@ public class GetRecommend extends RetrofitNetworkAbs {
 
         recommendApiServer.getRecommendApi(aid).enqueue(new Callback<RecommendM>() {
             @Override
-            public void onResponse(retrofit.Response<RecommendM> response) {
+            public void onResponse(retrofit.Response<RecommendM> response, Retrofit retrofit) {
                 myOnResponse(response);
             }
 

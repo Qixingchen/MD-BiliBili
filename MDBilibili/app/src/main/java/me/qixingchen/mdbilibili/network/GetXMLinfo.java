@@ -2,6 +2,7 @@ package me.qixingchen.mdbilibili.network;
 
 import me.qixingchen.mdbilibili.model.VideoM;
 import retrofit.Callback;
+import retrofit.Retrofit;
 
 /**
  * Created by Yulan on 2015/6/12.
@@ -19,7 +20,7 @@ public class GetXMLinfo extends RetrofitNetworkAbs {
 
         videoApiSer.getVideoApi(Aid).enqueue(new Callback<VideoM>() {
             @Override
-            public void onResponse(retrofit.Response<VideoM> response) {
+            public void onResponse(retrofit.Response<VideoM> response, Retrofit retrofit) {
                 myOnResponse(response);
             }
 

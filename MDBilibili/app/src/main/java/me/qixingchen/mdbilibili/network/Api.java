@@ -53,6 +53,9 @@ public interface Api {
 
         @GET("/m/html5")
         Call<VideoM> getVideoApi(@Query("aid") String aid);
+
+        @GET("/m/html5")
+        Observable<VideoM> getVideoApiRx(@Query("aid") String aid);
     }
 
     interface ListApi {

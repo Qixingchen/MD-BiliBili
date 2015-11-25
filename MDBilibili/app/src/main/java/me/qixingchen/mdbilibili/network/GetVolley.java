@@ -2,7 +2,7 @@ package me.qixingchen.mdbilibili.network;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
+import android.util.LruCache;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,7 +35,7 @@ public class GetVolley {
         mImageLoader = new ImageLoader(mRequestQueue,
                 new ImageLoader.ImageCache() {
                     private final LruCache<String, Bitmap>
-                            cache = new LruCache<String, Bitmap>(2000);
+                            cache = new LruCache<>(2000);
 
                     @Override
                     public Bitmap getBitmap(String url) {

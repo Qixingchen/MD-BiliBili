@@ -3,6 +3,7 @@ package me.qixingchen.mdbilibili.network;
 import me.qixingchen.mdbilibili.model.List;
 import retrofit.Callback;
 import retrofit.Response;
+import retrofit.Retrofit;
 
 /**
  * Created by Yulan on 2015/9/22.
@@ -20,7 +21,7 @@ public class ListApi extends RetrofitNetworkAbs {
     public void getList(int tid) {
         listServer.getList(tid, 2, 50).enqueue(new Callback<List>() {
             @Override
-            public void onResponse(Response<List> response) {
+            public void onResponse(Response<List> response, Retrofit retrofit) {
                 myOnResponse(response);
             }
 

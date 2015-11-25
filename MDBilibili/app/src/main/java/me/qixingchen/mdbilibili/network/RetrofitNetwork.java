@@ -18,6 +18,7 @@ import me.qixingchen.mdbilibili.app.Secret;
 import me.qixingchen.mdbilibili.logger.Log;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 
 /**
  * Created by Yulan on 2015/9/22.
@@ -33,6 +34,7 @@ public class RetrofitNetwork {
     public static Retrofit retrofitAPI = new Retrofit.Builder()
             .baseUrl(APIURL)
             .client(getClient())
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     private static String MAIN_URL = "http://www.bilibili.com/";
@@ -42,6 +44,7 @@ public class RetrofitNetwork {
     public static Retrofit retrofitMain = new Retrofit.Builder()
             .baseUrl(MAIN_URL)
             .client(getClient())
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
