@@ -25,6 +25,8 @@ https://groups.google.com/forum/#!forum/md-bili-bili
 将您申请到的 Bilibili API Key 填入 Secret.java ,
 并放入 MDBilibili\app\src\main\java\me\qixingchen\mdbilibili\app 文件夹下
 
+关于如何申请BiliBili 的 API KEY，请参阅 [#18](https://github.com/Qixingchen/MD-BiliBili/issues/18)
+
 ##Screen shots
 <img src="http://i4.tietuku.com/ccc877c96ff6c351.png" width = "300" height = "572" alt="demo1" align=center />
 <img src="http://i4.tietuku.com/c179c9cd9fa8d525.png" width = "300" height = "572" alt="demo2" align=center />
