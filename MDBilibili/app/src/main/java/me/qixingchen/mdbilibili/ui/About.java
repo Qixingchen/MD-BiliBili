@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,9 @@ public final class About extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dast_activity_about);
+
+        getWindow().getDecorView().setBackground(null);
+
         mContext = this;
         final Toolbar toolbar = (Toolbar) findViewById(R.id.about_toolbar);
         toolbar.setTitle("About");
@@ -53,7 +57,7 @@ public final class About extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 //todo 增加第三方的开源协议
-                builder.setMessage(R.string.other_license_text).setTitle(getString(R.string.other_license));
+                builder.setMessage(Html.fromHtml(getString(R.string.other_license_text))).setTitle(Html.fromHtml(getString(R.string.other_license)));
                 builder.setPositiveButton("确认", null);
                 AlertDialog dialog = builder.create();
                 dialog.show();
