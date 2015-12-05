@@ -23,14 +23,12 @@ import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.model.Topic;
 import me.qixingchen.mdbilibili.network.GetVolley;
 import me.qixingchen.mdbilibili.network.TopicApi;
-import rx.subscriptions.CompositeSubscription;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Context mContext;
     private DrawerLayout mDrawerLayout;
-    private CompositeSubscription subscription = new CompositeSubscription();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

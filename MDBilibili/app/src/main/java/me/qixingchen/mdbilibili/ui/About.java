@@ -1,7 +1,6 @@
 package me.qixingchen.mdbilibili.ui;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.ActionBar;
@@ -14,8 +13,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import me.qixingchen.mdbilibili.view.AppUtils;
+import me.qixingchen.mdbilibili.BuildConfig;
 import me.qixingchen.mdbilibili.R;
+import me.qixingchen.mdbilibili.view.AppUtils;
 
 /**
  * Created by Farble on 2015/6/28 14.
@@ -34,19 +34,14 @@ public final class About extends AppCompatActivity {
 
         mContext = this;
         final Toolbar toolbar = (Toolbar) findViewById(R.id.about_toolbar);
-        toolbar.setTitle("About");
         setSupportActionBar(toolbar);
 
         final ActionBar ab = getSupportActionBar();
         //noinspection ConstantConditions
         ab.setDisplayHomeAsUpEnabled(true);
 
-        String versionName = "0.0.1 技术预览版";
-        try {
-            versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            // do nothing
-        }
+        String versionName = BuildConfig.VERSION_NAME;
+
         setTextWithLinks(R.id.text_application_info, getString(R.string.application_info_text, versionName));
         setTextWithLinks(R.id.text_developer_info, getString(R.string.developer_info_text));
         setTextWithLinks(R.id.text_designer, getString(R.string.designer));

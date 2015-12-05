@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/md_teal_800"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/md_teal_800">
 
     <android.support.v7.widget.Toolbar
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="25dp"
         android:id="@+id/about_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="25dp"
         android:background="@color/md_teal_800"
         android:elevation="4dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        tools:ignore="UnusedAttribute" />
+        app:title="About"
+        tools:ignore="UnusedAttribute"/>
 
     <FrameLayout
-        android:background="@android:color/white"
-        android:layout_below="@+id/about_toolbar"
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/about_toolbar"
+        android:background="@android:color/white"
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
         <ScrollView
-            android:fitsSystemWindows="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false">
+            android:clipToPadding="false"
+            android:fitsSystemWindows="true">
 
             <LinearLayout
                 style="@style/layoutPadding"
@@ -41,52 +42,52 @@
 
                 <TextView
                     style="@style/HeadlineTextStyle"
-                    android:text="@string/application_info_title" />
+                    android:text="@string/application_info_title"/>
 
                 <TextView
                     android:id="@+id/text_application_info"
                     style="@style/textContentStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     style="@style/HeadlineTextStyle"
-                    android:text="@string/developer_info_title" />
+                    android:text="@string/developer_info_title"/>
 
                 <TextView
                     android:id="@+id/text_developer_info"
                     style="@style/textContentStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     style="@style/HeadlineTextStyle"
-                    android:text="@string/Designer_title" />
+                    android:text="@string/Designer_title"/>
 
                 <TextView
                     android:id="@+id/text_designer"
                     style="@style/textContentStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     style="@style/HeadlineTextStyle"
-                    android:text="@string/license_title" />
+                    android:text="@string/license_title"/>
 
                 <TextView
                     android:id="@+id/text_license"
                     style="@style/textContentStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     style="@style/HeadlineTextStyle"
-                    android:text="@string/other_license" />
+                    android:text="@string/other_license"/>
 
                 <Button
+                    android:id="@+id/other_license_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/other_license_button"
                     android:text="@string/click_here_and_see"/>
             </LinearLayout>
         </ScrollView>
