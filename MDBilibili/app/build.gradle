@@ -55,6 +55,7 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:percent:23.1.1'
 
     compile 'com.github.ctiao:dfm:0.3.9'
     compile 'com.mcxiaoke.volley:library:1.0.19'
