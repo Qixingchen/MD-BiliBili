@@ -1,31 +1,18 @@
 # MD-BiliBili
 基于 Material Design 的 BiliBili 第三方 Android 客户端
 
-文档共享 ： 
+文档共享 ： </br>
+https://drive.google.com/folderview?id=0B5Izr6QMl6WhflNwY3MyZUlLMl8wdTNQdmROUVExNHpJVDV4Y3ZrcFc0c2VUa2lldEszbkE&usp=sharing </br>
 
-https://drive.google.com/folderview?id=0B5Izr6QMl6WhflNwY3MyZUlLMl8wdTNQdmROUVExNHpJVDV4Y3ZrcFc0c2VUa2lldEszbkE&usp=sharing
-
-
-B站API镜像【被B站API wiki 服务器崩坏吓哭了，于是有了这个镜像。。：
-
-https://github.com/Qixingchen/ApiOfBiliBili/
-
-一个在维护中的API整理：
-
+一个在维护中的API整理：</br>
 https://github.com/fython/BilibiliAPIDocs
 
-
-邮件讨论组（仅对协作者开放，如果您希望一起完成这个项目，请先以 issue 或其他联络方式与 Qixingchen 联系）：
-https://groups.google.com/forum/#!forum/md-bili-bili
-
-开发群：（TeleGram）
-请申请邮件讨论组后查看
-
 ##Usages
-将您申请到的 Bilibili API Key 填入 Secret.java ,
+将您申请到的 Bilibili API Key 填入 Secret.java ,</br>
 并放入 MDBilibili\app\src\main\java\me\qixingchen\mdbilibili\app 文件夹下
 
-关于如何申请BiliBili 的 API KEY，请参阅 [#18](https://github.com/Qixingchen/MD-BiliBili/issues/18)
+~~关于如何申请BiliBili 的 API KEY，请参阅 [#18](https://github.com/Qixingchen/MD-BiliBili/issues/18)~~</br>
+~~API KEY Google下就好了~~
 
 ##Screen shots
 <img src="http://i4.tietuku.com/ccc877c96ff6c351.png" width = "300" height = "572" alt="demo1" align=center />
