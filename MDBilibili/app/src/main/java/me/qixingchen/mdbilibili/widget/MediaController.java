@@ -16,10 +16,7 @@
  * limitations under the License.
  */
 
-package me.qixingchen.mdbilibili.ui.widget;
-
-import java.util.Locale;
-
+package me.qixingchen.mdbilibili.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -41,6 +38,8 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 import me.qixingchen.mdbilibili.R;
 import tv.danmaku.ijk.media.player.pragma.DebugLog;
@@ -76,7 +75,9 @@ import tv.danmaku.ijk.media.player.pragma.DebugLog;
  */
 public class MediaController extends FrameLayout {
     private static final String TAG = MediaController.class.getSimpleName();
-
+    private static final int sDefaultTimeout = 3000;
+    private static final int FADE_OUT = 1;
+    private static final int SHOW_PROGRESS = 2;
     private MediaPlayerControl mPlayer;
     private Context mContext;
     private PopupWindow mWindow;
@@ -92,13 +93,89 @@ public class MediaController extends FrameLayout {
     private boolean mShowing;
     private boolean mDragging;
     private boolean mInstantSeeking = true;
-    private static final int sDefaultTimeout = 3000;
-    private static final int FADE_OUT = 1;
-    private static final int SHOW_PROGRESS = 2;
     private boolean mFromXml = false;
     private ImageButton mPauseButton;
 
     private AudioManager mAM;
+    private OnShownListener mShownListener;
+    private OnHiddenListener mHiddenListener;
+    @SuppressLint("HandlerLeak")
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            long pos;
+            switch (msg.what) {
+                case FADE_OUT:
+                    hide();
+                    break;
+                case SHOW_PROGRESS:
+                    pos = setProgress();
+                    if (!mDragging && mShowing) {
+                        msg = obtainMessage(SHOW_PROGRESS);
+                        sendMessageDelayed(msg, 1000 - (pos % 1000));
+                        updatePausePlay();
+                    }
+                    break;
+            }
+        }
+    };
+    private OnClickListener mPauseListener = new OnClickListener() {
+        public void onClick(View v) {
+            doPauseResume();
+            show(sDefaultTimeout);
+        }
+    };
+    private Runnable lastRunnable;
+    private OnSeekBarChangeListener mSeekListener = new OnSeekBarChangeListener() {
+        public void onStartTrackingTouch(SeekBar bar) {
+            mDragging = true;
+            show(3600000);
+            mHandler.removeMessages(SHOW_PROGRESS);
+            if (mInstantSeeking)
+                mAM.setStreamMute(AudioManager.STREAM_MUSIC, true);
+            if (mInfoView != null) {
+                mInfoView.setText("");
+                mInfoView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        public void onProgressChanged(SeekBar bar, int progress,
+                                      boolean fromuser) {
+            if (!fromuser)
+                return;
+
+            final long newposition = (mDuration * progress) / 1000;
+            String time = generateTime(newposition);
+            if (mInstantSeeking) {
+                mHandler.removeCallbacks(lastRunnable);
+                lastRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        mPlayer.seekTo(newposition);
+                    }
+                };
+                mHandler.postDelayed(lastRunnable, 200);
+            }
+            if (mInfoView != null)
+                mInfoView.setText(time);
+            if (mCurrentTime != null)
+                mCurrentTime.setText(time);
+        }
+
+        public void onStopTrackingTouch(SeekBar bar) {
+            if (!mInstantSeeking)
+                mPlayer.seekTo((mDuration * bar.getProgress()) / 1000);
+            if (mInfoView != null) {
+                mInfoView.setText("");
+                mInfoView.setVisibility(View.GONE);
+            }
+            show(sDefaultTimeout);
+            mHandler.removeMessages(SHOW_PROGRESS);
+            mAM.setStreamMute(AudioManager.STREAM_MUSIC, false);
+            mDragging = false;
+            mHandler.sendEmptyMessageDelayed(SHOW_PROGRESS, 1000);
+        }
+    };
 
     public MediaController(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -111,6 +188,22 @@ public class MediaController extends FrameLayout {
         super(context);
         if (!mFromXml && initController(context))
             initFloatingWindow();
+    }
+
+    private static String generateTime(long position) {
+        int totalSeconds = (int) ((position / 1000.0) + 0.5);
+
+        int seconds = totalSeconds % 60;
+        int minutes = (totalSeconds / 60) % 60;
+        int hours = totalSeconds / 3600;
+
+        if (hours > 0) {
+            return String.format(Locale.US, "%02d:%02d:%02d", hours, minutes,
+                    seconds).toString();
+        } else {
+            return String.format(Locale.US, "%02d:%02d", minutes, seconds)
+                    .toString();
+        }
     }
 
     private boolean initController(Context context) {
@@ -136,7 +229,7 @@ public class MediaController extends FrameLayout {
     /**
      * Set the view that acts as the anchor for the control view. This can for
      * example be a VideoView, or your Activity's main view.
-     * 
+     *
      * @param view
      *            The view to which to anchor the controller when it is visible.
      */
@@ -155,7 +248,7 @@ public class MediaController extends FrameLayout {
     /**
      * Create the view that holds the widgets that control playback. Derived
      * classes can override this to create their own.
-     * 
+     *
      * @return The controller view.
      */
     protected View makeControllerView() {
@@ -197,7 +290,7 @@ public class MediaController extends FrameLayout {
 
     /**
      * Control the action when the seekbar dragged by user
-     * 
+     *
      * @param seekWhenDragging
      *            True the media will seek periodically
      */
@@ -211,7 +304,7 @@ public class MediaController extends FrameLayout {
 
     /**
      * Set the content of the file_name TextView
-     * 
+     *
      * @param name
      */
     public void setFileName(String name) {
@@ -223,7 +316,7 @@ public class MediaController extends FrameLayout {
     /**
      * Set the View to hold some information when interact with the
      * MediaController
-     * 
+     *
      * @param v
      */
     public void setInfoView(OutlineTextView v) {
@@ -242,17 +335,17 @@ public class MediaController extends FrameLayout {
      * <p>
      * Change the animation style resource for this controller.
      * </p>
-     * 
+     *
      * <p>
      * If the controller is showing, calling this method will take effect only
      * the next time the controller is shown.
      * </p>
-     * 
+     *
      * @param animationStyle
      *            animation style to use when the controller appears and
      *            disappears. Set to -1 for the default animation, 0 for no
      *            animation, or a resource identifier for an explicit animation.
-     * 
+     *
      */
     public void setAnimationStyle(int animationStyle) {
         mAnimStyle = animationStyle;
@@ -261,7 +354,7 @@ public class MediaController extends FrameLayout {
     /**
      * Show the controller on screen. It will go away automatically after
      * 'timeout' milliseconds of inactivity.
-     * 
+     *
      * @param timeout
      *            The timeout in milliseconds. Use 0 to show the controller
      *            until hide() is called.
@@ -332,46 +425,13 @@ public class MediaController extends FrameLayout {
         }
     }
 
-    public interface OnShownListener {
-        public void onShown();
-    }
-
-    private OnShownListener mShownListener;
-
     public void setOnShownListener(OnShownListener l) {
         mShownListener = l;
     }
 
-    public interface OnHiddenListener {
-        public void onHidden();
-    }
-
-    private OnHiddenListener mHiddenListener;
-
     public void setOnHiddenListener(OnHiddenListener l) {
         mHiddenListener = l;
     }
-
-    @SuppressLint("HandlerLeak")
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            long pos;
-            switch (msg.what) {
-            case FADE_OUT:
-                hide();
-                break;
-            case SHOW_PROGRESS:
-                pos = setProgress();
-                if (!mDragging && mShowing) {
-                    msg = obtainMessage(SHOW_PROGRESS);
-                    sendMessageDelayed(msg, 1000 - (pos % 1000));
-                    updatePausePlay();
-                }
-                break;
-            }
-        }
-    };
 
     private long setProgress() {
         if (mPlayer == null || mDragging)
@@ -396,22 +456,6 @@ public class MediaController extends FrameLayout {
             mCurrentTime.setText(generateTime(position));
 
         return position;
-    }
-
-    private static String generateTime(long position) {
-        int totalSeconds = (int) ((position / 1000.0)+0.5);
-
-        int seconds = totalSeconds % 60;
-        int minutes = (totalSeconds / 60) % 60;
-        int hours = totalSeconds / 3600;
-
-        if (hours > 0) {
-            return String.format(Locale.US, "%02d:%02d:%02d", hours, minutes,
-                    seconds).toString();
-        } else {
-            return String.format(Locale.US, "%02d:%02d", minutes, seconds)
-                    .toString();
-        }
     }
 
     @Override
@@ -453,13 +497,6 @@ public class MediaController extends FrameLayout {
         return super.dispatchKeyEvent(event);
     }
 
-    private OnClickListener mPauseListener = new OnClickListener() {
-        public void onClick(View v) {
-            doPauseResume();
-            show(sDefaultTimeout);
-        }
-    };
-
     private void updatePausePlay() {
         if (mRoot == null || mPauseButton == null)
             return;
@@ -480,58 +517,6 @@ public class MediaController extends FrameLayout {
         updatePausePlay();
     }
 
-    private Runnable lastRunnable;
-    private OnSeekBarChangeListener mSeekListener = new OnSeekBarChangeListener() {
-        public void onStartTrackingTouch(SeekBar bar) {
-            mDragging = true;
-            show(3600000);
-            mHandler.removeMessages(SHOW_PROGRESS);
-            if (mInstantSeeking)
-                mAM.setStreamMute(AudioManager.STREAM_MUSIC, true);
-            if (mInfoView != null) {
-                mInfoView.setText("");
-                mInfoView.setVisibility(View.VISIBLE);
-            }
-        }
-
-        public void onProgressChanged(SeekBar bar, int progress,
-                boolean fromuser) {
-            if (!fromuser)
-                return;
-
-            final long newposition = (mDuration * progress) / 1000;
-            String time = generateTime(newposition);
-            if (mInstantSeeking) {
-                mHandler.removeCallbacks(lastRunnable);
-                lastRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        mPlayer.seekTo(newposition);
-                    }
-                };
-                mHandler.postDelayed(lastRunnable, 200);
-            }
-            if (mInfoView != null)
-                mInfoView.setText(time);
-            if (mCurrentTime != null)
-                mCurrentTime.setText(time);
-        }
-
-        public void onStopTrackingTouch(SeekBar bar) {
-            if (!mInstantSeeking)
-                mPlayer.seekTo((mDuration * bar.getProgress()) / 1000);
-            if (mInfoView != null) {
-                mInfoView.setText("");
-                mInfoView.setVisibility(View.GONE);
-            }
-            show(sDefaultTimeout);
-            mHandler.removeMessages(SHOW_PROGRESS);
-            mAM.setStreamMute(AudioManager.STREAM_MUSIC, false);
-            mDragging = false;
-            mHandler.sendEmptyMessageDelayed(SHOW_PROGRESS, 1000);
-        }
-    };
-
     @Override
     public void setEnabled(boolean enabled) {
         if (mPauseButton != null)
@@ -540,6 +525,14 @@ public class MediaController extends FrameLayout {
             mProgress.setEnabled(enabled);
         disableUnsupportedButtons();
         super.setEnabled(enabled);
+    }
+
+    public interface OnShownListener {
+        public void onShown();
+    }
+
+    public interface OnHiddenListener {
+        public void onHidden();
     }
 
     public interface MediaPlayerControl {

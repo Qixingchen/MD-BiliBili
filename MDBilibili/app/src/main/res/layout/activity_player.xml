@@ -1,11 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout
     android:id="@+id/playerFrame"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="me.qixingchen.mdbilibili.ui.PlayerActivity">
 
-    <me.qixingchen.mdbilibili.ui.widget.VideoView
+    <me.qixingchen.mdbilibili.widget.VideoView
         android:id="@+id/playerView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.fragment.main;
+package me.qixingchen.mdbilibili.ui.main;
 
 
 import android.app.Activity;
@@ -15,7 +15,7 @@ import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.model.List;
 import me.qixingchen.mdbilibili.network.ListApi;
 import me.qixingchen.mdbilibili.network.RetrofitNetworkAbs;
-import me.qixingchen.mdbilibili.ui.widget.AutoGridfitLayoutManager;
+import me.qixingchen.mdbilibili.widget.AutoGridfitLayoutManager;
 
 /**
  * A simple {@link Fragment} subclass.

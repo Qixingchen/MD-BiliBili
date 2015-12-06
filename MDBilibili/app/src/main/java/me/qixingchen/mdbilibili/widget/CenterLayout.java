@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package me.qixingchen.mdbilibili.ui.widget;
+package me.qixingchen.mdbilibili.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

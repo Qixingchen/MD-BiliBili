@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.ui;
+package me.qixingchen.mdbilibili.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,12 +19,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.qixingchen.mdbilibili.R;
+import me.qixingchen.mdbilibili.adapter.MainFragmentPagerAdapter;
 import me.qixingchen.mdbilibili.adapter.TopicAdapter;
-import me.qixingchen.mdbilibili.fragment.main.MainFragmentPagerAdapter;
 import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.model.Topic;
 import me.qixingchen.mdbilibili.network.TopicApi;
-import me.qixingchen.mdbilibili.ui.widget.LoopViewPager;
+import me.qixingchen.mdbilibili.ui.About;
+import me.qixingchen.mdbilibili.widget.LoopViewPager;
 
 
 public class MainActivity extends AppCompatActivity {

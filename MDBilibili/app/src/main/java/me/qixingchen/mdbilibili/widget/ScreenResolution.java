@@ -14,9 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.qixingchen.mdbilibili.ui.widget;
-
-import java.lang.reflect.Method;
+package me.qixingchen.mdbilibili.widget;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -25,6 +23,8 @@ import android.util.DisplayMetrics;
 import android.util.Pair;
 import android.view.Display;
 import android.view.WindowManager;
+
+import java.lang.reflect.Method;
 
 /**
  * Class to get the real screen resolution includes the system status bar.

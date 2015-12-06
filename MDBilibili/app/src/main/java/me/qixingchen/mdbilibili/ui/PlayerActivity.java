@@ -33,8 +33,8 @@ import me.qixingchen.mdbilibili.model.VideoM;
 import me.qixingchen.mdbilibili.network.DownloadXML;
 import me.qixingchen.mdbilibili.network.GetXMLinfo;
 import me.qixingchen.mdbilibili.network.RetrofitNetworkAbs;
-import me.qixingchen.mdbilibili.ui.widget.MediaController;
-import me.qixingchen.mdbilibili.ui.widget.VideoView;
+import me.qixingchen.mdbilibili.widget.MediaController;
+import me.qixingchen.mdbilibili.widget.VideoView;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 public class PlayerActivity extends AppCompatActivity implements DownloadXML.CallBack {

@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.ui.widget;
+package me.qixingchen.mdbilibili.widget;
 
 import android.os.Parcelable;
 import android.support.v4.app.FragmentPagerAdapter;

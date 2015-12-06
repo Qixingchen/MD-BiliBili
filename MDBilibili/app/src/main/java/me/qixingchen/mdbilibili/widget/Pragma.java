@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.qixingchen.mdbilibili.ui.widget;
+package me.qixingchen.mdbilibili.widget;
 
 /*-
  * configurated by app project

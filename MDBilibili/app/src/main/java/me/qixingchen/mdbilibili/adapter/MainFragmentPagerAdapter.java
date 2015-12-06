@@ -1,9 +1,11 @@
-package me.qixingchen.mdbilibili.fragment.main;
+package me.qixingchen.mdbilibili.adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import me.qixingchen.mdbilibili.ui.main.MainFragment;
 
 /**
  * Created by Yulan on 2015/7/26.

@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.ui.widget;
+package me.qixingchen.mdbilibili.widget;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;

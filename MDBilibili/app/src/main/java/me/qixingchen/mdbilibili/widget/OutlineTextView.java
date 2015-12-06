@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package me.qixingchen.mdbilibili.ui.widget;
+package me.qixingchen.mdbilibili.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -35,6 +35,17 @@ import android.widget.TextView;
  */
 @SuppressLint("DrawAllocation")
 public class OutlineTextView extends TextView {
+    private TextPaint mTextPaint;
+    private TextPaint mTextPaintOutline;
+    private String mText = "";
+    private int mAscent = 0;
+    private float mBorderSize;
+    private int mBorderColor;
+    private int mColor;
+    private float mSpacingMult = 1.0f;
+    private float mSpacingAdd = 0;
+    private boolean mIncludePad = true;
+
     public OutlineTextView(Context context) {
         super(context);
         initPaint();
@@ -168,15 +179,4 @@ public class OutlineTextView extends TextView {
         }
         return result;
     }
-
-    private TextPaint mTextPaint;
-    private TextPaint mTextPaintOutline;
-    private String mText = "";
-    private int mAscent = 0;
-    private float mBorderSize;
-    private int mBorderColor;
-    private int mColor;
-    private float mSpacingMult = 1.0f;
-    private float mSpacingAdd = 0;
-    private boolean mIncludePad = true;
 }
