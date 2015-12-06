@@ -1,19 +1,21 @@
 package me.qixingchen.mdbilibili.adapter;
 
+import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 
 /**
  * Created by Yulan on 2015/8/1.
  */
 public class TopicAdapter extends PagerAdapter {
 
-    private NetworkImageView[] mImageViews;
+    private ImageView[] mImageViews;
 
-    public TopicAdapter(NetworkImageView[] mImageViews) {
+    public TopicAdapter(ImageView[] mImageViews) {
         this.mImageViews = mImageViews;
     }
 
@@ -29,13 +31,26 @@ public class TopicAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(mImageViews[position]);
+
+        if (object instanceof ImageView) {
+            container.removeView((View) object);
+        } else {
+            container.removeView(mImageViews[position]);
+        }
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        container.addView(mImageViews[position]);
+        try {
+            container.addView(mImageViews[position]);
+        } catch (Exception ignore) {
+            ImageView imageCopy = new ImageView(container.getContext());
+            Bitmap copy = ((GlideBitmapDrawable) mImageViews[position].getDrawable()).getBitmap();
+            imageCopy.setImageBitmap(copy.copy(copy.getConfig(), false));
+            container.addView(imageCopy);
+            return imageCopy;
+        }
+
         return mImageViews[position];
-        //super.instantiateItem(container, position);
     }
 }

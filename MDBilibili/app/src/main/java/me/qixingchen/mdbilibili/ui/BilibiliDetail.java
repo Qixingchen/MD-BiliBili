@@ -10,13 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.logger.Log;
-import me.qixingchen.mdbilibili.network.GetVolley;
 import me.qixingchen.mdbilibili.network.ViewAPI;
 
 /**
@@ -34,7 +35,6 @@ public class BilibiliDetail extends AppCompatActivity {
     protected String imageUrl;
     protected String title;
     private String aid;
-    private NetworkImageView backdrop;
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingtoolbar;
     private android.support.design.widget.AppBarLayout appbar;
@@ -43,6 +43,7 @@ public class BilibiliDetail extends AppCompatActivity {
     private android.widget.TextView reviewTextView;
     private android.widget.TextView videoreviewTextView;
     private android.widget.TextView favoritesTextView;
+    private ImageView backdrop;
     private FloatingActionButton detailfab;
 
     @SuppressWarnings("ConstantConditions")
@@ -109,7 +110,7 @@ public class BilibiliDetail extends AppCompatActivity {
         this.appbar = (AppBarLayout) findViewById(R.id.appbar);
         this.collapsingtoolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
-        this.backdrop = (NetworkImageView) findViewById(R.id.backdrop);
+        this.backdrop = (ImageView) findViewById(R.id.backdrop);
     }
 
     @Override
@@ -123,8 +124,7 @@ public class BilibiliDetail extends AppCompatActivity {
     }
 
     private void loadBackdrop() {
-        final NetworkImageView imageView = (NetworkImageView) findViewById(R.id.backdrop);
-        imageView.setImageUrl(imageUrl, GetVolley.getmInstance(this).getImageLoader());
+        Glide.with(this).load(imageUrl).diskCacheStrategy(DiskCacheStrategy.ALL).into(backdrop);
     }
 
 }

@@ -13,16 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.adapter.TopicAdapter;
 import me.qixingchen.mdbilibili.fragment.main.MainFragmentPagerAdapter;
 import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.model.Topic;
-import me.qixingchen.mdbilibili.network.GetVolley;
 import me.qixingchen.mdbilibili.network.TopicApi;
+import me.qixingchen.mdbilibili.ui.widget.LoopViewPager;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -55,18 +57,17 @@ public class MainActivity extends AppCompatActivity {
         }
         initDrawer();
         //topic
-        final ViewPager topicViewPager = (ViewPager) findViewById(R.id.topicViewPager);
+        final LoopViewPager topicViewPager = (LoopViewPager) findViewById(R.id.topicViewPager);
 
         TopicApi.getInstance().setCallBack(new TopicApi.OnJsonGot() {
             @Override
             public void TopicOK(Topic topic) {
                 //将图片装载到数组中
-                NetworkImageView[] mImageViews = new NetworkImageView[topic.getResults()];
+                ImageView[] mImageViews = new ImageView[topic.getResults()];
                 for (int i = 0; i < topic.getResults(); i++) {
-                    NetworkImageView imageView = new NetworkImageView(mContext);
+                    ImageView imageView = new ImageView(mContext);
                     mImageViews[i] = imageView;
-                    imageView.setImageUrl(topic.getList().get(i).getImg(),
-                            GetVolley.getmInstance(mContext).getImageLoader());
+                    Glide.with(mContext).load(topic.getList().get(i).getImg()).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
                 }
                 topicViewPager.setAdapter(new TopicAdapter(mImageViews));
             }

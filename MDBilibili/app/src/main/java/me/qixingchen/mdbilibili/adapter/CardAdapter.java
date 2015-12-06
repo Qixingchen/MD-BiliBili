@@ -7,12 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.toolbox.ImageLoader;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.model.List;
-import me.qixingchen.mdbilibili.network.GetVolley;
 import me.qixingchen.mdbilibili.ui.BilibiliDetail;
 import me.qixingchen.mdbilibili.view.BilibiliCardViewHolder;
 
@@ -22,13 +22,11 @@ import me.qixingchen.mdbilibili.view.BilibiliCardViewHolder;
 public class CardAdapter extends RecyclerView.Adapter<BilibiliCardViewHolder> {
 
     private List list;
-    private ImageLoader mImageLoader;
     private Context mContext;
 
     public CardAdapter(List list, Context context) {
         this.list = list;
         mContext = context;
-        mImageLoader = GetVolley.getmInstance(mContext).getImageLoader();
     }
 
     @Override
@@ -42,7 +40,7 @@ public class CardAdapter extends RecyclerView.Adapter<BilibiliCardViewHolder> {
     @Override
     public void onBindViewHolder(BilibiliCardViewHolder holder, final int position) {
         holder.textView.setText(list.list.get(position).title);
-        holder.imageView.setImageUrl(list.list.get(position).pic, mImageLoader);
+        Glide.with(mContext).load(list.list.get(position).pic).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.imageView);
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

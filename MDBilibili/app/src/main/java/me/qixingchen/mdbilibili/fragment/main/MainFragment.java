@@ -4,18 +4,18 @@ package me.qixingchen.mdbilibili.fragment.main;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.adapter.CardAdapter;
+import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.model.List;
 import me.qixingchen.mdbilibili.network.ListApi;
 import me.qixingchen.mdbilibili.network.RetrofitNetworkAbs;
+import me.qixingchen.mdbilibili.ui.widget.AutoGridfitLayoutManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,7 +62,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(mActivity, 2));
+        mRecyclerView.setLayoutManager(new AutoGridfitLayoutManager(mActivity, 150));
 
     }
 

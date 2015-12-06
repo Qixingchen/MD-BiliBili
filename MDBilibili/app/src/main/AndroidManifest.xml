@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.qixingchen.mdbilibili" >
+<manifest
+    package="me.qixingchen.mdbilibili"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".app.BilibiliApplication"
@@ -12,28 +13,30 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         >
+        <meta-data
+            android:name="me.qixingchen.mdbilibili.app.MyGlideModule"
+            android:value="GlideModule"/>
+
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            >
+            android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.PlayerActivity"
             android:exported="false"
             android:label="@string/title_activity_player"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape">
         </activity>
-        <activity android:name=".ui.BilibiliDetail"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".ui.BilibiliDetail"
             android:exported="false"/>
-        <activity android:name=".ui.About"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".ui.About"
             android:exported="false"/>
     </application>
 

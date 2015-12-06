@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:id="@+id/card_view_image"
             style="@style/cardImagePadding"
             android:layout_width="match_parent"
