@@ -14,9 +14,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.qixingchen.mdbilibili.R;
-import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.network.ViewAPI;
 import me.qixingchen.mdbilibili.ui.base.BaseActivity;
+import me.qixingchen.mdbilibili.utils.Log;
 
 /**
  * Created by Farble on 2015/6/24.

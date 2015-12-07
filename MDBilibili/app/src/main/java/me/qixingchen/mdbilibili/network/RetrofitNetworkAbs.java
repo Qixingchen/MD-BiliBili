@@ -1,6 +1,6 @@
 package me.qixingchen.mdbilibili.network;
 
-import me.qixingchen.mdbilibili.logger.Log;
+import me.qixingchen.mdbilibili.utils.Log;
 
 /**
  * Created by Yulan on 2015/9/22.

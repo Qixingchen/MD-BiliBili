@@ -13,7 +13,7 @@ import android.widget.TextView;
 import me.qixingchen.mdbilibili.BuildConfig;
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.ui.base.BaseActivity;
-import me.qixingchen.mdbilibili.view.AppUtils;
+import me.qixingchen.mdbilibili.utils.HtmlToStrUtil;
 
 /**
  * Created by Farble on 2015/6/28 14.
@@ -69,7 +69,7 @@ public class AboutActivity extends BaseActivity {
     }
 
     private void setTextWithLinks(@IdRes int textViewResId, String htmlText) {
-        AppUtils.setTextWithLinks((TextView) findViewById(textViewResId), htmlText);
+        HtmlToStrUtil.setTextWithLinks((TextView) findViewById(textViewResId), htmlText);
     }
 
     @Override

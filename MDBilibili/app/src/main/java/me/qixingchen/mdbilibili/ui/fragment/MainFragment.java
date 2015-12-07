@@ -9,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.qixingchen.mdbilibili.R;
-import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.model.List;
 import me.qixingchen.mdbilibili.network.ListApi;
 import me.qixingchen.mdbilibili.network.RetrofitNetworkAbs;
 import me.qixingchen.mdbilibili.ui.adapter.CardAdapter;
+import me.qixingchen.mdbilibili.utils.Log;
 import me.qixingchen.mdbilibili.widget.AutoGridfitLayoutManager;
 
 /**

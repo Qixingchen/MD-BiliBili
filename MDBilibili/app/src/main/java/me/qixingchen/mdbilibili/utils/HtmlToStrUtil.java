@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.view;
+package me.qixingchen.mdbilibili.utils;
 
 import android.text.Html;
 import android.text.Layout;
@@ -10,10 +10,11 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
+ * html字符串转化为正常字符串工具类
  * Created by Farble on 2015/6/28 15.
  * https://github.com/hidroh
  */
-public class AppUtils {
+public class HtmlToStrUtil {
     public static void setTextWithLinks(TextView textView, String htmlText) {
         setHtmlText(textView, htmlText);
         textView.setOnTouchListener(new View.OnTouchListener() {

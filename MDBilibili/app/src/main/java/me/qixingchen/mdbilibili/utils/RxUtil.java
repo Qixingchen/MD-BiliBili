@@ -4,7 +4,7 @@ package me.qixingchen.mdbilibili.utils;
  * Created by dell on 2015/7/22.
  *
  */
-public class RxUtils {
+public class RxUtil {
 //    public static void unsubscribeIfNotNull(Subscription subscription) {
 //        if (subscription != null) {
 //            subscription.unsubscribe();

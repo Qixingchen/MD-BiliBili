@@ -17,12 +17,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.qixingchen.mdbilibili.R;
-import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.model.Topic;
 import me.qixingchen.mdbilibili.network.TopicApi;
 import me.qixingchen.mdbilibili.ui.adapter.MainFragmentPagerAdapter;
 import me.qixingchen.mdbilibili.ui.adapter.TopicAdapter;
 import me.qixingchen.mdbilibili.ui.base.BaseActivity;
+import me.qixingchen.mdbilibili.utils.Log;
 import me.qixingchen.mdbilibili.widget.LoopViewPager;
 
 /**
@@ -150,12 +150,12 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        //subscription = RxUtils.getNewCompositeSubIfUnsubscribed(subscription);
+        //subscription = RxUtil.getNewCompositeSubIfUnsubscribed(subscription);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        // RxUtils.unsubscribeIfNotNull(subscription);
+        // RxUtil.unsubscribeIfNotNull(subscription);
     }
 }
