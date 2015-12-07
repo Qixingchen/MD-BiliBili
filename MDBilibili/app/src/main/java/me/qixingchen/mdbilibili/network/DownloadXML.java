@@ -12,7 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import me.qixingchen.mdbilibili.app.BilibiliApplication;
-import me.qixingchen.mdbilibili.tool.Tool;
+import me.qixingchen.mdbilibili.utils.StorageUtil;
 
 /**
  * Created by Yulan on 2015/6/12.
@@ -43,7 +43,7 @@ public class DownloadXML extends AsyncTask<String, Integer, String> {
 				connection = url.openConnection();
 				connection.setUseCaches(false);
 
-				if (Tool.isExternalStorageAvailable()) {
+				if (StorageUtil.isExternalStorageAvailable()) {
 					filename = uriString.substring(uriString.lastIndexOf('=') + 1) + ".xml";
 					File file = new File(BilibiliApplication.getApplication().getExternalFilesDir
 							("danmaku"), filename);

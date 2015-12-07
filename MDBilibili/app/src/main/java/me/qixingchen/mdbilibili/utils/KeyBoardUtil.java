@@ -6,9 +6,10 @@ import android.widget.EditText;
 import me.qixingchen.mdbilibili.app.BilibiliApplication;
 
 /**
+ * 软键盘控制类
  * Created by shenvsv on 14/5/14.
  */
-public class KeyBoardUtils {
+public class KeyBoardUtil {
     public static void showKeyBoard(final EditText editText) {
         if (editText == null) {
             return;

@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.ui;
+package me.qixingchen.mdbilibili.ui.base;
 
 import android.app.Activity;
 import android.content.Context;

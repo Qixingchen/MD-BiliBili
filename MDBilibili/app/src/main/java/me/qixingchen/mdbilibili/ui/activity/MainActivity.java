@@ -1,8 +1,6 @@
-package me.qixingchen.mdbilibili.ui.main;
+package me.qixingchen.mdbilibili.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -19,46 +17,57 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.qixingchen.mdbilibili.R;
-import me.qixingchen.mdbilibili.adapter.MainFragmentPagerAdapter;
-import me.qixingchen.mdbilibili.adapter.TopicAdapter;
-import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.model.Topic;
 import me.qixingchen.mdbilibili.network.TopicApi;
-import me.qixingchen.mdbilibili.ui.About;
+import me.qixingchen.mdbilibili.ui.adapter.MainFragmentPagerAdapter;
+import me.qixingchen.mdbilibili.ui.adapter.TopicAdapter;
+import me.qixingchen.mdbilibili.ui.base.BaseActivity;
+import me.qixingchen.mdbilibili.utils.Log;
 import me.qixingchen.mdbilibili.widget.LoopViewPager;
 
+/**
+ * Created by chenchao on 15/12/7.
+ */
+public class MainActivity extends BaseActivity {
 
-public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private Context mContext;
     private DrawerLayout mDrawerLayout;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager mViewPager;
+    private NavigationView navigationView;
+    private LoopViewPager topicViewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mContext = this;
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    protected int getContentView() {
+        return R.layout.activity_main;
+    }
 
+    @Override
+    protected void bindView() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
+        mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        //topic
+        topicViewPager = (LoopViewPager) findViewById(R.id.topicViewPager);
+    }
+
+    @Override
+    protected void initData() {
+        setSupportActionBar(toolbar);
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.mipmap.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.main_tab_layout);
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
         mViewPager.setAdapter(new MainFragmentPagerAdapter(getSupportFragmentManager(), this));
         tabLayout.setupWithViewPager(mViewPager);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
         initDrawer();
-        //topic
-        final LoopViewPager topicViewPager = (LoopViewPager) findViewById(R.id.topicViewPager);
 
         TopicApi.getInstance().setCallBack(new TopicApi.OnJsonGot() {
             @Override
@@ -78,6 +87,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, errorMessage);
             }
         }).addRequest();
+    }
+
+    @Override
+    protected void bindEvent() {
 
     }
 
@@ -95,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.nav_video:
                                 break;
                             case R.id.nav_about:
-                                MainActivity.this.navigate(About.class);
+                                MainActivity.this.navigate(AboutActivity.class);
                                 break;
                             default:
                                 break;
@@ -137,12 +150,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        //subscription = RxUtils.getNewCompositeSubIfUnsubscribed(subscription);
+        //subscription = RxUtil.getNewCompositeSubIfUnsubscribed(subscription);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        // RxUtils.unsubscribeIfNotNull(subscription);
+        // RxUtil.unsubscribeIfNotNull(subscription);
     }
 }

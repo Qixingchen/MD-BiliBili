@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.logger;
+package me.qixingchen.mdbilibili.utils;
 
 /**
  * Created by Yulan on 2015/7/31.
@@ -42,3 +42,4 @@ public class Log {
         }
     }
 }
+

@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import me.qixingchen.mdbilibili.app.Secret;
-import me.qixingchen.mdbilibili.logger.Log;
+import me.qixingchen.mdbilibili.utils.Log;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
