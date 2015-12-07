@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,18 +26,22 @@ import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
 import me.qixingchen.mdbilibili.R;
-import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.model.VideoM;
+import me.qixingchen.mdbilibili.network.Api;
 import me.qixingchen.mdbilibili.network.DownloadXML;
-import me.qixingchen.mdbilibili.network.GetXMLinfo;
-import me.qixingchen.mdbilibili.network.RetrofitNetworkAbs;
+import me.qixingchen.mdbilibili.network.RetrofitNetwork;
 import me.qixingchen.mdbilibili.ui.base.BaseActivity;
-import me.qixingchen.mdbilibili.utils.Log;
 import me.qixingchen.mdbilibili.widget.MediaController;
 import me.qixingchen.mdbilibili.widget.VideoView;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
-public class PlayerActivity extends BaseActivity implements DownloadXML.CallBack {
+public class PlayerActivity extends BaseActivity {
 
     private static final String TAG = PlayerActivity.class.getSimpleName();
     private static BaseDanmakuParser mDanmakuParser;
@@ -47,11 +51,10 @@ public class PlayerActivity extends BaseActivity implements DownloadXML.CallBack
     private IDanmakuView mDanmakuView;
     private View mBufferingIndicator;
     private MediaController mMediaController;
-    private String mVideoSrc = "";
-    private Boolean isPlayerPrepared;
     //页面切换时，播放到的位置
     private int LastPosition = 0;
     //VideoView OnInfo 当正在缓冲时等事件会被调用
+
     // todo 显示缓冲提示
     private IMediaPlayer.OnInfoListener onInfoListener = new IMediaPlayer.OnInfoListener() {
         @Override
@@ -70,20 +73,6 @@ public class PlayerActivity extends BaseActivity implements DownloadXML.CallBack
                 }
             }
             return true;
-        }
-    };
-    //视频缓冲完成
-    private IMediaPlayer.OnPreparedListener onPreparedListener = new IMediaPlayer.OnPreparedListener() {
-        @Override
-        public void onPrepared(IMediaPlayer mp) {
-            //            if (mDanmakuView != null && mDanmakuView.isPrepared()) {
-            //                if (!mPlayerView.isPlaying()) {
-            //                    mPlayerView.start();
-            //                }
-            //                mDanmakuView.start();
-            //                Log.e(TAG, "弹幕先加载完成");
-            //            }
-            isPlayerPrepared = true;
         }
     };
     //跳转
@@ -183,32 +172,84 @@ public class PlayerActivity extends BaseActivity implements DownloadXML.CallBack
         mPlayerView.setMediaBufferingIndicator(mBufferingIndicator);
         mPlayerView.requestFocus();
 
-        GetXMLinfo.getNewInstance().setNetworkListener(new RetrofitNetworkAbs.NetworkListener() {
-            @Override
-            public void onOK(Object ts) {
-                VideoM html5 = (VideoM) ts;
-                String CIDName = html5.getCid();
-                if (CIDName.compareTo("http://comment.bilibili.com/undefined.xml") == 0) {
-                    Toast.makeText(mActivity, "视频不存在或不能播放", Toast.LENGTH_LONG).show();
-                    return;
-                }
-                CIDName = CIDName.replace(".com", ".cn");
-                //向 player 发送 视频源和弹幕 XML 文件名
-                getSrcAndXMLFileName(html5.getSrc(), CIDName);
-            }
+        Observable<VideoM> observable = RetrofitNetwork.retrofitMain.create(Api.VideoApi.class).getVideoApiRx(aid)
+                .subscribeOn(Schedulers.io());
+        //danmaku
+        Observable<Object> danmakuObservable =
+                observable
+                        .map(new Func1<VideoM, String>() {
+                            @Override
+                            public String call(VideoM videoM) {
+                                if (videoM.getCid().contentEquals("undefined")) {
+                                    return "error";
+                                }
+                                mXMLFileName = videoM.getCid().substring(videoM.getCid().lastIndexOf('/') + 1);
+                                String CID = mXMLFileName.substring(0, mXMLFileName.lastIndexOf("."));
+                                return "http://www.bilibilijj.com/ashx/Barrage" +
+                                        ".ashx?f=true&av=&p=&s=xml&cid=" + CID + "&n=" + CID;
+                            }
+                        })
+                        .flatMap(new Func1<String, Observable<File>>() {
+                            @Override
+                            public Observable<File> call(String string) {
+                                if (string.equals("error")) {
+                                    return Observable.error(new Exception("视频不存在或不能播放"));
+                                }
+                                return new DownloadXML().downloadXML(string);
+                            }
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .flatMap(new Func1<File, Observable<?>>() {
+                            @Override
+                            public Observable<?> call(File file) {
+                                return preparDanmaku(file);
+                            }
+                        });
 
-            @Override
-            public void onError(String Message) {
-                Toast.makeText(mActivity, "视频不存在或不能播放:" + Message, Toast.LENGTH_LONG).show();
-            }
-        }).getUri(aid);
-        isPlayerPrepared = false;
+        //video
+        Observable<Object> videoObservable =
+                observable
+                        .map(new Func1<VideoM, Uri>() {
+                            @Override
+                            public Uri call(VideoM videoM) {
+                                return Uri.parse(videoM.getSrc());
+                            }
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .flatMap(new Func1<Uri, Observable<?>>() {
+                            @Override
+                            public Observable<?> call(Uri uri) {
+                                return preparVideo(uri);
+                            }
+                        });
+
+        Observable
+                .merge(videoObservable, danmakuObservable)
+                .last()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Object>() {
+                    @Override
+                    public void onCompleted() {
+                        mPlayerView.start();
+                        mDanmakuView.start();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(Object o) {
+
+                    }
+                });
     }
 
     @Override
     protected void bindEvent() {
         mPlayerView.setOnInfoListener(onInfoListener);
-        mPlayerView.setOnPreparedListener(onPreparedListener);
         mPlayerView.setOnSeekCompleteListener(onSeekCompleteListener);
         mPlayerView.setOnCompletionListener(onCompletionListener);
         mPlayerView.setOnControllerEventsListener(onControllerEventsListener);
@@ -261,72 +302,56 @@ public class PlayerActivity extends BaseActivity implements DownloadXML.CallBack
             mDanmakuView.release();
         }
     }
+    //TODO 播放器解码失败时重试
+    //TODO 修改代码结构，重写文件下载
+    //TODO 错误提示
 
-    //来自 GetXMLinfo 的回调通告
-    public void getSrcAndXMLFileName(String Src, String XMLUri) {
-
-        mXMLFileName = XMLUri.substring(XMLUri.lastIndexOf('/') + 1);
-        String CID = mXMLFileName.substring(0, mXMLFileName.lastIndexOf("."));
-        XMLUri = "http://www.bilibilijj.com/ashx/Barrage" +
-                ".ashx?f=true&av=&p=&s=xml&cid=" + CID + "&n=" + CID;
-
-        //DLog.i(XMLUri);
-        mVideoSrc = Src;
-        //开始下载 XML
-        DownloadXML downloadXML = new DownloadXML();
-        downloadXML.setCallBack(this);
-        downloadXML.execute(XMLUri);
-
-        //DLog.i(Src);
-        //TODO 播放器解码失败时重试
-        //TODO 修改代码结构，重写文件下载
-        //TODO 错误提示
-
-    }
-
-    //DownloadXML 回调用此处 告知 XML 下载完成
-    @Override
-    public void onXmlSuccess() {
-        File xmlfile = new File(BilibiliApplication.getApplication().getExternalFilesDir("danmaku"),
-                mXMLFileName);
-        //DLog.i("danmu download ok");
-        try {
-            InputStream inputStream = new FileInputStream(xmlfile);
-            mDanmakuParser = createParser(inputStream);
-            mDanmakuView.setCallback(new DrawHandler.Callback() {
-                @Override
-                public void prepared() {
-                    if (mPlayerView != null && isPlayerPrepared) {
-                        if (!mPlayerView.isPlaying()) {
-                            mPlayerView.start();
-                        }
-                        Log.e(TAG, String.valueOf(mDanmakuView.isPrepared()));
-                        mDanmakuView.start();
-                        Log.e(TAG, "视频先加载完成");
+    //视频加载
+    public Observable preparVideo(final Uri src) {
+        return Observable.create(new Observable.OnSubscribe<Object>() {
+            @Override
+            public void call(final Subscriber<? super Object> subscriber) {
+                mPlayerView.setVideoURI(src);
+                mPlayerView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(IMediaPlayer mp) {
+                        subscriber.onCompleted();
                     }
-                }
-
-                @Override
-                public void updateTimer(DanmakuTimer danmakuTimer) {
-
-                }
-
-                @Override
-                public void drawingFinished() {
-
-                }
-            });
-            mDanmakuView.prepare(mDanmakuParser, new DanmakuContext());
-            mPlayerView.setVideoURI(Uri.parse(mVideoSrc));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+                });
+            }
+        });
     }
 
-    @Override
-    public void onXmlError() {
-        //先这么写
-        Toast.makeText(this, "弹幕加载错误", Toast.LENGTH_SHORT).show();
-        this.finish();
+    //danmaku加载
+    public Observable preparDanmaku(final File xmlFile) {
+        return Observable.create(new Observable.OnSubscribe<Object>() {
+            @Override
+            public void call(final Subscriber<? super Object> subscriber) {
+                try {
+                    InputStream inputStream = new FileInputStream(xmlFile);
+                    mDanmakuParser = createParser(inputStream);
+                    mDanmakuView.setCallback(new DrawHandler.Callback() {
+                        @Override
+                        public void prepared() {
+                            subscriber.onCompleted();
+                        }
+
+                        @Override
+                        public void updateTimer(DanmakuTimer danmakuTimer) {
+
+                        }
+
+                        @Override
+                        public void drawingFinished() {
+
+                        }
+                    });
+                    mDanmakuView.prepare(mDanmakuParser, new DanmakuContext());
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    subscriber.onError(e);
+                }
+            }
+        });
     }
 }

@@ -56,7 +56,7 @@ import tv.danmaku.ijk.media.player.pragma.DebugLog;
  * sources (such as resources or content providers), takes care of computing its
  * measurement from the video so that it can be used in any layout manager, and
  * provides various display options such as scaling and tinting.
- *
+ * <p/>
  * VideoView also provide many wrapper methods for
  * {@link io.vov.vitamio.MediaPlayer}, such as {@link #getVideoWidth()},
  * {@link #setSubShown(boolean)}
@@ -305,19 +305,17 @@ public class VideoView extends SurfaceView implements
     /**
      * Set the display options
      *
-     * @param layout
-     *            <ul>
-     *            <li>{@link #VIDEO_LAYOUT_ORIGIN}
-     *            <li>{@link #VIDEO_LAYOUT_SCALE}
-     *            <li>{@link #VIDEO_LAYOUT_STRETCH}
-     *            <li>{@link #VIDEO_LAYOUT_ZOOM}
-     *            </ul>
-     * @param aspectRatio
-     *            video aspect ratio, will audo detect if 0.
+     * @param layout      <ul>
+     *                    <li>{@link #VIDEO_LAYOUT_ORIGIN}
+     *                    <li>{@link #VIDEO_LAYOUT_SCALE}
+     *                    <li>{@link #VIDEO_LAYOUT_STRETCH}
+     *                    <li>{@link #VIDEO_LAYOUT_ZOOM}
+     *                    </ul>
+     * @param aspectRatio video aspect ratio, will audo detect if 0.
      */
     public void setVideoLayout(int layout) {
         LayoutParams lp = getLayoutParams();
-        Pair<Integer, Integer> res  = ScreenResolution.getResolution(mContext);
+        Pair<Integer, Integer> res = ScreenResolution.getResolution(mContext);
         int windowWidth = res.first.intValue(), windowHeight = res.second.intValue();
         float windowRatio = windowWidth / (float) windowHeight;
         int sarNum = mVideoSarNum;
@@ -390,7 +388,7 @@ public class VideoView extends SurfaceView implements
     }
 
     public void setUserAgent(String ua) {
-    	mUserAgent = ua;
+        mUserAgent = ua;
     }
 
     public void stopPlayback() {
@@ -419,6 +417,7 @@ public class VideoView extends SurfaceView implements
             IjkMediaPlayer ijkMediaPlayer = null;
             if (mUri != null) {
                 ijkMediaPlayer = new IjkMediaPlayer();
+                ijkMediaPlayer.setLogEnabled(false);
                 ijkMediaPlayer.setAvOption(AvFormatOption_HttpDetectRangeSupport.Disable);
                 ijkMediaPlayer.setOverlayFormat(AvFourCC.SDL_FCC_RV32);
                 ijkMediaPlayer.setMediaCodecEnabled(true);
@@ -515,7 +514,7 @@ public class VideoView extends SurfaceView implements
         mOnInfoListener = l;
     }
 
-    public void setOnControllerEventsListener(OnControllerEventsListener l){
+    public void setOnControllerEventsListener(OnControllerEventsListener l) {
         mOnControllerEventsListener = l;
     }
 
@@ -683,8 +682,9 @@ public class VideoView extends SurfaceView implements
         return mCanSeekForward;
     }
 
-    public interface OnControllerEventsListener{
+    public interface OnControllerEventsListener {
         void onVideoPause();
+
         void OnVideoResume();
     }
 }
