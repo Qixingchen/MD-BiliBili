@@ -1,12 +1,9 @@
-package me.qixingchen.mdbilibili.ui;
+package me.qixingchen.mdbilibili.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,18 +16,19 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.logger.Log;
 import me.qixingchen.mdbilibili.network.ViewAPI;
+import me.qixingchen.mdbilibili.ui.base.BaseActivity;
 
 /**
  * Created by Farble on 2015/6/24.
  * detail page
  */
-public class BilibiliDetail extends AppCompatActivity {
+public class BilibiliDetailActivity extends BaseActivity {
+
     private static final String TAG = "BilibiliDetail";
     private static final String IMG_URL = "IMG_URL";
     private static final String TITLE = "TITLE";
     private static final String AID = "AID";
 
-    protected Context mContext;
     protected FloatingActionButton fab;
     protected String imageUrl;
     protected String title;
@@ -46,14 +44,33 @@ public class BilibiliDetail extends AppCompatActivity {
     private ImageView backdrop;
     private FloatingActionButton detailfab;
 
+    @Override
+    protected int getContentView() {
+        return R.layout.dast_bilibili_detail;
+    }
+
+    @Override
+    protected void bindView() {
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        collapsingtoolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        fab = (FloatingActionButton) findViewById(R.id.detail_fab);
+
+        this.detailfab = (FloatingActionButton) findViewById(R.id.detail_fab);
+        this.favoritesTextView = (TextView) findViewById(R.id.favoritesTextView);
+        this.videoreviewTextView = (TextView) findViewById(R.id.video_reviewTextView);
+        this.reviewTextView = (TextView) findViewById(R.id.reviewTextView);
+        this.PlayTextView = (TextView) findViewById(R.id.PlayTextView);
+        this.aidTextView = (TextView) findViewById(R.id.aidTextView);
+        this.appbar = (AppBarLayout) findViewById(R.id.appbar);
+        this.collapsingtoolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
+        this.backdrop = (ImageView) findViewById(R.id.backdrop);
+    }
+
     @SuppressWarnings("ConstantConditions")
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.dast_bilibili_detail);
-        findViews();
-
-        mContext = this;
+    protected void initData() {
         Intent intent = getIntent();
         imageUrl = intent.getStringExtra(IMG_URL);
         title = intent.getStringExtra(TITLE);
@@ -71,16 +88,17 @@ public class BilibiliDetail extends AppCompatActivity {
             }
         }).addRequest(aid, "1");
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Detail");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        collapsingtoolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingtoolbar.setTitle(title);
 
-        fab = (FloatingActionButton) findViewById(R.id.detail_fab);
+        loadBackdrop();
+    }
+
+    @Override
+    protected void bindEvent() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +107,6 @@ public class BilibiliDetail extends AppCompatActivity {
                 mContext.startActivity(playDemoIntent);
             }
         });
-        loadBackdrop();
     }
 
     private void setVideoInfo(me.qixingchen.mdbilibili.model.View views) {
@@ -98,19 +115,6 @@ public class BilibiliDetail extends AppCompatActivity {
         reviewTextView.setText("评论数：" + views.getReview());
         PlayTextView.setText("播放数：" + views.getPlay());
         aidTextView.setText("AV" + aid);
-    }
-
-    private void findViews() {
-        this.detailfab = (FloatingActionButton) findViewById(R.id.detail_fab);
-        this.favoritesTextView = (TextView) findViewById(R.id.favoritesTextView);
-        this.videoreviewTextView = (TextView) findViewById(R.id.video_reviewTextView);
-        this.reviewTextView = (TextView) findViewById(R.id.reviewTextView);
-        this.PlayTextView = (TextView) findViewById(R.id.PlayTextView);
-        this.aidTextView = (TextView) findViewById(R.id.aidTextView);
-        this.appbar = (AppBarLayout) findViewById(R.id.appbar);
-        this.collapsingtoolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        this.toolbar = (Toolbar) findViewById(R.id.toolbar);
-        this.backdrop = (ImageView) findViewById(R.id.backdrop);
     }
 
     @Override

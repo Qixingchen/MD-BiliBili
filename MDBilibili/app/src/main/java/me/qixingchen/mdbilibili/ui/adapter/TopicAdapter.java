@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.adapter;
+package me.qixingchen.mdbilibili.ui.adapter;
 
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;

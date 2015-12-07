@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.adapter;
+package me.qixingchen.mdbilibili.ui.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.app.BilibiliApplication;
 import me.qixingchen.mdbilibili.model.List;
-import me.qixingchen.mdbilibili.ui.BilibiliDetail;
+import me.qixingchen.mdbilibili.ui.activity.BilibiliDetailActivity;
 import me.qixingchen.mdbilibili.view.BilibiliCardViewHolder;
 
 /**
@@ -44,7 +44,7 @@ public class CardAdapter extends RecyclerView.Adapter<BilibiliCardViewHolder> {
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(BilibiliApplication.getApplication(), BilibiliDetail.class);
+                Intent intent = new Intent(BilibiliApplication.getApplication(), BilibiliDetailActivity.class);
                 String url = String.valueOf(list.list.get(position).pic);
                 String title = String.valueOf(list.list.get(position).title);
                 String aid = String.valueOf(list.list.get(position).aid);

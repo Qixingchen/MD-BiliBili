@@ -1,10 +1,9 @@
-package me.qixingchen.mdbilibili.ui;
+package me.qixingchen.mdbilibili.ui.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -33,11 +32,12 @@ import me.qixingchen.mdbilibili.model.VideoM;
 import me.qixingchen.mdbilibili.network.DownloadXML;
 import me.qixingchen.mdbilibili.network.GetXMLinfo;
 import me.qixingchen.mdbilibili.network.RetrofitNetworkAbs;
+import me.qixingchen.mdbilibili.ui.base.BaseActivity;
 import me.qixingchen.mdbilibili.widget.MediaController;
 import me.qixingchen.mdbilibili.widget.VideoView;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
-public class PlayerActivity extends AppCompatActivity implements DownloadXML.CallBack {
+public class PlayerActivity extends BaseActivity implements DownloadXML.CallBack {
 
     private static final String TAG = PlayerActivity.class.getSimpleName();
     private static BaseDanmakuParser mDanmakuParser;
@@ -152,31 +152,35 @@ public class PlayerActivity extends AppCompatActivity implements DownloadXML.Cal
 
     }
 
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_player);
+    }
 
-        //find views
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_player;
+    }
+
+    @Override
+    protected void bindView() {
         mDanmakuView = (IDanmakuView) findViewById(R.id.sv_danmaku);
         mPlayerView = (VideoView) findViewById(R.id.playerView);
         mBufferingIndicator = findViewById(R.id.buffering_indicator);
+    }
+
+    @Override
+    protected void initData() {
         mMediaController = new MediaController(this);
         mActivity = this;
         mDanmakuView.enableDanmakuDrawingCache(true);
         Intent intent = getIntent();
         String aid = intent.getStringExtra("AID");
-
-        //init playerView
         mPlayerView.setMediaController(mMediaController);
         mPlayerView.setMediaBufferingIndicator(mBufferingIndicator);
-        mPlayerView.setOnInfoListener(onInfoListener);
-        mPlayerView.setOnPreparedListener(onPreparedListener);
-        mPlayerView.setOnSeekCompleteListener(onSeekCompleteListener);
-        mPlayerView.setOnCompletionListener(onCompletionListener);
-        mPlayerView.setOnControllerEventsListener(onControllerEventsListener);
         mPlayerView.requestFocus();
 
         GetXMLinfo.getNewInstance().setNetworkListener(new RetrofitNetworkAbs.NetworkListener() {
@@ -199,6 +203,15 @@ public class PlayerActivity extends AppCompatActivity implements DownloadXML.Cal
             }
         }).getUri(aid);
         isPlayerPrepared = false;
+    }
+
+    @Override
+    protected void bindEvent() {
+        mPlayerView.setOnInfoListener(onInfoListener);
+        mPlayerView.setOnPreparedListener(onPreparedListener);
+        mPlayerView.setOnSeekCompleteListener(onSeekCompleteListener);
+        mPlayerView.setOnCompletionListener(onCompletionListener);
+        mPlayerView.setOnControllerEventsListener(onControllerEventsListener);
     }
 
     @Override

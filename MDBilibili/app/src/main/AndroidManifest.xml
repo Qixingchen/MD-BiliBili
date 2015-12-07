@@ -18,7 +18,7 @@
             android:value="GlideModule"/>
 
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -27,16 +27,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.PlayerActivity"
+            android:name=".ui.activity.PlayerActivity"
             android:exported="false"
             android:label="@string/title_activity_player"
             android:screenOrientation="landscape">
         </activity>
         <activity
-            android:name=".ui.BilibiliDetail"
+            android:name=".ui.activity.BilibiliDetailActivity"
             android:exported="false"/>
         <activity
-            android:name=".ui.About"
+            android:name=".ui.activity.AboutActivity"
             android:exported="false"/>
     </application>
 

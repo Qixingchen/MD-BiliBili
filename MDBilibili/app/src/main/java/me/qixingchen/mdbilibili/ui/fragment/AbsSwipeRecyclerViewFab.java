@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.fragment;
+package me.qixingchen.mdbilibili.ui.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -119,7 +119,7 @@ public abstract class AbsSwipeRecyclerViewFab extends Fragment {
 
     /**
      * set canPullToLoading,canRefresh value<li>{@linkplain AbsSwipeRecyclerViewFab canPullToLoading}</li>
-     * <li>{@linkplain RecyclerViewFragment canSwipeRefresh}</li>
+     * <li>{@linkplain me.qixingchen.mdbilibili.ui.fragment.RecyclerViewFragment canSwipeRefresh}</li>
      */
     protected abstract void setConfig();
 

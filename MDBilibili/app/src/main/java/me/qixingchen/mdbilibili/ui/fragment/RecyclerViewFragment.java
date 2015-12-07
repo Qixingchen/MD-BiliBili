@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.fragment;
+package me.qixingchen.mdbilibili.ui.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -12,11 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.qixingchen.mdbilibili.R;
-import me.qixingchen.mdbilibili.adapter.CardAdapter;
 import me.qixingchen.mdbilibili.model.List;
 import me.qixingchen.mdbilibili.network.ListApi;
 import me.qixingchen.mdbilibili.network.RetrofitNetworkAbs;
-
+import me.qixingchen.mdbilibili.ui.adapter.CardAdapter;
 
 /**
  * Created by farble on 2015/6/15.

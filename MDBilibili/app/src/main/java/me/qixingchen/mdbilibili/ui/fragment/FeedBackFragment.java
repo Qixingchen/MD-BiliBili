@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.ui.main;
+package me.qixingchen.mdbilibili.ui.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -13,7 +13,7 @@ import me.qixingchen.mdbilibili.R;
 /**
  * Created by Farble on 2015/7/31 00.
  */
-public class FeedBackFragment extends Fragment{
+public class FeedBackFragment extends Fragment {
     private static final String TAG = "FeedBackFragment";
     private View rootView;
     private Activity mActivity;
