@@ -26,10 +26,12 @@ import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 import master.flame.danmaku.danmaku.parser.IDataSource;
 import master.flame.danmaku.danmaku.parser.android.BiliDanmukuParser;
 import me.qixingchen.mdbilibili.R;
+import me.qixingchen.mdbilibili.app.Secret;
 import me.qixingchen.mdbilibili.model.VideoM;
 import me.qixingchen.mdbilibili.network.Api;
 import me.qixingchen.mdbilibili.network.DownloadXML;
 import me.qixingchen.mdbilibili.network.RetrofitNetwork;
+import me.qixingchen.mdbilibili.network.VideoHDM;
 import me.qixingchen.mdbilibili.ui.base.BaseActivity;
 import me.qixingchen.mdbilibili.widget.MediaController;
 import me.qixingchen.mdbilibili.widget.VideoView;
@@ -209,10 +211,35 @@ public class PlayerActivity extends BaseActivity {
         //video
         Observable<Object> videoObservable =
                 observable
-                        .map(new Func1<VideoM, Uri>() {
+                        .map(new Func1<VideoM, String>() {
                             @Override
-                            public Uri call(VideoM videoM) {
-                                return Uri.parse(videoM.getSrc());
+                            public String call(VideoM videoM) {
+                                return videoM.getCid();
+                            }
+                        })
+                        .map(new Func1<String, String>() {
+                            @Override
+                            public String call(String s) {
+                                if (s.contentEquals("undefined")) {
+                                    return "error";
+                                }
+                                return s.substring(s.lastIndexOf('/') + 1, s.lastIndexOf("."));
+                            }
+                        })
+                        .flatMap(new Func1<String, Observable<VideoHDM>>() {
+                            @Override
+                            public Observable<VideoHDM> call(String cid) {
+                                if (cid.equals("error")) {
+                                    return Observable.error(new Exception("视频不存在或不能播放"));
+                                }
+                                return RetrofitNetwork.getRetrofitNoBaseUri().baseUrl("http://interface.bilibili.com/")
+                                        .build().create(Api.VideoApi.class).getVideoApi("json", cid, "mp4", 4, Secret.App_Key);
+                            }
+                        })
+                        .map(new Func1<VideoHDM, Uri>() {
+                            @Override
+                            public Uri call(VideoHDM videoHDM) {
+                                return Uri.parse(videoHDM.getDurl().get(0).getUrl());
                             }
                         })
                         .observeOn(AndroidSchedulers.mainThread())

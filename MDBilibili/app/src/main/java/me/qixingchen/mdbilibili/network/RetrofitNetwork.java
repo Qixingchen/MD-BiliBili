@@ -49,6 +49,17 @@ public class RetrofitNetwork {
             .build();
 
     /**
+     * 没有写入BaseUri的Retrofit
+     * 需要使用 .baseUrl(BASE_URI).build();
+     */
+    public static Retrofit.Builder getRetrofitNoBaseUri() {
+        return new Retrofit.Builder()
+                .client(getClient())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create());
+    }
+
+    /**
      * 获取 OkHttpClinet
      */
     private static OkHttpClient getClient() {
@@ -152,7 +163,7 @@ public class RetrofitNetwork {
 
             if (request != null) {
                 URL requestURL = request.url();
-                if (requestURL.getHost().contains("www.bilibili.com")) {
+                if (!requestURL.getHost().contains("api")) {
                     return chain.proceed(request);
                 }
                 String baseURL = requestURL.getProtocol() + "://" + requestURL.getHost() + requestURL.getPath();

@@ -16,51 +16,65 @@ import rx.Observable;
  * Created by Farble on 2015/7/28 22.
  */
 public interface Api {
-    String URL = "http://api.bilibili.cn";
+    String URL = "http://api.bilibili.cn/";
     String VIDEO_URL = "http://www.bilibili.com/";
 
     interface SearchApi {
-        @GET("/search")
+        @GET("search")
         Observable<SearchM> doSearch(@Query("keyword") String keyword, @Query("page") int page,
                                      @Query("pagesize") int pagesize, @Query("order") String order);
     }
 
     interface RecommendApi {
 
-        @GET("/author_recommend")
+        @GET("author_recommend")
         Call<RecommendM> getRecommendApi(@Query("aid") int aid);
     }
 
     interface FeedBackApi {
 
-        @GET("/feedback")
+        @GET("feedback")
         Observable<FeedbackM> getFeedBackApiApi(@Query("aid") int aid, @Query("ver") int ver);
     }
 
     interface UserInfoBynameApi {
 
-        @GET("/userinfo")
+        @GET("userinfo")
         Observable<UserNameM> getUserInfoBynameApi(@Query("user") String user);
     }
 
     interface UserInfoByuidApi {
 
-        @GET("/userinfo")
+        @GET("userinfo")
         Observable<UserUidM> getUserInfoByuidApi(@Query("uid") String uid);
     }
 
     interface VideoApi {
 
-        @GET("/m/html5")
+        @GET("m/html5")
         Call<VideoM> getVideoApi(@Query("aid") String aid);
 
-        @GET("/m/html5")
+        /**
+         * 获取高清视频接口
+         * 请求位于 http://interface.bilibili.com/
+         * 海外需要使用 /playurl 接口
+         */
+        @GET("v_cdn_play")
+        Observable<VideoHDM> getVideoApi(
+                @Query("otype") String otype,
+                @Query("cid") String cid,
+                @Query("type") String type,
+                @Query("quality") int quality,
+                @Query("appkey") String appkey
+        );
+
+        @GET("m/html5")
         Observable<VideoM> getVideoApiRx(@Query("aid") String aid);
     }
 
     interface ListApi {
 
-        @GET("/list")
+        @GET("list")
         Call<List> getList(
                 @Query("tid") int tid,
                 @Query("ver") int ver,
