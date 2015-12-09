@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +13,15 @@ import android.view.ViewGroup;
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.model.List;
 import me.qixingchen.mdbilibili.network.ListApi;
-import me.qixingchen.mdbilibili.network.RetrofitNetworkAbs;
 import me.qixingchen.mdbilibili.ui.adapter.CardAdapter;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * Created by farble on 2015/6/15.
+ * 并不知道用在哪里..
  */
+@Deprecated
 public class RecyclerViewFragment extends Fragment {
     private static final String TAG = "RecyclerViewFragment";
     private View rootView;
@@ -47,18 +49,19 @@ public class RecyclerViewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ListApi.getNewInstance().setNetworkListener(new RetrofitNetworkAbs.NetworkListener() {
+        ListApi.getList(1).observeOn(AndroidSchedulers.mainThread())
+                .doOnError(new Action1<Throwable>() {
+
+                    @Override
+                    public void call(Throwable throwable) {
+                        throwable.printStackTrace();
+                    }
+                }).doOnNext(new Action1<List>() {
             @Override
-            public void onOK(Object ts) {
-                List list = (List) ts;
+            public void call(List list) {
                 mCardAdapter.notifyDateChanged(list);
             }
-
-            @Override
-            public void onError(String Message) {
-                Log.w(TAG, Message);
-            }
-        }).getList(1);
+        });
     }
 
     private void initView() {

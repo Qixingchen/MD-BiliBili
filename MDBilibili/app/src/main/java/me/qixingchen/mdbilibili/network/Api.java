@@ -6,8 +6,8 @@ import me.qixingchen.mdbilibili.model.RecommendM;
 import me.qixingchen.mdbilibili.model.SearchM;
 import me.qixingchen.mdbilibili.model.UserNameM;
 import me.qixingchen.mdbilibili.model.UserUidM;
+import me.qixingchen.mdbilibili.model.VideoHDM;
 import me.qixingchen.mdbilibili.model.VideoM;
-import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Query;
 import rx.Observable;
@@ -28,7 +28,7 @@ public interface Api {
     interface RecommendApi {
 
         @GET("author_recommend")
-        Call<RecommendM> getRecommendApi(@Query("aid") int aid);
+        Observable<RecommendM> getRecommendApi(@Query("aid") int aid);
     }
 
     interface FeedBackApi {
@@ -49,10 +49,22 @@ public interface Api {
         Observable<UserUidM> getUserInfoByuidApi(@Query("uid") String uid);
     }
 
-    interface VideoApi {
+    interface View {
+        @GET("view")
+        Observable<me.qixingchen.mdbilibili.model.View> getViewInfo(
+                @Query("id") int aid,
+                @Query("page") int page
+        );
 
-        @GET("m/html5")
-        Call<VideoM> getVideoApi(@Query("aid") String aid);
+        @GET("view")
+        Observable<me.qixingchen.mdbilibili.model.View> getViewInfo(
+                @Query("id") int aid,
+                @Query("page") int page,
+                @Query("fav") int fav
+        );
+    }
+
+    interface VideoApi {
 
         /**
          * 获取高清视频接口
@@ -69,13 +81,12 @@ public interface Api {
         );
 
         @GET("m/html5")
-        Observable<VideoM> getVideoApiRx(@Query("aid") String aid);
+        Observable<VideoM> getVideoApiRx(@Query("aid") int aid);
     }
 
     interface ListApi {
-
         @GET("list")
-        Call<List> getList(
+        Observable<List> getList(
                 @Query("tid") int tid,
                 @Query("ver") int ver,
                 @Query("pagesize") int pageSize

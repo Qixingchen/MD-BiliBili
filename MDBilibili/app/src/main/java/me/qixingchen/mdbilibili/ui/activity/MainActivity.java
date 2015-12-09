@@ -2,6 +2,7 @@ package me.qixingchen.mdbilibili.ui.activity;
 
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -22,8 +23,9 @@ import me.qixingchen.mdbilibili.network.TopicApi;
 import me.qixingchen.mdbilibili.ui.adapter.MainFragmentPagerAdapter;
 import me.qixingchen.mdbilibili.ui.adapter.TopicAdapter;
 import me.qixingchen.mdbilibili.ui.base.BaseActivity;
-import me.qixingchen.mdbilibili.utils.Log;
 import me.qixingchen.mdbilibili.widget.LoopViewPager;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by chenchao on 15/12/7.
@@ -69,24 +71,31 @@ public class MainActivity extends BaseActivity {
         }
         initDrawer();
 
-        TopicApi.getInstance().setCallBack(new TopicApi.OnJsonGot() {
-            @Override
-            public void TopicOK(Topic topic) {
-                //将图片装载到数组中
-                ImageView[] mImageViews = new ImageView[topic.getResults()];
-                for (int i = 0; i < topic.getResults(); i++) {
-                    ImageView imageView = new ImageView(mContext);
-                    mImageViews[i] = imageView;
-                    Glide.with(mContext).load(topic.getList().get(i).getImg()).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
-                }
-                topicViewPager.setAdapter(new TopicAdapter(mImageViews));
-            }
+        TopicApi.getTopic()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Topic>() {
+                    @Override
+                    public void onCompleted() {
 
-            @Override
-            public void TopicError(String errorMessage) {
-                Log.e(TAG, errorMessage);
-            }
-        }).addRequest();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onNext(Topic topic) {
+                        ImageView[] mImageViews = new ImageView[topic.getResults()];
+                        for (int i = 0; i < topic.getResults(); i++) {
+                            ImageView imageView = new ImageView(mContext);
+                            mImageViews[i] = imageView;
+                            Glide.with(mContext).load(topic.getList().get(i).getImg()).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+                        }
+                        topicViewPager.setAdapter(new TopicAdapter(mImageViews));
+                    }
+                });
     }
 
     @Override

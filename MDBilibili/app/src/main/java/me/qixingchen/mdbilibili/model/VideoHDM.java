@@ -1,4 +1,4 @@
-package me.qixingchen.mdbilibili.network;
+package me.qixingchen.mdbilibili.model;
 
 import java.util.List;
 

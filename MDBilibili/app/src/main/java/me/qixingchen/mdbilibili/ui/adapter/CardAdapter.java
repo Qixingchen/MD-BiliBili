@@ -45,9 +45,9 @@ public class CardAdapter extends RecyclerView.Adapter<BilibiliCardViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BilibiliApplication.getApplication(), BilibiliDetailActivity.class);
-                String url = String.valueOf(list.list.get(position).pic);
-                String title = String.valueOf(list.list.get(position).title);
-                String aid = String.valueOf(list.list.get(position).aid);
+                String url = list.list.get(position).pic;
+                String title = list.list.get(position).title;
+                int aid = list.list.get(position).aid;
                 intent.putExtra("IMG_URL", url);
                 intent.putExtra("TITLE", title);
                 intent.putExtra("AID", aid);

@@ -58,7 +58,6 @@ dependencies {
     compile 'com.android.support:percent:23.1.1'
 
     compile 'com.github.ctiao:dfm:0.3.9'
-    compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.google.code.gson:gson:2.4'
     //okHttp
     compile 'com.squareup.okhttp:okhttp:2.5.0'

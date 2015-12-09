@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,9 +15,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.qixingchen.mdbilibili.R;
-import me.qixingchen.mdbilibili.network.ViewAPI;
+import me.qixingchen.mdbilibili.network.Api;
+import me.qixingchen.mdbilibili.network.RetrofitNetwork;
 import me.qixingchen.mdbilibili.ui.base.BaseActivity;
-import me.qixingchen.mdbilibili.utils.Log;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Farble on 2015/6/24.
@@ -32,7 +36,7 @@ public class BilibiliDetailActivity extends BaseActivity {
     protected FloatingActionButton fab;
     protected String imageUrl;
     protected String title;
-    private String aid;
+    private int aid;
     private Toolbar toolbar;
     private CollapsingToolbarLayout collapsingtoolbar;
     private android.support.design.widget.AppBarLayout appbar;
@@ -74,19 +78,28 @@ public class BilibiliDetailActivity extends BaseActivity {
         Intent intent = getIntent();
         imageUrl = intent.getStringExtra(IMG_URL);
         title = intent.getStringExtra(TITLE);
-        aid = intent.getStringExtra(AID);
+        aid = intent.getIntExtra(AID, 0);
 
-        ViewAPI.getInstance().setCallBack(new ViewAPI.OnJsonGot() {
-            @Override
-            public void ViewOK(me.qixingchen.mdbilibili.model.View views) {
-                setVideoInfo(views);
-            }
+        RetrofitNetwork.retrofitAPI.create(Api.View.class).getViewInfo(aid, 1)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<me.qixingchen.mdbilibili.model.View>() {
+                    @Override
+                    public void onCompleted() {
 
-            @Override
-            public void ViewError(String errorMessage) {
-                Log.e(TAG, errorMessage);
-            }
-        }).addRequest(aid, "1");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        Snackbar.make(view, e.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onNext(me.qixingchen.mdbilibili.model.View view) {
+                        setVideoInfo(view);
+                    }
+                });
 
         toolbar.setTitle("Detail");
         setSupportActionBar(toolbar);

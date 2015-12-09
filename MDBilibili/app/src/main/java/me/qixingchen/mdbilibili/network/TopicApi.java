@@ -1,64 +1,42 @@
 package me.qixingchen.mdbilibili.network;
 
-import android.app.Application;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
-import me.qixingchen.mdbilibili.app.BilibiliApplication;
+import java.io.IOException;
+
 import me.qixingchen.mdbilibili.model.Topic;
+import rx.Observable;
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Yulan on 2015/7/31.
+ * 首页主题json
  */
 public class TopicApi {
 
-    private Gson gson;
-    private Application application;
-    private OnJsonGot onJsonGot;
-    private static TopicApi mInstance;
-    private static final String TAG = TopicApi.class.getSimpleName();
-
-    private TopicApi() {
-        gson = new Gson();
-        application = BilibiliApplication.getApplication();
-    }
-
-    public static TopicApi getInstance() {
-        mInstance = new TopicApi();
-        return mInstance;
-    }
-
-    public TopicApi setCallBack(OnJsonGot onJsonGot) {
-        this.onJsonGot = onJsonGot;
-        return mInstance;
-    }
-
-    public TopicApi addRequest() {
-
-        Request<String> request = new StringRequest(Request.Method.GET, "http://www.bilibili.com/index/slideshow.json", new Response.Listener<String>() {
+    public static Observable<Topic> getTopic() {
+        return Observable.create(new Observable.OnSubscribe<Topic>() {
             @Override
-            public void onResponse(String response) {
-                Topic topic = gson.fromJson(response, Topic.class);
-                onJsonGot.TopicOK(topic);
+            public void call(Subscriber<? super Topic> subscriber) {
+                Request request = new Request.Builder()
+                        .url("http://www.bilibili.com/index/slideshow.json")
+                        .build();
+                try {
+                    Response response = new OkHttpClient().newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        Topic topic = new Gson().fromJson(response.body().string(), Topic.class);
+                        subscriber.onNext(topic);
+                    } else {
+                        subscriber.onError(new Exception(response.message()));
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                onJsonGot.TopicError(error.getMessage());
-            }
-        });
-        GetVolley.getmInstance(application).addToRequestQueue(request);
-        return mInstance;
-    }
-
-
-    public interface OnJsonGot {
-        void TopicOK(Topic topic);
-
-        void TopicError(String errorMessage);
+        }).subscribeOn(Schedulers.io());
     }
 }

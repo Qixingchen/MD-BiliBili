@@ -4,6 +4,7 @@ package me.qixingchen.mdbilibili.danmaku;
  * Created by Yulan on 2015/6/12.
  * 用于调用XML下载，然而现在并没有什么琴梨用
  */
+@Deprecated
 public class DownloadDanmakuXML {
 	private DownloadDanmakuXML downloadDanmakuXML;
 
@@ -22,6 +23,5 @@ public class DownloadDanmakuXML {
 	}
 
 	public void startDownloadByAid(String Aid) {
-		//GetXMLinfo.getNewInstance().getUri(Aid);
 	}
 }
