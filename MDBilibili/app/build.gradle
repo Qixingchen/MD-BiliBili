@@ -21,7 +21,10 @@ android {
     sourceSets {
         androidTest.setRoot('tests')
         androidTest.java.srcDirs = ['tests/src']
+    }
 
+    dataBinding {
+        enabled = true
     }
 
     packagingOptions {

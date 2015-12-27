@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.View;
 
 /**
@@ -13,7 +12,7 @@ import android.view.View;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-//    protected final String TAG = this.getClass().getSimpleName();
+    //    protected final String TAG = this.getClass().getSimpleName();
     protected Context mContext;
     protected View view;
     protected Activity mActivity;
@@ -22,7 +21,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getContentView());
+        if (getContentView() != 0) {
+            setContentView(getContentView());
+        }
 
         mContext = this;
         mActivity = this;

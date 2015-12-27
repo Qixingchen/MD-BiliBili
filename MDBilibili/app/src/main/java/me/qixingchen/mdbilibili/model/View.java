@@ -1,9 +1,12 @@
 package me.qixingchen.mdbilibili.model;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
 /**
  * Created by Yulan on 2015/7/26.
  */
-public class View {
+public class View extends BaseObservable {
 
     /**
      * play : 722310
@@ -60,211 +63,218 @@ public class View {
     private String typename;
     private int cid;
 
+    @Bindable
+    public String getPlay() {
+        return play;
+    }
+
     public void setPlay(String play) {
         this.play = play;
+    }
+
+    @Bindable
+    public String getFavorites() {
+        return favorites;
     }
 
     public void setFavorites(String favorites) {
         this.favorites = favorites;
     }
 
-    public void setOffsite(String offsite) {
-        this.offsite = offsite;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setMid(String mid) {
-        this.mid = mid;
-    }
-
-    public void setInstant_server(String instant_server) {
-        this.instant_server = instant_server;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public void setPic(String pic) {
-        this.pic = pic;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setSpid(String spid) {
-        this.spid = spid;
-    }
-
-    public void setTid(int tid) {
-        this.tid = tid;
-    }
-
-    public void setPages(int pages) {
-        this.pages = pages;
-    }
-
-    public void setAllow_feed(int allow_feed) {
-        this.allow_feed = allow_feed;
-    }
-
-    public void setReview(String review) {
-        this.review = review;
-    }
-
-    public void setAllow_bp(int allow_bp) {
-        this.allow_bp = allow_bp;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    public void setVideo_review(String video_review) {
-        this.video_review = video_review;
-    }
-
-    public void setCredit(String credit) {
-        this.credit = credit;
-    }
-
-    public void setPartname(String partname) {
-        this.partname = partname;
-    }
-
-    public void setCoins(String coins) {
-        this.coins = coins;
-    }
-
-    public void setSrc(String src) {
-        this.src = src;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public void setCreated(int created) {
-        this.created = created;
-    }
-
-    public void setFace(String face) {
-        this.face = face;
-    }
-
-    public void setTypename(String typename) {
-        this.typename = typename;
-    }
-
-    public void setCid(int cid) {
-        this.cid = cid;
-    }
-
-    public String getPlay() {
-        return play;
-    }
-
-    public String getFavorites() {
-        return favorites;
-    }
-
     public String getOffsite() {
         return offsite;
+    }
+
+    public void setOffsite(String offsite) {
+        this.offsite = offsite;
     }
 
     public String getDescription() {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getMid() {
         return mid;
+    }
+
+    public void setMid(String mid) {
+        this.mid = mid;
     }
 
     public String getInstant_server() {
         return instant_server;
     }
 
+    public void setInstant_server(String instant_server) {
+        this.instant_server = instant_server;
+    }
+
     public String getCreated_at() {
         return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
     }
 
     public String getPic() {
         return pic;
     }
 
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
+    @Bindable
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getSpid() {
         return spid;
     }
 
+    public void setSpid(String spid) {
+        this.spid = spid;
+    }
+
     public int getTid() {
         return tid;
+    }
+
+    public void setTid(int tid) {
+        this.tid = tid;
     }
 
     public int getPages() {
         return pages;
     }
 
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
+
     public int getAllow_feed() {
         return allow_feed;
     }
 
+    public void setAllow_feed(int allow_feed) {
+        this.allow_feed = allow_feed;
+    }
+
+    @Bindable
     public String getReview() {
         return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
     }
 
     public int getAllow_bp() {
         return allow_bp;
     }
 
+    public void setAllow_bp(int allow_bp) {
+        this.allow_bp = allow_bp;
+    }
+
+    @Bindable
     public String getTag() {
         return tag;
     }
 
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
+
+    @Bindable
     public String getVideo_review() {
         return video_review;
+    }
+
+    public void setVideo_review(String video_review) {
+        this.video_review = video_review;
     }
 
     public String getCredit() {
         return credit;
     }
 
+    public void setCredit(String credit) {
+        this.credit = credit;
+    }
+
     public String getPartname() {
         return partname;
+    }
+
+    public void setPartname(String partname) {
+        this.partname = partname;
     }
 
     public String getCoins() {
         return coins;
     }
 
+    public void setCoins(String coins) {
+        this.coins = coins;
+    }
+
     public String getSrc() {
         return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
     }
 
     public String getAuthor() {
         return author;
     }
 
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    @Bindable
     public int getCreated() {
         return created;
+    }
+
+    public void setCreated(int created) {
+        this.created = created;
     }
 
     public String getFace() {
         return face;
     }
 
+    public void setFace(String face) {
+        this.face = face;
+    }
+
     public String getTypename() {
         return typename;
     }
 
+    public void setTypename(String typename) {
+        this.typename = typename;
+    }
+
     public int getCid() {
         return cid;
+    }
+
+    public void setCid(int cid) {
+        this.cid = cid;
     }
 }

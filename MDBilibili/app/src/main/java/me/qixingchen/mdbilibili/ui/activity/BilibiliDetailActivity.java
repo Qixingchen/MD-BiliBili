@@ -1,6 +1,7 @@
 package me.qixingchen.mdbilibili.ui.activity;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import me.qixingchen.mdbilibili.R;
+import me.qixingchen.mdbilibili.databinding.DastBilibiliDetailBinding;
 import me.qixingchen.mdbilibili.network.Api;
 import me.qixingchen.mdbilibili.network.RetrofitNetwork;
 import me.qixingchen.mdbilibili.ui.base.BaseActivity;
@@ -33,7 +35,6 @@ public class BilibiliDetailActivity extends BaseActivity {
     private static final String TITLE = "TITLE";
     private static final String AID = "AID";
 
-    protected FloatingActionButton fab;
     protected String imageUrl;
     protected String title;
     private int aid;
@@ -48,17 +49,17 @@ public class BilibiliDetailActivity extends BaseActivity {
     private ImageView backdrop;
     private FloatingActionButton detailfab;
 
+    private DastBilibiliDetailBinding binding;
+
     @Override
     protected int getContentView() {
-        return R.layout.dast_bilibili_detail;
+        binding = DataBindingUtil.setContentView(
+                this, R.layout.dast_bilibili_detail);
+        return 0;
     }
 
     @Override
     protected void bindView() {
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        collapsingtoolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        fab = (FloatingActionButton) findViewById(R.id.detail_fab);
 
         this.detailfab = (FloatingActionButton) findViewById(R.id.detail_fab);
         this.favoritesTextView = (TextView) findViewById(R.id.favoritesTextView);
@@ -98,21 +99,20 @@ public class BilibiliDetailActivity extends BaseActivity {
                     @Override
                     public void onNext(me.qixingchen.mdbilibili.model.View view) {
                         setVideoInfo(view);
+                        binding.setView(view);
                     }
                 });
-
-        toolbar.setTitle("Detail");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        collapsingtoolbar.setTitle(title);
+        //collapsingtoolbar.setTitle(title);
 
         loadBackdrop();
     }
 
     @Override
     protected void bindEvent() {
-        fab.setOnClickListener(new View.OnClickListener() {
+        detailfab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent playDemoIntent = new Intent(mContext, PlayerActivity.class);
