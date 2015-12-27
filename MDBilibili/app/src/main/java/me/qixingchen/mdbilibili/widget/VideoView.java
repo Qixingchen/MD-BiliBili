@@ -47,8 +47,6 @@ import tv.danmaku.ijk.media.player.IMediaPlayer.OnPreparedListener;
 import tv.danmaku.ijk.media.player.IMediaPlayer.OnSeekCompleteListener;
 import tv.danmaku.ijk.media.player.IMediaPlayer.OnVideoSizeChangedListener;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-import tv.danmaku.ijk.media.player.option.AvFourCC;
-import tv.danmaku.ijk.media.player.option.format.AvFormatOption_HttpDetectRangeSupport;
 import tv.danmaku.ijk.media.player.pragma.DebugLog;
 
 /**
@@ -418,14 +416,15 @@ public class VideoView extends SurfaceView implements
             if (mUri != null) {
                 ijkMediaPlayer = new IjkMediaPlayer();
                 ijkMediaPlayer.setLogEnabled(false);
-                ijkMediaPlayer.setAvOption(AvFormatOption_HttpDetectRangeSupport.Disable);
-                ijkMediaPlayer.setOverlayFormat(AvFourCC.SDL_FCC_RV32);
-                ijkMediaPlayer.setMediaCodecEnabled(true);
 
-                ijkMediaPlayer.setAvCodecOption("skip_loop_filter", "48");
-                ijkMediaPlayer.setFrameDrop(12);
+//                ijkMediaPlayer.setAvOption(AvFormatOption_HttpDetectRangeSupport.Disable);
+//                ijkMediaPlayer.setOverlayFormat(AvFourCC.SDL_FCC_RV32);
+//                ijkMediaPlayer.setMediaCodecEnabled(true);
+                ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_CODEC, "skip_loop_filter", "48");
+                //ijkMediaPlayer.setAvCodecOption("skip_loop_filter", "48");
+                //ijkMediaPlayer.setFrameDrop(12);
                 if (mUserAgent != null) {
-                    ijkMediaPlayer.setAvFormatOption("user_agent", mUserAgent);
+                    //ijkMediaPlayer.setAvFormatOption("user_agent", mUserAgent);
                 }
             }
             mMediaPlayer = ijkMediaPlayer;

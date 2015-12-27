@@ -19,6 +19,7 @@ import master.flame.danmaku.controller.IDanmakuView;
 import master.flame.danmaku.danmaku.loader.ILoader;
 import master.flame.danmaku.danmaku.loader.IllegalDataException;
 import master.flame.danmaku.danmaku.loader.android.DanmakuLoaderFactory;
+import master.flame.danmaku.danmaku.model.BaseDanmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
 import master.flame.danmaku.danmaku.model.android.Danmakus;
@@ -70,9 +71,9 @@ public class PlayerActivity extends BaseActivity {
             } else if (what == IMediaPlayer.MEDIA_INFO_BUFFERING_END) {
                 if (mDanmakuView != null && mDanmakuView.isPaused()) {
                     mDanmakuView.resume();
-                    if (mBufferingIndicator != null)
-                        mBufferingIndicator.setVisibility(View.GONE);
                 }
+                if (mBufferingIndicator != null)
+                    mBufferingIndicator.setVisibility(View.GONE);
             }
             return true;
         }
@@ -92,9 +93,8 @@ public class PlayerActivity extends BaseActivity {
         @Override
         public void onCompletion(IMediaPlayer mp) {
             if (mDanmakuView != null && mDanmakuView.isPrepared()) {
-                mDanmakuView.pause();
                 mDanmakuView.seekTo((long) 0);
-
+                mDanmakuView.pause();
             }
             mPlayerView.pause();
         }
@@ -110,7 +110,7 @@ public class PlayerActivity extends BaseActivity {
 
         @Override
         public void OnVideoResume() {
-            if (mDanmakuView != null && mDanmakuView.isPaused() && mPlayerView.isPlaying()) {
+            if (mDanmakuView != null && mDanmakuView.isPaused()) {
                 mDanmakuView.resume();
             }
         }
@@ -174,6 +174,9 @@ public class PlayerActivity extends BaseActivity {
         mPlayerView.setMediaBufferingIndicator(mBufferingIndicator);
         mPlayerView.requestFocus();
 
+        if (mBufferingIndicator != null)
+            mBufferingIndicator.setVisibility(View.VISIBLE);
+
         Observable<VideoM> observable = RetrofitNetwork.retrofitMain.create(Api.VideoApi.class).getVideoApiRx(aid)
                 .subscribeOn(Schedulers.io());
         //danmaku
@@ -182,7 +185,7 @@ public class PlayerActivity extends BaseActivity {
                         .map(new Func1<VideoM, String>() {
                             @Override
                             public String call(VideoM videoM) {
-                                if (videoM.getCid().contentEquals("undefined")) {
+                                if (videoM.getCid() == null || videoM.getCid().contentEquals("undefined")) {
                                     return "error";
                                 }
                                 mXMLFileName = videoM.getCid().substring(videoM.getCid().lastIndexOf('/') + 1);
@@ -220,7 +223,7 @@ public class PlayerActivity extends BaseActivity {
                         .map(new Func1<String, String>() {
                             @Override
                             public String call(String s) {
-                                if (s.contentEquals("undefined")) {
+                                if (s == null || s.contentEquals("undefined")) {
                                     return "error";
                                 }
                                 return s.substring(s.lastIndexOf('/') + 1, s.lastIndexOf("."));
@@ -286,12 +289,10 @@ public class PlayerActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (mDanmakuView != null && mDanmakuView.isPrepared() && mDanmakuView.isPaused()) {
-            mDanmakuView.resume();
             mDanmakuView.seekTo((long) LastPosition);
         }
         //todo 看看能不能保留缓冲的视频
         if (mPlayerView != null && !mPlayerView.isPlaying()) {
-            mPlayerView.start();
             mPlayerView.seekTo(LastPosition);
         }
     }
@@ -343,6 +344,8 @@ public class PlayerActivity extends BaseActivity {
                     @Override
                     public void onPrepared(IMediaPlayer mp) {
                         subscriber.onCompleted();
+                        if (mBufferingIndicator != null)
+                            mBufferingIndicator.setVisibility(View.GONE);
                     }
                 });
             }
@@ -365,6 +368,11 @@ public class PlayerActivity extends BaseActivity {
 
                         @Override
                         public void updateTimer(DanmakuTimer danmakuTimer) {
+
+                        }
+
+                        @Override
+                        public void danmakuShown(BaseDanmaku danmaku) {
 
                         }
 

@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 import me.qixingchen.mdbilibili.app.Secret;
 import me.qixingchen.mdbilibili.utils.Log;
@@ -64,6 +65,9 @@ public class RetrofitNetwork {
      */
     private static OkHttpClient getClient() {
         OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(HttpCommon.OKHTTP_CLIENT_CONNECT_TIMEOUT, TimeUnit.SECONDS);
+        client.setWriteTimeout(HttpCommon.OKHTTP_CLIENT_WRITE_TIMEOUT, TimeUnit.SECONDS);
+        client.setReadTimeout(HttpCommon.OKHTTP_CLIENT_READ_TIMEOUT, TimeUnit.SECONDS);
         client.networkInterceptors().add(new LoggingInterceptor());
         client.networkInterceptors().add(new SignInterceptor());
         client.networkInterceptors().add(new UserAgentInterceptor());
@@ -129,6 +133,12 @@ public class RetrofitNetwork {
         return paraUri;
     }
 
+    public interface HttpCommon {
+        int OKHTTP_CLIENT_CONNECT_TIMEOUT = 10;
+        int OKHTTP_CLIENT_WRITE_TIMEOUT = 20;
+        int OKHTTP_CLIENT_READ_TIMEOUT = 20;
+    }
+
     /**
      * OKHttp log接口
      */
@@ -138,8 +148,7 @@ public class RetrofitNetwork {
             Request request = chain.request();
 
             long t1 = System.nanoTime();
-            //Log.i(TAG, String.format("Sending request %s on %s%n%s",
-            //request.url(), chain.connection(), "request.headers()"));
+            Log.i(TAG, String.format("Sending request %s", request.url()));
 
             Response response = chain.proceed(request);
 
