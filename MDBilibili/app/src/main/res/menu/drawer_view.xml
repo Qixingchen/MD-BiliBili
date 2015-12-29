@@ -35,19 +35,21 @@
             android:title="关注我的"/>
     </group>
 
-    <item android:title="收藏夹"
-        >
+    <item android:title="收藏夹">
         <menu>
             <item
                 android:id="@+id/nav_article"
+                android:checkable="true"
                 android:icon="@mipmap/ic_dashboard"
                 android:title="文章"/>
             <item
                 android:id="@+id/nav_video"
+                android:checkable="true"
                 android:icon="@mipmap/ic_forum"
                 android:title="视频"/>
             <item
                 android:id="@+id/nav_about"
+                android:checkable="true"
                 android:icon="@mipmap/ic_about"
                 android:title="关于"/>
         </menu>

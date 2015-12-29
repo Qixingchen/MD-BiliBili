@@ -54,12 +54,12 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
-    protected void findViews(View view) {
+    protected void bindView(View view) {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.dast_recycler_view);
     }
 
     @Override
-    protected void initViews() {
+    protected void initData() {
         ListApi.getList(Integer.valueOf(pid))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List>() {
@@ -81,7 +81,7 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
-    protected void setViewEvent() {
+    protected void bindEvent() {
 
     }
 
