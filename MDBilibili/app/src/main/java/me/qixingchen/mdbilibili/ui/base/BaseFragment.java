@@ -13,6 +13,7 @@ import android.view.ViewGroup;
  * Fragment 的抽象
  */
 public abstract class BaseFragment extends Fragment {
+
     protected final String TAG = this.getClass().getSimpleName();
     protected Activity mActivity;
     protected Context mContext;
@@ -20,22 +21,21 @@ public abstract class BaseFragment extends Fragment {
     protected View view;
     protected boolean isAttached = false;
 
-
     public abstract View onCreateView(LayoutInflater inflater, ViewGroup container,
                                       Bundle savedInstanceState);
 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
-        findViews(view);
+        bindView(view);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        initViews();
-        setViewEvent();
+        initData();
+        bindEvent();
     }
 
     @Override
@@ -57,10 +57,10 @@ public abstract class BaseFragment extends Fragment {
         isAttached = false;
     }
 
-    protected abstract void findViews(View view);
+    protected abstract void bindView(View view);
 
-    protected abstract void initViews();
+    protected abstract void initData();
 
-    protected abstract void setViewEvent();
+    protected abstract void bindEvent();
 
 }
