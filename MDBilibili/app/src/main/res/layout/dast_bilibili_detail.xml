@@ -56,6 +56,7 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:scaleType="centerCrop"
+                    app:imageUrl="@{View.pic}"
                     app:layout_collapseMode="parallax" />
 
                 <android.support.v7.widget.Toolbar
@@ -74,9 +75,10 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
                 android:orientation="vertical"
                 android:paddingTop="24dp">
 
@@ -84,50 +86,171 @@
                     android:id="@+id/aidTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
                     android:padding="8dp"
                     android:textColor="@color/md_black"
                     android:textSize="@dimen/small_title_size"
                     tools:text="AV1048898" />
 
-                <TextView
-                    android:id="@+id/PlayTextView"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/aidTextView"
-                    android:layout_marginLeft="8dp"
-                    android:text="@{View.play}"
-                    android:textSize="@dimen/normal_text_size"
-                    tools:text="55558" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/reviewTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/aidTextView"
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@id/PlayTextView"
-                    android:textSize="@dimen/normal_text_size"
-                    tools:text="55558" />
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_account_box_black_24dp" />
 
-                <TextView
-                    android:id="@+id/video_reviewTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/reviewTextView"
-                    android:layout_marginLeft="8dp"
-                    android:textSize="@dimen/normal_text_size"
-                    tools:text="55558" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{View.author}"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="55558" />
 
-                <TextView
-                    android:id="@+id/favoritesTextView"
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/reviewTextView"
-                    android:layout_marginLeft="16dp"
-                    android:layout_toRightOf="@id/video_reviewTextView"
-                    android:textSize="@dimen/normal_text_size"
-                    tools:text="55558" />
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_subscriptions_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{View.play}"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="55558" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_comment_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{View.review}"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="55558" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_art_track_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{View.video_review}"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="55558" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_star_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{View.favorites}"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="55558" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_description_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{View.description}"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="55558" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_tag_multiple_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{View.tag}"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="55558" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_coin_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{View.coins}"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="55558" />
+
+                </LinearLayout>
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/detail_viewpager"
@@ -141,7 +264,7 @@
                         android:layout_gravity="top" />
                 </android.support.v4.view.ViewPager>
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
