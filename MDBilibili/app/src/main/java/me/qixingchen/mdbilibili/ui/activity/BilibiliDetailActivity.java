@@ -7,7 +7,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import me.qixingchen.mdbilibili.R;
 import me.qixingchen.mdbilibili.databinding.DastBilibiliDetailBinding;
@@ -24,12 +23,10 @@ import rx.schedulers.Schedulers;
  */
 public class BilibiliDetailActivity extends BaseActivity {
 
-    private static final String TAG = BilibiliDetailActivity.class.getSimpleName();
     private static final String AID = "AID";
 
     private int aid;
     private Toolbar toolbar;
-    private android.widget.TextView aidTextView;
     private FloatingActionButton detailfab;
 
     private DastBilibiliDetailBinding binding;
@@ -45,7 +42,6 @@ public class BilibiliDetailActivity extends BaseActivity {
     protected void bindView() {
 
         this.detailfab = (FloatingActionButton) findViewById(R.id.detail_fab);
-        this.aidTextView = (TextView) findViewById(R.id.aidTextView);
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
     }
 
@@ -54,6 +50,7 @@ public class BilibiliDetailActivity extends BaseActivity {
     protected void initData() {
         Intent intent = getIntent();
         aid = intent.getIntExtra(AID, 0);
+        binding.setAID("AV" + aid);
 
         RetrofitNetwork.retrofitAPI.create(Api.View.class).getViewInfo(aid, 1)
                 .subscribeOn(Schedulers.io())
@@ -72,7 +69,6 @@ public class BilibiliDetailActivity extends BaseActivity {
 
                     @Override
                     public void onNext(me.qixingchen.mdbilibili.model.View view) {
-                        aidTextView.setText("AV" + aid);
                         binding.setView(view);
                     }
                 });

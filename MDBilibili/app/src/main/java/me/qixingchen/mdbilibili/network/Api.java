@@ -34,7 +34,28 @@ public interface Api {
     interface FeedBackApi {
 
         @GET("feedback")
-        Observable<FeedbackM> getFeedBackApiApi(@Query("aid") int aid, @Query("ver") int ver);
+        Observable<FeedbackM> getFeedBack(
+                @Query("aid") int aid,
+                @Query("page") int page,
+                @Query("pagesize") int pageSize,
+                @Query("ver") int ver);
+
+        /**
+         * 获取视频评论 <a href="https://github.com/fython/BilibiliAPIDocs/blob/master/API.feedback.md">API.feedback</a>
+         *
+         * @param aid      AV号
+         * @param page     页码
+         * @param pageSize 单页返回的记录条数，最大不超过300，默认为10。
+         * @param order    API版本,最新是3
+         * @param ver      排序方式 默认按发布时间倒序 可选：good 按点赞人数排序 hot 按热门回复排序
+         */
+        @GET("feedback")
+        Observable<FeedbackM> getFeedBack(
+                @Query("aid") int aid,
+                @Query("page") int page,
+                @Query("pagesize") int pageSize,
+                @Query("order") String order,
+                @Query("ver") int ver);
     }
 
     interface UserInfoBynameApi {

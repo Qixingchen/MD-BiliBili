@@ -12,7 +12,7 @@ import android.view.View;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    //    protected final String TAG = this.getClass().getSimpleName();
+    protected final String TAG = this.getClass().getSimpleName();
     protected Context mContext;
     protected View view;
     protected Activity mActivity;

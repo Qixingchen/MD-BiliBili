@@ -3,6 +3,8 @@ package me.qixingchen.mdbilibili.model;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import me.qixingchen.mdbilibili.utils.TimeUtils;
+
 /**
  * Created by Yulan on 2015/7/26.
  */
@@ -276,5 +278,10 @@ public class View extends BaseObservable {
 
     public void setCid(int cid) {
         this.cid = cid;
+    }
+
+    @Bindable
+    public String getReadableCreateTime() {
+        return TimeUtils.getReadableTime(created);
     }
 }

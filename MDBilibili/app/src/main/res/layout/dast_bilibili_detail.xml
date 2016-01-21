@@ -23,6 +23,10 @@
         <variable
             name="View"
             type="me.qixingchen.mdbilibili.model.View" />
+
+        <variable
+            name="AID"
+            type="String" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -48,7 +52,8 @@
                 app:expandedTitleMarginEnd="64dp"
                 app:expandedTitleMarginStart="48dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:title="@{View.title}">
+                app:title="@{AID}"
+                tools:title="AV1048898">
 
                 <ImageView
                     android:id="@+id/backdrop"
@@ -83,13 +88,13 @@
                 android:paddingTop="24dp">
 
                 <TextView
-                    android:id="@+id/aidTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
+                    android:text="@{View.title}"
                     android:textColor="@color/md_black"
                     android:textSize="@dimen/small_title_size"
-                    tools:text="AV1048898" />
+                    tools:text="title" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -106,6 +111,20 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="@{View.author}"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="55558" />
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ic_access_time_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{View.readableCreateTime}"
                         android:textSize="@dimen/normal_text_size"
                         tools:text="55558" />
 
@@ -129,6 +148,20 @@
                         android:textSize="@dimen/normal_text_size"
                         tools:text="55558" />
 
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ic_art_track_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@{View.video_review}"
+                        android:textSize="@dimen/normal_text_size"
+                        tools:text="55558" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -146,26 +179,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:text="@{View.review}"
-                        android:textSize="@dimen/normal_text_size"
-                        tools:text="55558" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_art_track_black_24dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="@{View.video_review}"
                         android:textSize="@dimen/normal_text_size"
                         tools:text="55558" />
 

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="comment"
+            type="me.qixingchen.mdbilibili.model.FeedbackM.ListEntity" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/user_face_image_v"
+            android:layout_width="@dimen/comment_user_face_size"
+            android:layout_height="@dimen/comment_user_face_size"
+            android:layout_centerVertical="true"
+            android:background="#66ccff"
+            app:imageUrl="@{comment.face}" />
+
+        <TextView
+            android:id="@+id/user_name_text_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/user_face_image_v"
+            android:text="@{comment.nick}"
+            android:textSize="@dimen/comment_user_name_text_size"
+            tools:text="username" />
+
+        <TextView
+            android:id="@+id/user_lv_text_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/user_name_text_v"
+            android:layout_below="@id/user_name_text_v"
+            android:text="@{comment.lv}"
+            tools:text="#12" />
+
+        <TextView
+            android:id="@+id/comment_time_text_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_name_text_v"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/user_lv_text_v"
+            android:text="@{comment.readableCreate}"
+            tools:text="#12" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/user_name_text_v"
+            android:layout_below="@id/user_lv_text_v"
+            android:text="@{comment.msg}"
+            android:textSize="@dimen/comment_msg_text_size"
+            tools:text="122222" />
+
+        <TextView
+            android:id="@+id/comment_good_number_text_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@{comment.good}"
+            tools:text="12" />
+
+        <ImageView
+            android:id="@+id/comment_good_number_image_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/comment_good_number_text_v"
+            android:src="@drawable/ic_thumb_up_black_12dp" />
+
+        <TextView
+            android:id="@+id/comment_reply_number_text_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/comment_good_number_image_v"
+            android:text="@{comment.good}"
+            tools:text="12" />
+
+        <ImageView
+            android:id="@+id/comment_reply_number_image_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/comment_reply_number_text_v"
+            android:src="@drawable/ic_reply_black_12dp" />
+
+    </RelativeLayout>
+
+
+</layout>
+
